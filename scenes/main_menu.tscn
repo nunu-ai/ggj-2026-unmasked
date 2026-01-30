@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cn7w22ecscp33"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_right = 129.0
+offset_bottom = 40.0
+text = "Unmasked"
