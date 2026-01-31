@@ -1,49 +1,64 @@
 class_name Day
 
 var day_number: int
-var queue: Array[Person] = []
 var in_club: Array[Person] = []
+var global_rules: Array[Rule] = []
+
+# Current person in the infinite queue (generated on demand)
+var _current_person: Person = null
 
 
 func _init(_day_number: int):
 	self.day_number = _day_number
-	self.fill_queue()
+	self.global_rules = Rule.get_day_rules(_day_number)
+	# Generate first person
+	_generate_next_person()
 
 
-## Calculate profit based on the happiness score of people in the club
+## Calculate profit based on people in club minus rule penalties
 func profit() -> float:
-	var trait_list: Array[Trait] = []
-
+	# Base profit from money each person brings (based on their mask)
+	var base_profit: float = 0.0
 	for person in in_club:
-		trait_list.append_array(person.traits)
-
-	var trait_set = TraitSet.new(trait_list)
-
-	# Base profit from number of guests, modified by their happiness
-	var base_profit = in_club.size() * 50
-	var happiness_bonus = trait_set.calc_score() * 10
+		base_profit += person.money
 	
-	return base_profit + happiness_bonus
+	# Calculate penalties from violated global rules
+	var penalties: float = 0.0
+	for rule in global_rules:
+		if rule.is_violated(in_club):
+			penalties += rule.get_penalty()
+	
+	# Calculate penalties from violated personal rules
+	for person in in_club:
+		for rule in person.rules:
+			if rule.is_violated(in_club):
+				penalties += rule.get_penalty()
+	
+	return base_profit + penalties  # penalties are negative
 
 
-## Creates a queue for the day using the PersonGenerator
-func fill_queue():
-	self.queue = PersonGenerator.generate_queue(day_number)
-
-
+## Get the current person (infinite queue - always has someone)
 func current_person() -> Person:
-	if queue.is_empty():
-		return null
-
-	return queue[0]
+	return _current_person
 
 
-## Accept or reject the current person in the queue
+## Accept or reject the current person
 ## Note: Caller should check club capacity via SaveState.club.capacity before accepting
 func decide_current_person(accept: bool):
 	if accept:
-		in_club.append(current_person())
-	queue.remove_at(0)
+		in_club.append(_current_person)
+	# Generate next person (infinite queue)
+	_generate_next_person()
+
+
+## Reroll to get a new person (costs money, handled by caller)
+func reroll():
+	_generate_next_person()
+
+
+## Generate the next person in the queue
+func _generate_next_person():
+	_current_person = PersonGenerator.generate_person()
 
 
 ## Check if club is full (convenience method, uses provided capacity)
