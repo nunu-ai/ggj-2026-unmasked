@@ -31,21 +31,25 @@ func update_view() -> void:
 		for person in day.in_club:
 			# Calculate individual happiness contribution using the combined trait set
 			var individual_score = 0
-			var trait_scores: Array[Dictionary] = []
+			var trait_data: Array[Dictionary] = []
 
 			for t in person.traits:
 				var score = t.calc_score(combined_trait_set)
+				var explanations = t.explain_score(combined_trait_set, day.in_club)
 				individual_score += score
-				if score != 0:
-					trait_scores.append({"trait": t, "score": score})
+				trait_data.append({
+					"trait": t,
+					"score": score,
+					"explanations": explanations
+				})
 
 			# Create expandable entry for this person
-			var entry = _create_person_debug_entry(person, individual_score, trait_scores)
+			var entry = _create_person_debug_entry(person, individual_score, trait_data)
 			members_list.add_child(entry)
 
 
 ## Creates a clickable debug entry for a person with expandable trait breakdown
-func _create_person_debug_entry(person: Person, total_score: int, trait_scores: Array[Dictionary]) -> Control:
+func _create_person_debug_entry(person: Person, total_score: int, trait_data: Array[Dictionary]) -> Control:
 	var container = VBoxContainer.new()
 
 	# Header button showing person name and total score
@@ -71,27 +75,22 @@ func _create_person_debug_entry(person: Person, total_score: int, trait_scores: 
 	var details_vbox = VBoxContainer.new()
 	details_panel.add_child(details_vbox)
 
-	if trait_scores.is_empty():
-		var no_effect_label = Label.new()
-		no_effect_label.text = "  No trait effects"
-		no_effect_label.add_theme_font_size_override("font_size", 10)
-		no_effect_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		details_vbox.add_child(no_effect_label)
+	# Show ALL traits, grouped by whether they affect score
+	if trait_data.is_empty():
+		var no_traits_label = Label.new()
+		no_traits_label.text = "  No traits"
+		no_traits_label.add_theme_font_size_override("font_size", 10)
+		no_traits_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+		details_vbox.add_child(no_traits_label)
 	else:
-		for ts in trait_scores:
-			var trait_label = Label.new()
-			var t: Trait = ts["trait"]
-			var score: int = ts["score"]
-			var prefix = "+" if score > 0 else ""
-			trait_label.text = "  %s: %s%d" % [t.description(), prefix, score]
-			trait_label.add_theme_font_size_override("font_size", 10)
-
-			if score > 0:
-				trait_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5))
-			else:
-				trait_label.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
-
-			details_vbox.add_child(trait_label)
+		for td in trait_data:
+			var t: Trait = td["trait"]
+			var score: int = td["score"]
+			var explanations: Array = td["explanations"]
+			
+			# Create entry for this trait
+			var trait_entry = _create_trait_entry(t, score, explanations)
+			details_vbox.add_child(trait_entry)
 
 	container.add_child(details_panel)
 
@@ -99,3 +98,76 @@ func _create_person_debug_entry(person: Person, total_score: int, trait_scores: 
 	header_btn.pressed.connect(func(): details_panel.visible = not details_panel.visible)
 
 	return container
+
+
+## Creates a trait entry, expandable if it has score effects
+func _create_trait_entry(t: Trait, score: int, explanations: Array) -> Control:
+	var has_effect = score != 0
+	
+	if not has_effect:
+		# Simple label for traits without score effects
+		var trait_label = Label.new()
+		trait_label.text = "  %s" % t.display_value()
+		trait_label.add_theme_font_size_override("font_size", 10)
+		trait_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+		return trait_label
+	
+	# Expandable entry for traits with score effects
+	var trait_container = VBoxContainer.new()
+	
+	var trait_btn = Button.new()
+	var prefix = "+" if score > 0 else ""
+	trait_btn.text = "  %s: %s%d" % [t.display_value(), prefix, score]
+	trait_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	trait_btn.add_theme_font_size_override("font_size", 10)
+	trait_btn.flat = true
+	
+	if score > 0:
+		trait_btn.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5))
+	else:
+		trait_btn.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
+	
+	trait_container.add_child(trait_btn)
+	
+	# Explanation panel (hidden by default)
+	var explain_panel = PanelContainer.new()
+	explain_panel.visible = false
+	
+	var explain_vbox = VBoxContainer.new()
+	explain_panel.add_child(explain_vbox)
+	
+	if explanations.is_empty():
+		var no_explain_label = Label.new()
+		no_explain_label.text = "      (no details available)"
+		no_explain_label.add_theme_font_size_override("font_size", 9)
+		no_explain_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+		explain_vbox.add_child(no_explain_label)
+	else:
+		for expl in explanations:
+			var reason: String = expl["reason"]
+			var expl_score: int = expl["score"]
+			var triggered_by = expl["triggered_by"]  # Person or null
+			
+			var explain_label = Label.new()
+			var expl_prefix = "+" if expl_score > 0 else ""
+			
+			if triggered_by != null:
+				explain_label.text = "      %s%d: %s (→ %s)" % [expl_prefix, expl_score, reason, triggered_by.name]
+			else:
+				explain_label.text = "      %s%d: %s" % [expl_prefix, expl_score, reason]
+			
+			explain_label.add_theme_font_size_override("font_size", 9)
+			
+			if expl_score > 0:
+				explain_label.add_theme_color_override("font_color", Color(0.4, 0.8, 0.4))
+			else:
+				explain_label.add_theme_color_override("font_color", Color(0.8, 0.4, 0.4))
+			
+			explain_vbox.add_child(explain_label)
+	
+	trait_container.add_child(explain_panel)
+	
+	# Connect button to toggle explanation visibility
+	trait_btn.pressed.connect(func(): explain_panel.visible = not explain_panel.visible)
+	
+	return trait_container

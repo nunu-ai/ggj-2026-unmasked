@@ -31,3 +31,19 @@ func calc_score(trait_set: TraitSet):
 				return 5
 
 	return 0
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	
+	for t in trait_set.get_traits_by_tag("profession"):
+		if t is Profession and self.like_profession == t.kind:
+			var owner = _find_trait_owner(t, all_people)
+			result.append({
+				"reason": "Happy to meet a %s" % self.like_profession,
+				"score": 5,
+				"triggered_by": owner
+			})
+			break  # Only one match counts
+	
+	return result

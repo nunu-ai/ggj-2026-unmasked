@@ -35,3 +35,18 @@ func calc_score(trait_set: TraitSet):
 				score -= 20  # Intense rivalry penalty
 
 	return score
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	
+	for t in trait_set.get_traits_by_tag("profession"):
+		if t is Profession and self.rival_profession == t.kind:
+			var owner = _find_trait_owner(t, all_people)
+			result.append({
+				"reason": "Bitter rivalry with %s!" % self.rival_profession,
+				"score": -20,
+				"triggered_by": owner
+			})
+	
+	return result

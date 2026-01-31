@@ -31,3 +31,19 @@ func calc_score(trait_set: TraitSet):
 				return -10
 
 	return 0
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	
+	for t in trait_set.get_traits_by_tag("hobby"):
+		if t is Hobby and self.dislike_hobby == t.kind:
+			var owner = _find_trait_owner(t, all_people)
+			result.append({
+				"reason": "Annoyed by %s enthusiast" % self.dislike_hobby,
+				"score": -10,
+				"triggered_by": owner
+			})
+			break  # Only one match counts
+	
+	return result

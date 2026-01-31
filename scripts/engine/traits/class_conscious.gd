@@ -36,3 +36,25 @@ func calc_score(trait_set: TraitSet):
 				score -= 8
 
 	return score
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	
+	for t in trait_set.get_traits_by_tag("social_class"):
+		if t is SocialClass:
+			var owner = _find_trait_owner(t, all_people)
+			if t.tier == self.own_class:
+				result.append({
+					"reason": "Fellow %s class - feels at home" % self.own_class,
+					"score": 3,
+					"triggered_by": owner
+				})
+			else:
+				result.append({
+					"reason": "Different class (%s) - uncomfortable" % t.tier,
+					"score": -8,
+					"triggered_by": owner
+				})
+	
+	return result

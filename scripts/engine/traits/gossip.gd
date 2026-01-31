@@ -33,3 +33,27 @@ func calc_score(trait_set: TraitSet):
 		score -= 3  # Penalty if no one to gossip with
 
 	return score
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var found_gossip = false
+	
+	for t in trait_set.get_traits_by_tag("gossip"):
+		if t is Gossip and t != self:
+			found_gossip = true
+			var owner = _find_trait_owner(t, all_people)
+			result.append({
+				"reason": "Found a fellow gossip!",
+				"score": 5,
+				"triggered_by": owner
+			})
+	
+	if not found_gossip:
+		result.append({
+			"reason": "No one to gossip with...",
+			"score": -3,
+			"triggered_by": null
+		})
+	
+	return result

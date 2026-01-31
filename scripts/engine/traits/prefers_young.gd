@@ -28,3 +28,18 @@ func calc_score(trait_set: TraitSet):
 				score += 5
 
 	return score
+
+
+func explain_score(trait_set: TraitSet, all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	
+	for t in trait_set.get_traits_by_tag("age"):
+		if t is Age and t.age < 30:
+			var owner = _find_trait_owner(t, all_people)
+			result.append({
+				"reason": "Enjoys young company (age %d)" % t.age,
+				"score": 5,
+				"triggered_by": owner
+			})
+	
+	return result

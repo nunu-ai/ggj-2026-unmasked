@@ -30,3 +30,29 @@ func calc_score(trait_set: TraitSet):
 		return 2  # Medium group bonus
 	else:
 		return (person_count - 4) * 2 + 2  # Bonus for larger groups
+
+
+func explain_score(trait_set: TraitSet, _all_people: Array[Person]) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var person_count = trait_set.get_traits_by_tag("age").size()
+	
+	if person_count <= 2:
+		result.append({
+			"reason": "Small group (%d people) - wants more company" % person_count,
+			"score": -3,
+			"triggered_by": null
+		})
+	elif person_count <= 4:
+		result.append({
+			"reason": "Medium group (%d people) - enjoying the party" % person_count,
+			"score": 2,
+			"triggered_by": null
+		})
+	else:
+		result.append({
+			"reason": "Large group (%d people) - thriving!" % person_count,
+			"score": (person_count - 4) * 2 + 2,
+			"triggered_by": null
+		})
+	
+	return result
