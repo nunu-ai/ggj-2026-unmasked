@@ -94,15 +94,24 @@ func display_mask(person: Person) -> void:
 
 func display_rules() -> void:
 	var day = SaveState.day
+	var club = SaveState.club
 	var rules_text = "[b]Today's Rules:[/b]\n"
 
 	if day.global_rules.size() == 0:
-		rules_text += "No special rules today."
+		rules_text += "No special rules today.\n"
 	else:
 		for rule in day.global_rules:
 			var violated = rule.is_violated(day.in_club)
 			var status = "[color=red]VIOLATED[/color]" if violated else "[color=green]OK[/color]"
 			rules_text += "- %s (%s, penalty: $%d)\n" % [rule.description, status, rule.penalty]
+	
+	# Display bonus rules
+	if day.bonus_rules.size() > 0:
+		rules_text += "\n[b][color=yellow]Bonus Objectives:[/color][/b]\n"
+		for rule in day.bonus_rules:
+			var achieved = rule.is_achieved(day.in_club, club.capacity)
+			var status = "[color=green]ACHIEVED![/color]" if achieved else "[color=gray]Not yet[/color]"
+			rules_text += "- %s (%s)\n" % [rule.description, status]
 
 	rules_label.text = rules_text
 
@@ -119,9 +128,10 @@ func update_status() -> void:
 	var day = SaveState.day
 	var club = SaveState.club
 	var reroll_cost = _get_reroll_cost()
+	var rent = club.rent()
 	
-	status_label.text = "In Club: %d/%d | Money: $%d" % [
-		day.in_club.size(), club.capacity, club.money
+	status_label.text = "In Club: %d/%d | Money: $%d | Rent Due: $%d" % [
+		day.in_club.size(), club.capacity, club.money, rent
 	]
 
 	# Disable accept if club is full

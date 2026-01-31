@@ -18,18 +18,31 @@ enum RuleType {
 	NO_MOOD_TYPE,         # e.g., "no sad people allowed"
 	MIN_CARD_SUIT,        # e.g., "at least 2 hearts"
 	MAX_CARD_SUIT,        # e.g., "maximum 1 spades"
+	# Bonus rule types (positive rewards when achieved)
+	BONUS_MIN_CARNEVAL,       # e.g., "Have 5+ carneval masks"
+	BONUS_ALL_COLORS,         # e.g., "Have all mask colors"
+	BONUS_ALL_MOODS,          # e.g., "Have all three moods"
+	BONUS_MIN_UPPER_DECO,     # e.g., "Have 4+ upper decorations"
+	BONUS_HIGH_STAR_TOTAL,    # e.g., "Have 10+ total stars"
+	BONUS_FULL_CAPACITY,      # e.g., "Club at full capacity"
+	BONUS_CARD_FLUSH,         # e.g., "Have 4+ of same card suit"
+	BONUS_ROMAN_SUM,          # e.g., "Roman numbers total exactly X"
+	BONUS_NO_GREY,            # e.g., "No grey masks (VIP night)"
+	BONUS_MOOD_MAJORITY,      # e.g., "Majority happy people"
 }
 
 var type: RuleType
 var params: Dictionary  # e.g., {"color": "blue", "max": 3}
-var penalty: int  # Negative money if violated
+var penalty: int  # Negative money if violated (or positive for bonus rules)
 var description: String
+var is_bonus: bool = false  # True for bonus rules that give rewards
 
-func _init(_type: RuleType, _params: Dictionary, _penalty: int, _desc: String):
+func _init(_type: RuleType, _params: Dictionary, _penalty: int, _desc: String, _is_bonus: bool = false):
 	type = _type
 	params = _params
 	penalty = _penalty
 	description = _desc
+	is_bonus = _is_bonus
 
 # Helper to count masks by color tier
 static func _count_by_color(club_people: Array, color_name: String) -> int:
@@ -90,6 +103,50 @@ static func _count_card_suit(club_people: Array, suit: String) -> int:
 		if person.mask != null and person.mask.lower_deco_path.contains("cards/" + suit):
 			count += 1
 	return count
+
+# Helper to count distinct colors present in club
+static func _count_distinct_colors(club_people: Array) -> int:
+	var colors_present: Dictionary = {}
+	for person in club_people:
+		if person.mask != null:
+			var color_name = person.mask.tier_name().to_lower()
+			colors_present[color_name] = true
+	return colors_present.size()
+
+# Helper to get all distinct colors present
+static func _get_colors_present(club_people: Array) -> Array:
+	var colors_present: Dictionary = {}
+	for person in club_people:
+		if person.mask != null:
+			var color_name = person.mask.tier_name().to_lower()
+			colors_present[color_name] = true
+	return colors_present.keys()
+
+# Helper to count distinct moods present
+static func _count_distinct_moods(club_people: Array) -> int:
+	var moods_present: Dictionary = {}
+	for person in club_people:
+		if person.mask != null:
+			moods_present[person.mask.mouth_mood] = true
+	return moods_present.size()
+
+# Helper to count people with upper decorations
+static func _count_with_upper_deco(club_people: Array) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.upper_deco_path != "":
+			count += 1
+	return count
+
+# Helper to get max count of any single card suit
+static func _get_max_card_suit_count(club_people: Array) -> int:
+	var suits = ["heart", "spades", "diamond", "clubs"]
+	var max_count = 0
+	for suit in suits:
+		var count = _count_card_suit(club_people, suit)
+		if count > max_count:
+			max_count = count
+	return max_count
 
 # Check if rule is violated based on current club state
 func is_violated(club_people: Array) -> bool:
@@ -157,9 +214,68 @@ func is_violated(club_people: Array) -> bool:
 	
 	return false
 
-# Get the penalty amount (returns negative number)
+# Get the penalty amount (returns negative number for penalties, positive for bonuses)
 func get_penalty() -> int:
 	return penalty
+
+# Check if bonus rule is achieved (only for bonus rules)
+func is_achieved(club_people: Array, club_capacity: int = 0) -> bool:
+	if not is_bonus:
+		return false
+	
+	match type:
+		RuleType.BONUS_MIN_CARNEVAL:
+			var count = _count_upper_deco_type(club_people, "carneval")
+			return count >= params["min"]
+		
+		RuleType.BONUS_ALL_COLORS:
+			var colors = _get_colors_present(club_people)
+			var required = params.get("colors", ["gold", "blue", "green", "grey"])
+			for color in required:
+				if color not in colors:
+					return false
+			return true
+		
+		RuleType.BONUS_ALL_MOODS:
+			var mood_count = _count_distinct_moods(club_people)
+			return mood_count >= 3  # Happy, Sad, Neutral
+		
+		RuleType.BONUS_MIN_UPPER_DECO:
+			var count = _count_with_upper_deco(club_people)
+			return count >= params["min"]
+		
+		RuleType.BONUS_HIGH_STAR_TOTAL:
+			var total = _count_total_stars(club_people)
+			return total >= params["min"]
+		
+		RuleType.BONUS_FULL_CAPACITY:
+			return club_capacity > 0 and club_people.size() >= club_capacity
+		
+		RuleType.BONUS_CARD_FLUSH:
+			var max_suit = _get_max_card_suit_count(club_people)
+			return max_suit >= params["min"]
+		
+		RuleType.BONUS_ROMAN_SUM:
+			var total = _sum_roman_numbers(club_people)
+			return total == params["target"]
+		
+		RuleType.BONUS_NO_GREY:
+			var grey_count = _count_by_color(club_people, "grey")
+			return club_people.size() > 0 and grey_count == 0
+		
+		RuleType.BONUS_MOOD_MAJORITY:
+			var mood = params["mood"]
+			var mood_count = _count_by_mood(club_people, mood)
+			var half = club_people.size() / 2.0
+			return mood_count > half
+	
+	return false
+
+# Get bonus amount (only returns value if achieved)
+func get_bonus(club_people: Array, club_capacity: int = 0) -> int:
+	if is_bonus and is_achieved(club_people, club_capacity):
+		return penalty  # For bonus rules, penalty is positive (the reward)
+	return 0
 
 # Get all available rules (for personal rules on people)
 static func get_available_rules() -> Array[Rule]:
@@ -229,6 +345,83 @@ static func get_hard_rules() -> Array[Rule]:
 		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "cards"}, -80, "No playing cards allowed"),
 		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "stars"}, -90, "No star decorations allowed"),
 	]
+
+# =============================================================================
+# BONUS RULES - Positive rewards for achieving goals
+# =============================================================================
+
+static func get_easy_bonus_rules() -> Array[Rule]:
+	return [
+		Rule.new(RuleType.BONUS_ALL_MOODS, {}, 150, "Mood Variety: Have all 3 mood types (+$150)", true),
+		Rule.new(RuleType.BONUS_MIN_UPPER_DECO, {"min": 3}, 100, "Decorated Party: 3+ upper decorations (+$100)", true),
+		Rule.new(RuleType.BONUS_MOOD_MAJORITY, {"mood": Mask.Mood.HAPPY}, 120, "Happy Hour: Majority happy people (+$120)", true),
+	]
+
+static func get_medium_bonus_rules() -> Array[Rule]:
+	return [
+		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 3}, 200, "Carnival Night: 3+ carneval masks (+$200)", true),
+		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 8}, 180, "Star Studded: 8+ total stars (+$180)", true),
+		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 3}, 150, "Card Flush: 3+ same card suit (+$150)", true),
+		Rule.new(RuleType.BONUS_NO_GREY, {}, 200, "VIP Night: No grey masks (+$200)", true),
+		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green"]}, 175, "Color Trio: Gold, Blue & Green masks (+$175)", true),
+	]
+
+static func get_hard_bonus_rules() -> Array[Rule]:
+	return [
+		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 5}, 400, "Grand Carnival: 5+ carneval masks (+$400)", true),
+		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green", "grey", "purple"]}, 350, "Rainbow Club: 5 different mask colors (+$350)", true),
+		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 12}, 300, "Constellation: 12+ total stars (+$300)", true),
+		Rule.new(RuleType.BONUS_FULL_CAPACITY, {}, 250, "Full House: Club at full capacity (+$250)", true),
+		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 4}, 300, "Royal Flush: 4+ same card suit (+$300)", true),
+		Rule.new(RuleType.BONUS_ROMAN_SUM, {"target": 10}, 350, "Perfect Ten: Roman numbers sum to 10 (+$350)", true),
+	]
+
+# Get bonus rules for a specific day
+static func get_day_bonus_rules(day: int) -> Array[Rule]:
+	var easy = get_easy_bonus_rules()
+	var medium = get_medium_bonus_rules()
+	var hard = get_hard_bonus_rules()
+	
+	# Shuffle for variety
+	easy.shuffle()
+	medium.shuffle()
+	hard.shuffle()
+	
+	var rules: Array[Rule] = []
+	
+	match day:
+		1:
+			# Day 1: 1 easy bonus
+			rules.append(easy[0])
+		2:
+			# Day 2: 1 easy bonus
+			rules.append(easy[0])
+		3:
+			# Day 3: 1 easy, 1 medium bonus
+			rules.append(easy[0])
+			rules.append(medium[0])
+		4:
+			# Day 4: 1 medium bonus
+			rules.append(medium[0])
+		5:
+			# Day 5: 1 medium, 1 hard bonus
+			rules.append(medium[0])
+			rules.append(hard[0])
+		6:
+			# Day 6: 2 medium bonuses
+			rules.append(medium[0])
+			rules.append(medium[1])
+		7:
+			# Day 7: 1 medium, 1 hard bonus
+			rules.append(medium[0])
+			rules.append(hard[0])
+		_:
+			# Day 8+: 2 hard bonuses
+			rules.append(hard[0])
+			if hard.size() > 1:
+				rules.append(hard[1])
+	
+	return rules
 
 # Get global rules for a specific day
 static func get_day_rules(day: int) -> Array[Rule]:

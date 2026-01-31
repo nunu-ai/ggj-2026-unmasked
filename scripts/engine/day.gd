@@ -3,6 +3,7 @@ class_name Day
 var day_number: int
 var in_club: Array[Person] = []
 var global_rules: Array[Rule] = []
+var bonus_rules: Array[Rule] = []
 
 # Current person in the infinite queue (generated on demand)
 var _current_person: Person = null
@@ -11,12 +12,13 @@ var _current_person: Person = null
 func _init(_day_number: int):
 	self.day_number = _day_number
 	self.global_rules = Rule.get_day_rules(_day_number)
+	self.bonus_rules = Rule.get_day_bonus_rules(_day_number)
 	# Generate first person
 	_generate_next_person()
 
 
-## Calculate profit based on people in club minus rule penalties
-func profit() -> float:
+## Calculate profit based on people in club minus rule penalties plus bonuses
+func profit(club_capacity: int = 0) -> float:
 	# Base profit from money each person brings (based on their mask)
 	var base_profit: float = 0.0
 	for person in in_club:
@@ -34,7 +36,12 @@ func profit() -> float:
 			if rule.is_violated(in_club):
 				penalties += rule.get_penalty()
 	
-	return base_profit + penalties  # penalties are negative
+	# Calculate bonuses from achieved bonus rules
+	var bonuses: float = 0.0
+	for rule in bonus_rules:
+		bonuses += rule.get_bonus(in_club, club_capacity)
+	
+	return base_profit + penalties + bonuses  # penalties are negative, bonuses are positive
 
 
 ## Get the current person (infinite queue - always has someone)
