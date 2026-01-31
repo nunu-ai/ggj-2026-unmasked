@@ -51,14 +51,27 @@ const MOUTHS_SAD = [
 ]
 
 # =============================================================================
-# UPPER DECOS — carneval category
+# UPPER DECOS — carneval and horns categories
+# Upper deco picks one category first, then picks within it
 # =============================================================================
 
-const UPPER_DECOS = [
-	{ "value": "", "weight": 40 },  # no deco
+## Which upper deco category to use
+const UPPER_DECO_CATEGORIES = [
+	{ "value": "none",     "weight": 30 },
+	{ "value": "carneval", "weight": 40 },
+	{ "value": "horns",    "weight": 30 },
+]
+
+const UPPER_DECOS_CARNEVAL = [
+	{ "value": "res://assets/masks/upper_decos/carneval/1.png", "weight": 25 },
 	{ "value": "res://assets/masks/upper_decos/carneval/3.png", "weight": 25 },
-	{ "value": "res://assets/masks/upper_decos/carneval/4.png", "weight": 25 },
+	{ "value": "res://assets/masks/upper_decos/carneval/6.png", "weight": 25 },
 	{ "value": "res://assets/masks/upper_decos/carneval/8.png", "weight": 10 },
+]
+
+const UPPER_DECOS_HORNS = [
+	{ "value": "res://assets/masks/upper_decos/horns/2.png", "weight": 50 },
+	{ "value": "res://assets/masks/upper_decos/horns/3.png", "weight": 50 },
 ]
 
 # =============================================================================
@@ -124,9 +137,18 @@ static func generate() -> Mask:
 		_:
 			mouth_path = _weighted_pick(MOUTHS_NEUTRAL)["value"]
 
-	# Pick upper deco
-	var upper_deco_path: String = _weighted_pick(UPPER_DECOS)["value"]
+	# Pick upper deco category, then pick within it
+	var upper_category: String = _weighted_pick(UPPER_DECO_CATEGORIES)["value"]
+	var upper_deco_path: String = ""
 	var upper_deco_color: Color = Color(randf(), randf(), randf())
+
+	match upper_category:
+		"carneval":
+			upper_deco_path = _weighted_pick(UPPER_DECOS_CARNEVAL)["value"]
+		"horns":
+			upper_deco_path = _weighted_pick(UPPER_DECOS_HORNS)["value"]
+		_:  # "none"
+			upper_deco_path = ""
 
 	# Pick lower deco category, then pick within it
 	var lower_category: String = _weighted_pick(LOWER_DECO_CATEGORIES)["value"]
