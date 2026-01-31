@@ -16,5 +16,5 @@ func hidden():
 	return false
 
 
-func calc_score(_trait_set: TraitSet):
-	return 0
+func calc_score(_trait_set: TraitSet) -> float:
+	return 0.0

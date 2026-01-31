@@ -36,7 +36,7 @@ func switch_to_state(new_state: State):
 
 
 func new_game():
-	self.club = Club.new(5, 100)
+	self.club = Club.new(5, 10000)
 	switch_to_state(State.Manage)
 
 
@@ -48,7 +48,7 @@ func start_day():
 
 func end_day():
 	self.club.money += self.day.profit()
-	self.club.money -= self.day.rent()
+	self.club.money -= self.club.rent()
 	switch_to_state(State.Manage)
 
 	self.save()

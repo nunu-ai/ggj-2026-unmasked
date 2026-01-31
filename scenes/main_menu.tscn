@@ -36,3 +36,6 @@ text = "Continue"
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "New Game"
+
+[connection signal="pressed" from="VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
