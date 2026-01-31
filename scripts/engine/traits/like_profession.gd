@@ -12,6 +12,10 @@ func name():
 	return "Like Profession"
 
 
+func display_value():
+	return "Likes %ss" % self.like_profession
+
+
 func description():
 	return "Enjoys the company of a certain profession"
 

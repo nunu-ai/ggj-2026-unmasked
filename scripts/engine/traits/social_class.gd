@@ -12,6 +12,10 @@ func name():
 	return "Social Class"
 
 
+func display_value():
+	return "%s class" % self.tier.capitalize()
+
+
 func description():
 	return "Their social standing"
 

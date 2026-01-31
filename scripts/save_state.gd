@@ -7,11 +7,13 @@ enum State {
 	Menu,
 	Queue,
 	Manage,
+	GameOver,
 }
 
 const menu_scene: PackedScene = preload("res://scenes/main_menu.tscn")
 const queue_scene: PackedScene = preload("res://scenes/queue_scene.tscn")
 const manage_scene: PackedScene = preload("res://scenes/manage_scene.tscn")
+const game_over_scene: PackedScene = preload("res://scenes/game_over.tscn")
 
 # Management vars
 var state: State = State.Menu
@@ -33,6 +35,8 @@ func switch_to_state(new_state: State):
 		load_scene(queue_scene)
 	elif state == State.Manage:
 		load_scene(manage_scene)
+	elif state == State.GameOver:
+		load_scene(game_over_scene)
 
 
 func new_game():
@@ -49,9 +53,14 @@ func start_day():
 func end_day():
 	self.club.money += self.day.profit()
 	self.club.money -= self.club.rent()
-	switch_to_state(State.Manage)
-
-	self.save()
+	
+	# Check for game over (bankruptcy)
+	if self.club.money < 0:
+		delete_save()  # Game is over, remove save file
+		switch_to_state(State.GameOver)
+	else:
+		switch_to_state(State.Manage)
+		self.save()
 
 ## Loads the game state from a file.
 ## Returns true if successful, false otherwise.
@@ -110,3 +119,9 @@ func save() -> bool:
 ## Returns true if a save file exists.
 func has_save() -> bool:
 	return FileAccess.file_exists(SAVE_FILE_PATH)
+
+
+## Deletes the save file (used when game is over).
+func delete_save() -> void:
+	if FileAccess.file_exists(SAVE_FILE_PATH):
+		DirAccess.remove_absolute(SAVE_FILE_PATH)

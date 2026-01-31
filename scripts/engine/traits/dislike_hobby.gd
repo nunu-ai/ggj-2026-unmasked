@@ -12,6 +12,10 @@ func name():
 	return "Dislike Hobby"
 
 
+func display_value():
+	return "Dislikes %s enthusiasts" % self.dislike_hobby
+
+
 func description():
 	return "Dislikes people with a certain hobby"
 

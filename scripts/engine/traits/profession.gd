@@ -12,6 +12,10 @@ func name():
 	return "Profession"
 
 
+func display_value():
+	return self.kind
+
+
 func description():
 	return "profession"
 
