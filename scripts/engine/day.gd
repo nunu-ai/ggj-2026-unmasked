@@ -1,10 +1,18 @@
 class_name Day
 
+var day_number: int
+
 var queue: Array[Person] = []
 var in_club: Array[Person] = []
 
 
-func get_score():
+func _init(_day_number: int):
+	self.day_number = _day_number
+
+	self.fill_queue()
+
+
+func profit():
 	var trait_list: Array[Trait] = []
 
 	for person in in_club:
@@ -17,10 +25,14 @@ func get_score():
 
 ## Creates a queue for the day. Currently placeholder.
 func fill_queue():
-	self.queue = [
-		Person.new("john", [DressCode.new("theme-a")]),
-		Person.new("jane", [DressCode.new("theme-b")]),
-	]
+	if self.day_number == 1:
+		self.queue = [
+			Person.new("John", [DressCode.new("black")]),
+			Person.new("Jane", [DressCode.new("white")]),
+		]
+	else:
+		for i in range(day_number * 10):
+			self.queue.append(Person.new("Person " + str(i), [DressCode.new("theme-" + str(i % 3))]))
 
 
 func current_person():
