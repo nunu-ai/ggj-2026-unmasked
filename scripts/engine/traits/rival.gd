@@ -15,12 +15,8 @@ func name():
 	return "Rival"
 
 
-func display_value():
-	return "Rival of %ss" % self.rival_profession
-
-
 func description():
-	return "Has a bitter rivalry with certain professionals"
+	return "Rival of %ss" % self.rival_profession
 
 
 func tags():

@@ -102,12 +102,15 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 228)
 layout_mode = 2
 
-[node name="TraitsLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer"]
+[node name="TraitsLabel" type="RichTextLabel" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "- Trait 1
 - Trait 2
 - Trait 3"
+shortcut_keys_enabled = false
+horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/HBox/VBoxContainer"]
 layout_mode = 2

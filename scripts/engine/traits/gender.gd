@@ -12,12 +12,8 @@ func name():
 	return "Gender"
 
 
-func display_value():
-	return self.identity.capitalize()
-
-
 func description():
-	return "Their gender identity"
+	return self.identity.capitalize()
 
 
 func tags():

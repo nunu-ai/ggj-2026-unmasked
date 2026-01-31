@@ -12,12 +12,8 @@ func name():
 	return "Like Hobby"
 
 
-func display_value():
-	return "Likes %s enthusiasts" % self.like_hobby
-
-
 func description():
-	return "Enjoys meeting people with a certain hobby"
+	return "Likes %s fans" % self.like_hobby
 
 
 func tags():

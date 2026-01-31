@@ -12,12 +12,8 @@ func name():
 	return "Nationality"
 
 
-func display_value():
-	return self.country
-
-
 func description():
-	return "Where they come from"
+	return "%s" % self.country
 
 
 func tags():

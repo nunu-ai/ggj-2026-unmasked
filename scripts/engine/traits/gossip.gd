@@ -9,7 +9,7 @@ func name():
 
 
 func description():
-	return "Loves sharing rumors and drama"
+	return "Loves drama"
 
 
 func tags():
@@ -23,12 +23,12 @@ func can_affect_happiness() -> bool:
 func calc_score(trait_set: TraitSet):
 	var score = 0
 	var found_gossip = false
-	
+
 	for t in trait_set.get_traits_by_tag("gossip"):
 		if t is Gossip and t != self:
 			found_gossip = true
 			score += 5  # Bonus for each fellow gossip
-	
+
 	if not found_gossip:
 		score -= 3  # Penalty if no one to gossip with
 

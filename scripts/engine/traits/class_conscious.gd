@@ -15,7 +15,7 @@ func name():
 
 
 func description():
-	return "Prefers their own social class"
+	return "%s class only" % self.own_class.capitalize()
 
 
 func tags():

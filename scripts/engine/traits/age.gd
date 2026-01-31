@@ -12,12 +12,8 @@ func name():
 	return "Age"
 
 
-func display_value():
-	return "%d years old" % self.age
-
-
 func description():
-	return "how old the person is"
+	return "%d years old" % self.age
 
 
 func tags():

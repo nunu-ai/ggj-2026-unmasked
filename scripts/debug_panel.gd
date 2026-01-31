@@ -83,7 +83,7 @@ func _create_person_debug_entry(person: Person, total_score: int, trait_scores: 
 			var t: Trait = ts["trait"]
 			var score: int = ts["score"]
 			var prefix = "+" if score > 0 else ""
-			trait_label.text = "  %s: %s%d" % [t.display_value(), prefix, score]
+			trait_label.text = "  %s: %s%d" % [t.description(), prefix, score]
 			trait_label.add_theme_font_size_override("font_size", 10)
 
 			if score > 0:

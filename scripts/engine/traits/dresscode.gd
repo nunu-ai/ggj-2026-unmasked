@@ -12,12 +12,8 @@ func name():
 	return "Dress Code"
 
 
-func display_value():
-	return "Wearing %s" % self.theme
-
-
 func description():
-	return "Dress code"
+	return "Wearing %s" % self.theme
 
 
 func tags():

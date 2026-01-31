@@ -12,12 +12,8 @@ func name():
 	return "Hobby"
 
 
-func display_value():
-	return self.kind
-
-
 func description():
-	return "What they enjoy doing"
+	return "Enjoys %s" % self.kind
 
 
 func tags():

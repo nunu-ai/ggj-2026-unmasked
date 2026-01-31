@@ -2,7 +2,7 @@ extends Control
 
 @export var name_label: Label
 @export var status_label: Label
-@export var traits_label: Label
+@export var traits_label: RichTextLabel
 @export var accept_button: Button
 @export var reject_button: Button
 @export var debug_panel: DebugPanel
@@ -30,13 +30,46 @@ func update_display() -> void:
 
 
 func display_traits(person: Person) -> void:
-	var traits_text = ""
+	var header_parts: Array[String] = []
+	var other_traits: Array[String] = []
+
+	var age: Age = null
+	var nationality: Nationality = null
+	var gender: Gender = null
+	var dress_code: DressCode = null
+
 	for t in person.traits:
-		if not t.hidden():
+		if t.hidden():
+			continue
+		if t is Age:
+			age = t
+		elif t is Nationality:
+			nationality = t
+		elif t is Gender:
+			gender = t
+		elif t is DressCode:
+			dress_code = t
+		else:
 			# Add happiness indicator: [H] for traits that affect happiness
 			var happiness_indicator = " [H]" if t.can_affect_happiness() else ""
-			traits_text += "- %s%s\n" % [t.description(), happiness_indicator]
-	traits_label.text = traits_text
+			var trait_text = "%s%s\n" % [t.description(), happiness_indicator]
+			other_traits.append(trait_text)
+
+	if gender != null:
+		header_parts.append("%s" % gender.description())
+	if age != null:
+		header_parts.append("Age: %d" % age.age)
+	if nationality != null:
+		header_parts.append("%s" % nationality.description())
+	if dress_code != null:
+		header_parts.append("%s" % dress_code.description())
+
+	var header_line = " | ".join(header_parts)
+	var other_lines = ""
+	for desc in other_traits:
+		other_lines += "- %s\n" % desc
+
+	traits_label.text = "%s\n\n%s" % [header_line, other_lines]
 
 
 func update_status() -> void:

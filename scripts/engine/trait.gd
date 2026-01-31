@@ -4,12 +4,6 @@ func name():
 	return "Base Trait"
 
 
-## Returns the display value of this trait (e.g., "Male" instead of "Gender")
-## Override in subclasses that have specific values
-func display_value():
-	return name()
-
-
 func tags():
 	return []
 

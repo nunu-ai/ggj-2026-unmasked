@@ -12,12 +12,8 @@ func name():
 	return "Dislike Profession"
 
 
-func display_value():
-	return "Dislikes %ss" % self.dislike_profession
-
-
 func description():
-	return "dislike Profession"
+	return "Dislikes %ss" % self.dislike_profession
 
 
 func tags():
