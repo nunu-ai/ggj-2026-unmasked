@@ -144,11 +144,8 @@ func _randomize_appearance() -> void:
 
 func _on_accept_button_pressed() -> void:
 	SaveState.day.decide_current_person(true)
-<<<<<<< HEAD
 	randomize_button_captions()
-=======
 	_randomize_appearance()
->>>>>>> 0e88efc (show masks and overlay structure)
 	update_display()
 
 
