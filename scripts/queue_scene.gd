@@ -6,6 +6,9 @@ extends Control
 @export var accept_button: Button
 @export var reject_button: Button
 @export var debug_panel: DebugPanel
+@export var reaction_particles: ReactionParticles
+
+var last_happiness = null
 
 const ACCEPT_PHRASES: Array[String] = [
 	"Welcome",
@@ -107,6 +110,20 @@ func update_status() -> void:
 	# Update debug view
 	if debug_panel:
 		debug_panel.update_view()
+
+	var cur_happiness = SaveState.day.profit()
+	if last_happiness == null:
+		last_happiness = cur_happiness
+	else:
+		var delta_happiness = cur_happiness - last_happiness
+		last_happiness = cur_happiness
+
+		if delta_happiness > 10:
+			reaction_particles.react_happily()
+		elif delta_happiness < -10:
+			reaction_particles.react_negatively()
+		else:
+			reaction_particles.react_neutrally()
 
 
 func _on_accept_button_pressed() -> void:

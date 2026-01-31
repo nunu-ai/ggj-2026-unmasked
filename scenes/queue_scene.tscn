@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=9 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
-[ext_resource type="Shader" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://cehidhncyc2dl" path="res://assets/character.png" id="3_54epr"]
-[ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="4_54epr"]
+[ext_resource type="PackedScene" uid="uid://rxui56rawoch" path="res://scenes/debug_panel.tscn" id="4_54epr"]
+[ext_resource type="Texture2D" uid="uid://biispkrc5dw16" path="res://assets/masks/mask.png" id="5_s6a0p"]
+[ext_resource type="Script" uid="uid://c73iorjibs4pa" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -19,7 +21,21 @@ shader_parameter/num_dots = 30
 shader_parameter/dot_speed = 0.15000000386512
 shader_parameter/bounce_speed = 0.5
 
-[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "traits_label", "accept_button", "reject_button", "debug_panel")]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8j4ut"]
+lifetime_randomness = 0.37
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_box_extents = Vector3(400, 50, 1)
+direction = Vector3(0, -1, 0)
+spread = 28.085
+initial_velocity_min = 891.38
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 98, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
+
+[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "traits_label", "accept_button", "reject_button", "debug_panel", "reaction_particles")]
 material = SubResource("ShaderMaterial_54epr")
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,6 +49,7 @@ traits_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollCo
 accept_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton")
 reject_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton")
 debug_panel = NodePath("DebugPanel")
+reaction_particles = NodePath("ReactionParticles")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -139,6 +156,15 @@ text = "Reject"
 visible = true
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="ReactionParticles" type="GPUParticles2D" parent="."]
+position = Vector2(587, 707)
+emitting = false
+amount = 30
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_8j4ut")
+script = ExtResource("6_chl07")
+happy_texture = ExtResource("5_s6a0p")
 
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
