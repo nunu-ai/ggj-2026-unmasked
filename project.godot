@@ -15,6 +15,10 @@ run/main_scene="uid://cn7w22ecscp33"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SaveState="*res://scripts/save_state.gd"
+
 [dotnet]
 
 project/assembly_name="Unmasked"

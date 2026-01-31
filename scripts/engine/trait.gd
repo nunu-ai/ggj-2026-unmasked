@@ -1,16 +1,20 @@
 class_name Trait
 
 func name():
-  return "Base Trait"
+	return "Base Trait"
+
 
 func tags():
-  return []
+	return []
+
 
 func description():
-  return "Base trait"
-  
+	return "Base trait"
+
+
 func hidden():
-  return false
+	return false
+
 
 func calc_score(_trait_set: TraitSet):
-  return 0
+	return 0

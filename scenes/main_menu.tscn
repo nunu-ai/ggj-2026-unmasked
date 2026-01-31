@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://cn7w22ecscp33"]
+[gd_scene load_steps=2 format=3 uid="uid://cn7w22ecscp33"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Script" uid="uid://di0cmmkjhh5ra" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_l6cm7")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_top = 5.0

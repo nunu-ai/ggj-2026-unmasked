@@ -1,1 +1,17 @@
-Use two spaces for indentation
+# Unmasked - A GGJ 2026 Game
+
+Unmasked is a game about being a bouncer at a club. The
+player has to decide which people to let in and which to send out.
+
+## Technical
+
+- This game uses Godot 4.5.1
+- GDScript is the main language
+
+## Coding Rules
+
+- Use tabs for indentation
+
+## Hints
+
+- Always use context7 mcp (if available) to look up godot docs

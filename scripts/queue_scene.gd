@@ -8,3 +8,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_main_menu_button_pressed() -> void:
+	SaveState.switch_to_state(SaveStateClass.State.Menu)

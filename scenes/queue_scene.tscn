@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfc2ofslx3wjd"]
+
+[ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
+
+[node name="QueueScene" type="Node2D"]
+script = ExtResource("1_h6422")
+
+[node name="MainMenuButton" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Main menu"
+
+[connection signal="pressed" from="MainMenuButton" to="." method="_on_main_menu_button_pressed"]
