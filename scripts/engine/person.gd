@@ -11,3 +11,12 @@ func _init(_name: String, _mask, _rules: Array = []):
 	mask = _mask
 	money = _mask.get_money_value()
 	rules = _rules
+var traits: Array[Trait]
+var mask: Mask
+
+
+func _init(_name: String, _traits: Array[Trait], _mask: Mask = null):
+	self.name = _name
+	self.traits = _traits
+	self.mask = _mask
+	self.rules = _rules

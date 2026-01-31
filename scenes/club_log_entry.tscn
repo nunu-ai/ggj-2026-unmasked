@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="1_mask"]
+[ext_resource type="Script" path="res://scripts/club_log_entry.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_entry"]
+bg_color = Color(0.12, 0.08, 0.18, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.35, 0.8, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
+[node name="ClubLogEntry" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_entry")
+script = ExtResource("2_script")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Portrait" parent="HBoxContainer" instance=ExtResource("1_mask")]
+clip_contents = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="InfoContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/InfoContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/InfoContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+alignment = 1
+theme_override_constants/separation = 4
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/InfoContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Person Name"
+
+[node name="InfoLabel" type="Label" parent="HBoxContainer/InfoContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.8, 0.7, 0.9, 1.0)
+text = "Grey Mask | Neutral | $100"
