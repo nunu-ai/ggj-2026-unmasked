@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=6 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
+[ext_resource type="PackedScene" uid="uid://rxui56rawoch" path="res://scenes/debug_panel.tscn" id="4_54epr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -18,7 +19,7 @@ shader_parameter/num_dots = 30
 shader_parameter/dot_speed = 0.15000000386512
 shader_parameter/bounce_speed = 0.5
 
-[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "traits_label", "accept_button", "reject_button")]
+[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "traits_label", "accept_button", "reject_button", "debug_panel")]
 material = SubResource("ShaderMaterial_54epr")
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,6 +32,7 @@ status_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/StatusLa
 traits_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer/TraitsLabel")
 accept_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton")
 reject_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton")
+debug_panel = NodePath("DebugPanel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -123,39 +125,10 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Reject"
 
-[node name="DebugPanel" type="PanelContainer" parent="."]
-visible = false
+[node name="DebugPanel" parent="." instance=ExtResource("4_54epr")]
+visible = true
 layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel"]
-layout_mode = 2
-
-[node name="DebugTitleLabel" type="Label" parent="DebugPanel/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
-theme_override_font_sizes/font_size = 18
-text = "DEBUG: Club Members"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="DebugPanel/VBoxContainer"]
-layout_mode = 2
-
-[node name="TotalHappinessLabel" type="Label" parent="DebugPanel/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Total Happiness: 0"
-
-[node name="HSeparator2" type="HSeparator" parent="DebugPanel/VBoxContainer"]
-layout_mode = 2
-
-[node name="ClubMembersScroll" type="ScrollContainer" parent="DebugPanel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="ClubMembersList" type="VBoxContainer" parent="DebugPanel/VBoxContainer/ClubMembersScroll"]
-layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
