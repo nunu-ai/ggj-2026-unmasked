@@ -1,103 +1,139 @@
-[gd_scene load_steps=2 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=5 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
+[ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 
-[node name="QueueScene" type="Control"]
-layout_mode = 3
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
+shader = ExtResource("1_hl0vj")
+shader_parameter/base_color = Color(0.1, 0.05, 0.15, 1)
+shader_parameter/halo_color = Color(0.8, 0.4, 0.9, 1)
+shader_parameter/dot_color = Color(1, 0.8, 0.3, 1)
+shader_parameter/halo_intensity = 0.3
+shader_parameter/halo_size = 0.15
+shader_parameter/halo_softness = 0.1
+shader_parameter/num_halos = 4
+shader_parameter/dot_size = 0.015
+shader_parameter/num_dots = 30
+shader_parameter/dot_speed = 0.15000000386512
+shader_parameter/bounce_speed = 0.5
+
+[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "traits_label", "accept_button", "reject_button")]
+material = SubResource("ShaderMaterial_54epr")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h6422")
+name_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/NameLabel")
+status_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/StatusLabel")
+traits_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer/TraitsLabel")
+accept_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton")
+reject_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="VBoxContainer/BoxContainer"]
+layout_mode = 2
+vertical = true
+
+[node name="MainMenuButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Main Menu"
+
+[node name="HBox" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+dragging_enabled = false
+
+[node name="VBox1" type="VBoxContainer" parent="VBoxContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="MaskDisplay" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_tbu78")
+
+[node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+dragging_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBox/VBoxContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Club Entrance"
 horizontal_alignment = 1
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+[node name="StatusLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Queue: 0 | In Club: 0/0"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="VBoxContainer"]
+[node name="NameLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Person Name"
 horizontal_alignment = 1
 
-[node name="TraitsLabel" type="Label" parent="VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 228)
+layout_mode = 2
+
+[node name="TraitsLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "- Trait 1
 - Trait 2
 - Trait 3"
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/HBox/VBoxContainer"]
 layout_mode = 2
+dragging_enabled = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AcceptButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-alignment = 1
-
-[node name="AcceptButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Accept"
 
-[node name="RejectButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(120, 0)
+[node name="RejectButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Reject"
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="MainMenuButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Main Menu"
-
 [node name="DebugPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -300.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 400.0
-grow_horizontal = 0
+visible = false
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel"]
 layout_mode = 2
 
 [node name="DebugTitleLabel" type="Label" parent="DebugPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 18
 text = "DEBUG: Club Members"
 horizontal_alignment = 1
 
@@ -121,6 +157,6 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]
