@@ -21,6 +21,9 @@ const CAPACITY_UPGRADE_AMOUNT: int = 1
 @onready var _reset_to_initial_button: Button = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetToInitialButton
 @onready var _confirm_button: Button = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton
 
+# Theme label
+@onready var _theme_label: Label = $VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer/ThemeLabel
+
 # Day results button + popup
 @onready var _day_results_button: Button = $VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton
 @onready var _day_results_popup: AcceptDialog = $DayResultsPopup
@@ -59,6 +62,13 @@ func update_display() -> void:
 	_cost_label.text = "Cost: $%d" % _pending_cost
 	_money_after_label.text = "Money After: $%d" % (SaveState.club.money - _pending_cost)
 	_capacity_after_label.text = "Capacity After: %d" % (SaveState.club.capacity + _pending_capacity)
+
+	# Theme display
+	var theme = SaveState.next_theme
+	if theme != null and theme.type != DailyTheme.ThemeType.NONE:
+		_theme_label.text = "%s (+%d%%)" % [theme.theme_name(), int(theme.bonus_percent())]
+	else:
+		_theme_label.text = "No Theme"
 
 	# Day results button text
 	_day_results_button.text = "Day %d Results" % SaveState.club.day

@@ -21,6 +21,7 @@ var state: State = State.Menu
 # Game state vars
 var club: Club
 var day: Day
+var next_theme: DailyTheme  # Pre-generated theme for the upcoming day
 
 func load_scene(scene: PackedScene):
 	get_tree().call_deferred("change_scene_to_packed", scene)
@@ -41,24 +42,26 @@ func switch_to_state(new_state: State):
 
 func new_game():
 	self.club = Club.new(5, 500)
+	self.next_theme = DailyTheme.pick_random()
 	switch_to_state(State.Manage)
 
 
 func start_day():
 	self.club.day += 1
-	self.day = Day.new(self.club.day)
+	self.day = Day.new(self.club.day, next_theme)
 	switch_to_state(State.Queue)
 
 
 func end_day():
 	self.club.money += int(self.day.profit(self.club.capacity))
 	self.club.money -= self.club.rent()
-	
+
 	# Check for game over (bankruptcy)
 	if self.club.money < 0:
 		delete_save()  # Game is over, remove save file
 		switch_to_state(State.GameOver)
 	else:
+		self.next_theme = DailyTheme.pick_random()
 		switch_to_state(State.Manage)
 		self.save()
 
@@ -88,6 +91,7 @@ func load() -> bool:
 		return false
 
 	self.club = Club.load(data["club"])
+	self.next_theme = DailyTheme.pick_random()
 
 	return true
 

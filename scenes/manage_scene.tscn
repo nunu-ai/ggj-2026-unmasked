@@ -41,8 +41,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel"]
 layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ThemeTitle" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Tomorrow's Theme"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeLabel" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "No Theme"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="ButtonPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
 layout_mode = 2
