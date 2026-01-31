@@ -34,7 +34,7 @@ gravity = Vector3(0, 98, 0)
 scale_min = 0.099999994
 scale_max = 0.19999999
 
-[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "mask_label", "rules_label", "accept_button", "reject_button", "reroll_button", "end_day_button")]
+[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "mask_label", "rules_label", "accept_button", "reject_button", "end_day_button")]
 material = SubResource("ShaderMaterial_54epr")
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,8 +48,7 @@ mask_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollCont
 rules_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/RulesLabel")
 accept_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton")
 reject_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton")
-reroll_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer2/RerollButton")
-end_day_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer2/EndDayButton")
+end_day_button = NodePath("VBoxContainer/BoxContainer/BoxContainer/EndDayButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -66,6 +65,11 @@ vertical = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Club Log"
+
+[node name="EndDayButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "End Day"
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
 layout_mode = 2
@@ -154,23 +158,7 @@ text = "Accept"
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
-text = "Reject"
-
-[node name="HBoxContainer2" type="HSplitContainer" parent="VBoxContainer/HBox/VBoxContainer"]
-layout_mode = 2
-dragging_enabled = false
-
-[node name="RerollButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
-text = "Reroll ($20)"
-
-[node name="EndDayButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
-text = "End Day"
+text = "Reject ($100)"
 
 [node name="ClubLogPopup" type="AcceptDialog" parent="."]
 title = "Club Log"
@@ -202,7 +190,6 @@ happy_texture = ExtResource("2_tbu78")
 
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/LogButton" to="." method="_on_log_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/EndDayButton" to="." method="_on_end_day_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer2/RerollButton" to="." method="_on_reroll_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer2/EndDayButton" to="." method="_on_end_day_button_pressed"]

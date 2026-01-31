@@ -3,9 +3,21 @@ extends RefCounted
 
 # Rule types enum - add more as game expands
 enum RuleType {
-	MAX_COLOR_COUNT,  # e.g., "max 3 blue masks"
-	MIN_COLOR_COUNT,  # e.g., "at least 2 gold masks"
-	# Add more rule types here as the game expands
+	MAX_COLOR_COUNT,      # e.g., "max 3 blue masks"
+	MIN_COLOR_COUNT,      # e.g., "at least 2 gold masks"
+	EXACT_COLOR_COUNT,    # e.g., "exactly 2 blue masks"
+	MIN_TOTAL_STARS,      # e.g., "minimum 5 total stars"
+	MAX_TOTAL_STARS,      # e.g., "maximum 8 total stars"
+	EQUAL_MOOD_COUNT,     # e.g., "equal happy and sad people"
+	NO_UPPER_DECO_TYPE,   # e.g., "no horns present"
+	NO_LOWER_DECO_TYPE,   # e.g., "no roman numbers"
+	ODD_ROMAN_TOTAL,      # e.g., "odd total of roman numbers"
+	EVEN_ROMAN_TOTAL,     # e.g., "even total of roman numbers"
+	MIN_MOOD_COUNT,       # e.g., "at least 3 happy people"
+	MAX_MOOD_COUNT,       # e.g., "maximum 2 sad people"
+	NO_MOOD_TYPE,         # e.g., "no sad people allowed"
+	MIN_CARD_SUIT,        # e.g., "at least 2 hearts"
+	MAX_CARD_SUIT,        # e.g., "maximum 1 spades"
 }
 
 var type: RuleType
@@ -19,41 +31,253 @@ func _init(_type: RuleType, _params: Dictionary, _penalty: int, _desc: String):
 	penalty = _penalty
 	description = _desc
 
+# Helper to count masks by color tier
+static func _count_by_color(club_people: Array, color_name: String) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.tier_name().to_lower() == color_name:
+			count += 1
+	return count
+
+# Helper to count total stars in club
+static func _count_total_stars(club_people: Array) -> int:
+	var total = 0
+	for person in club_people:
+		if person.mask != null:
+			total += person.mask.star_count
+	return total
+
+# Helper to count people by mood
+static func _count_by_mood(club_people: Array, mood: Mask.Mood) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.mouth_mood == mood:
+			count += 1
+	return count
+
+# Helper to check if upper deco contains specific type
+static func _count_upper_deco_type(club_people: Array, deco_type: String) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.upper_deco_path.contains(deco_type):
+			count += 1
+	return count
+
+# Helper to check if lower deco contains specific type
+static func _count_lower_deco_type(club_people: Array, deco_type: String) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.lower_deco_path.contains(deco_type):
+			count += 1
+	return count
+
+# Helper to sum roman numbers (files are 1.png through 6.png)
+static func _sum_roman_numbers(club_people: Array) -> int:
+	var total = 0
+	for person in club_people:
+		if person.mask != null and person.mask.lower_deco_path.contains("roman"):
+			# Extract number from path like "res://assets/masks/lower_decos/roman/3.png"
+			var path = person.mask.lower_deco_path
+			var filename = path.get_file().get_basename()
+			if filename.is_valid_int():
+				total += filename.to_int()
+	return total
+
+# Helper to count card suits
+static func _count_card_suit(club_people: Array, suit: String) -> int:
+	var count = 0
+	for person in club_people:
+		if person.mask != null and person.mask.lower_deco_path.contains("cards/" + suit):
+			count += 1
+	return count
+
 # Check if rule is violated based on current club state
 func is_violated(club_people: Array) -> bool:
 	match type:
 		RuleType.MAX_COLOR_COUNT:
-			var count = 0
-			for person in club_people:
-				if person.mask != null and person.mask.tier_name().to_lower() == params["color"]:
-					count += 1
+			var count = _count_by_color(club_people, params["color"])
 			return count > params["max"]
+		
 		RuleType.MIN_COLOR_COUNT:
-			var count = 0
-			for person in club_people:
-				if person.mask != null and person.mask.tier_name().to_lower() == params["color"]:
-					count += 1
+			var count = _count_by_color(club_people, params["color"])
 			return count < params["min"]
+		
+		RuleType.EXACT_COLOR_COUNT:
+			var count = _count_by_color(club_people, params["color"])
+			return count != params["count"]
+		
+		RuleType.MIN_TOTAL_STARS:
+			var total = _count_total_stars(club_people)
+			return total < params["min"]
+		
+		RuleType.MAX_TOTAL_STARS:
+			var total = _count_total_stars(club_people)
+			return total > params["max"]
+		
+		RuleType.EQUAL_MOOD_COUNT:
+			var mood1_count = _count_by_mood(club_people, params["mood1"])
+			var mood2_count = _count_by_mood(club_people, params["mood2"])
+			return mood1_count != mood2_count
+		
+		RuleType.NO_UPPER_DECO_TYPE:
+			var count = _count_upper_deco_type(club_people, params["deco_type"])
+			return count > 0
+		
+		RuleType.NO_LOWER_DECO_TYPE:
+			var count = _count_lower_deco_type(club_people, params["deco_type"])
+			return count > 0
+		
+		RuleType.ODD_ROMAN_TOTAL:
+			var total = _sum_roman_numbers(club_people)
+			return total % 2 == 0  # Violated if even
+		
+		RuleType.EVEN_ROMAN_TOTAL:
+			var total = _sum_roman_numbers(club_people)
+			return total % 2 != 0  # Violated if odd
+		
+		RuleType.MIN_MOOD_COUNT:
+			var count = _count_by_mood(club_people, params["mood"])
+			return count < params["min"]
+		
+		RuleType.MAX_MOOD_COUNT:
+			var count = _count_by_mood(club_people, params["mood"])
+			return count > params["max"]
+		
+		RuleType.NO_MOOD_TYPE:
+			var count = _count_by_mood(club_people, params["mood"])
+			return count > 0
+		
+		RuleType.MIN_CARD_SUIT:
+			var count = _count_card_suit(club_people, params["suit"])
+			return count < params["min"]
+		
+		RuleType.MAX_CARD_SUIT:
+			var count = _count_card_suit(club_people, params["suit"])
+			return count > params["max"]
+	
 	return false
 
 # Get the penalty amount (returns negative number)
 func get_penalty() -> int:
 	return penalty
 
-# All available rules (add more here for later days)
+# Get all available rules (for personal rules on people)
 static func get_available_rules() -> Array[Rule]:
+	var all_rules: Array[Rule] = []
+	all_rules.append_array(get_easy_rules())
+	all_rules.append_array(get_medium_rules())
+	return all_rules  # Exclude hard rules for personal rules
+
+# All available rules (categorized by difficulty)
+static func get_easy_rules() -> Array[Rule]:
 	return [
-		Rule.new(
-			RuleType.MAX_COLOR_COUNT,
-			{"color": "blue", "max": 3},
-			-50,
-			"Maximum of 3 blue masks allowed"
-		),
+		# Color limits
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "blue", "max": 3}, -50, "Maximum of 3 blue masks"),
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "green", "max": 3}, -50, "Maximum of 3 green masks"),
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "grey", "max": 4}, -40, "Maximum of 4 grey masks"),
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "gold", "min": 1}, -100, "At least 1 gold mask required"),
+		
+		# Mood rules
+		Rule.new(RuleType.MAX_MOOD_COUNT, {"mood": Mask.Mood.SAD, "max": 2}, -40, "Maximum of 2 sad people"),
+		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 2}, -50, "At least 2 happy people"),
+	]
+
+static func get_medium_rules() -> Array[Rule]:
+	return [
+		# Exact color counts
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "blue", "count": 2}, -75, "Exactly 2 blue masks required"),
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "purple", "count": 1}, -80, "Exactly 1 purple mask required"),
+		
+		# Star rules
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 5}, -100, "Minimum 5 total stars"),
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 3}, -60, "Minimum 3 total stars"),
+		Rule.new(RuleType.MAX_TOTAL_STARS, {"max": 6}, -80, "Maximum 6 total stars"),
+		
+		# Mood balance
+		Rule.new(RuleType.EQUAL_MOOD_COUNT, {"mood1": Mask.Mood.HAPPY, "mood2": Mask.Mood.SAD}, -100, "Equal number of happy and sad people"),
+		
+		# No specific decorations
+		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "horns"}, -75, "No horns allowed"),
+		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "carneval"}, -80, "No carnival decorations"),
+		
+		# Card suits
+		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "heart", "min": 1}, -50, "At least 1 heart card"),
+		Rule.new(RuleType.MAX_CARD_SUIT, {"suit": "spades", "max": 1}, -60, "Maximum 1 spades card"),
+	]
+
+static func get_hard_rules() -> Array[Rule]:
+	return [
+		# Roman number rules
+		Rule.new(RuleType.ODD_ROMAN_TOTAL, {}, -120, "Odd total of roman numbers"),
+		Rule.new(RuleType.EVEN_ROMAN_TOTAL, {}, -120, "Even total of roman numbers"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "roman"}, -100, "No roman numbers allowed"),
+		
+		# Strict mood rules
+		Rule.new(RuleType.NO_MOOD_TYPE, {"mood": Mask.Mood.SAD}, -150, "No sad people allowed"),
+		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 3}, -100, "At least 3 happy people"),
+		
+		# Strict color rules
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "purple", "min": 2}, -120, "At least 2 purple masks"),
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "orange", "min": 1}, -150, "At least 1 orange mask"),
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "green", "count": 3}, -100, "Exactly 3 green masks"),
+		
+		# High star requirements
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 8}, -150, "Minimum 8 total stars"),
+		
+		# Complex card rules
+		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "diamond", "min": 2}, -100, "At least 2 diamond cards"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "cards"}, -80, "No playing cards allowed"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "stars"}, -90, "No star decorations allowed"),
 	]
 
 # Get global rules for a specific day
 static func get_day_rules(day: int) -> Array[Rule]:
-	var all_rules = get_available_rules()
+	var easy = get_easy_rules()
+	var medium = get_medium_rules()
+	var hard = get_hard_rules()
+	
+	# Shuffle all rule pools for variety
+	easy.shuffle()
+	medium.shuffle()
+	hard.shuffle()
+	
+	var rules: Array[Rule] = []
+	
 	match day:
-		1: return [all_rules[0]]  # Day 1: just 1 rule
-		_: return [all_rules[0]]  # Expand later
+		1:
+			# Day 1: 1 easy rule
+			rules.append(easy[0])
+		2:
+			# Day 2: 2 easy rules
+			rules.append(easy[0])
+			rules.append(easy[1])
+		3:
+			# Day 3: 1 easy, 1 medium
+			rules.append(easy[0])
+			rules.append(medium[0])
+		4:
+			# Day 4: 2 medium rules
+			rules.append(medium[0])
+			rules.append(medium[1])
+		5:
+			# Day 5: 1 medium, 1 hard
+			rules.append(medium[0])
+			rules.append(hard[0])
+		6:
+			# Day 6: 2 medium, 1 hard
+			rules.append(medium[0])
+			rules.append(medium[1])
+			rules.append(hard[0])
+		7:
+			# Day 7: 1 medium, 2 hard
+			rules.append(medium[0])
+			rules.append(hard[0])
+			rules.append(hard[1])
+		_:
+			# Day 8+: 3 hard rules (escalating difficulty)
+			var num_rules = mini(day - 5, 4)  # 3-4 hard rules
+			for i in range(num_rules):
+				if i < hard.size():
+					rules.append(hard[i])
+	
+	return rules

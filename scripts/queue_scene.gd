@@ -5,8 +5,7 @@ extends Control
 @export var mask_label: RichTextLabel
 @export var rules_label: RichTextLabel
 @export var accept_button: Button
-@export var reject_button: Button
-@export var reroll_button: Button
+@export var reject_button: Button  # Also serves as reroll (costs money)
 @export var end_day_button: Button
 
 @onready var _mask_layer: TextureRect = $VBoxContainer/HBox/VBox1/MaskLayer
@@ -108,9 +107,19 @@ func display_rules() -> void:
 	rules_label.text = rules_text
 
 
+# Reroll/reject cost: $100 base + $25 per day after day 1
+const REROLL_BASE_COST = 100
+const REROLL_COST_INCREMENT = 25
+
+func _get_reroll_cost() -> int:
+	return REROLL_BASE_COST + (SaveState.day.day_number - 1) * REROLL_COST_INCREMENT
+
+
 func update_status() -> void:
 	var day = SaveState.day
 	var club = SaveState.club
+	var reroll_cost = _get_reroll_cost()
+	
 	status_label.text = "In Club: %d/%d | Money: $%d" % [
 		day.in_club.size(), club.capacity, club.money
 	]
@@ -118,9 +127,9 @@ func update_status() -> void:
 	# Disable accept if club is full
 	accept_button.disabled = day.is_club_full(club.capacity)
 
-	# Disable reroll if not enough money
-	reroll_button.disabled = club.money < Constants.REROLL_COST
-	reroll_button.text = "Reroll ($%d)" % Constants.REROLL_COST
+	# Disable reject/reroll if not enough money
+	reject_button.disabled = club.money < reroll_cost
+	reject_button.text = "Reject ($%d)" % reroll_cost
 
 
 func _on_accept_button_pressed() -> void:
@@ -129,14 +138,10 @@ func _on_accept_button_pressed() -> void:
 
 
 func _on_reject_button_pressed() -> void:
-	SaveState.day.decide_current_person(false)
-	update_display()
-
-
-func _on_reroll_button_pressed() -> void:
-	if SaveState.club.money >= Constants.REROLL_COST:
-		SaveState.club.money -= Constants.REROLL_COST
-		SaveState.day.reroll()
+	var reroll_cost = _get_reroll_cost()
+	if SaveState.club.money >= reroll_cost:
+		SaveState.club.money -= reroll_cost
+		SaveState.day.decide_current_person(false)
 		update_display()
 
 

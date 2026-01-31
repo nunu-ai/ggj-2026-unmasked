@@ -1,5 +1,4 @@
 class_name Constants
-extends RefCounted
 
 # =============================================================================
 # MASK CONSTANTS - All possible values for masks
@@ -35,5 +34,4 @@ const LAST_NAMES = [
 # GAME CONSTANTS
 # =============================================================================
 
-# Cost to reroll and get a new person in the queue
-const REROLL_COST = 20
+# (Reroll costs are defined in queue_scene.gd)

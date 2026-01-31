@@ -40,7 +40,7 @@ func switch_to_state(new_state: State):
 
 
 func new_game():
-	self.club = Club.new(5, 10000)
+	self.club = Club.new(5, 500)
 	switch_to_state(State.Manage)
 
 
