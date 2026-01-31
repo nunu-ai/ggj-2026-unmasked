@@ -24,6 +24,10 @@ func tags():
 	return []
 
 
+func can_affect_happiness() -> bool:
+	return true
+
+
 func calc_score(trait_set: TraitSet):
 	for t in trait_set.get_traits_by_tag("hobby"):
 		if t is Hobby:

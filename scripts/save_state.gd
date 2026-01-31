@@ -51,7 +51,7 @@ func start_day():
 
 
 func end_day():
-	self.club.money += self.day.profit()
+	self.club.money += int(self.day.profit())
 	self.club.money -= self.club.rent()
 	
 	# Check for game over (bankruptcy)

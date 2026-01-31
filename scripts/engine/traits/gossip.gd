@@ -16,6 +16,10 @@ func tags():
 	return ["personality", "gossip"]
 
 
+func can_affect_happiness() -> bool:
+	return true
+
+
 func calc_score(trait_set: TraitSet):
 	var score = 0
 	var found_gossip = false

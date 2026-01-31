@@ -16,6 +16,10 @@ func tags():
 	return ["personality"]
 
 
+func can_affect_happiness() -> bool:
+	return true
+
+
 func calc_score(trait_set: TraitSet):
 	var score = 0
 	for t in trait_set.get_traits_by_tag("social_class"):

@@ -51,33 +51,33 @@ const LAST_NAMES = [
 const DAY_CONFIG = {
 	1: {
 		"queue_size": 10,
-		"hobby_chance": 0.3,           # Chance to have a hobby
-		"personality_chance": 0.15,    # Chance for each personality trait
-		"max_personalities": 1,        # Max personality traits per person
+		"hobby_chance": 0.3,             # Chance to have a hobby
+		"scoring_trait_chance": 0.15,    # Chance for each scoring trait
+		"max_scoring_traits": 1,         # Max traits that affect happiness
 	},
 	2: {
 		"queue_size": 12,
 		"hobby_chance": 0.4,
-		"personality_chance": 0.25,
-		"max_personalities": 2,
+		"scoring_trait_chance": 0.25,
+		"max_scoring_traits": 2,
 	},
 	3: {
 		"queue_size": 15,
 		"hobby_chance": 0.5,
-		"personality_chance": 0.35,
-		"max_personalities": 2,
+		"scoring_trait_chance": 0.35,
+		"max_scoring_traits": 2,
 	},
 	4: {
 		"queue_size": 18,
 		"hobby_chance": 0.5,
-		"personality_chance": 0.45,
-		"max_personalities": 3,
+		"scoring_trait_chance": 0.45,
+		"max_scoring_traits": 3,
 	},
 	5: {
 		"queue_size": 20,
 		"hobby_chance": 0.6,
-		"personality_chance": 0.55,
-		"max_personalities": 3,
+		"scoring_trait_chance": 0.55,
+		"max_scoring_traits": 3,
 	},
 }
 
@@ -85,8 +85,8 @@ const DAY_CONFIG = {
 const DEFAULT_DAY_CONFIG = {
 	"queue_size": 25,
 	"hobby_chance": 0.6,
-	"personality_chance": 0.6,
-	"max_personalities": 4,
+	"scoring_trait_chance": 0.6,
+	"max_scoring_traits": 4,
 }
 
 

@@ -41,21 +41,21 @@ static func generate_person(config: Dictionary) -> Person:
 		var hobby = _pick_random(Constants.HOBBIES)
 		traits.append(Hobby.new(hobby))
 	
-	# Maybe add personality traits (these create interactions)
-	var personality_count = 0
-	var max_personalities = config["max_personalities"]
-	var personality_chance = config["personality_chance"]
+	# Maybe add scoring traits (these affect happiness)
+	var scoring_count = 0
+	var max_scoring_traits = config["max_scoring_traits"]
+	var scoring_chance = config["scoring_trait_chance"]
 	
-	# Try to add personality traits based on chance
-	var possible_personalities = _get_possible_personalities(nationality, profession, social_class, age)
-	possible_personalities.shuffle()
+	# Try to add scoring traits based on chance
+	var possible_scoring_traits = _get_possible_scoring_traits(nationality, profession, social_class, age)
+	possible_scoring_traits.shuffle()
 	
-	for personality_data in possible_personalities:
-		if personality_count >= max_personalities:
+	for _trait in possible_scoring_traits:
+		if scoring_count >= max_scoring_traits:
 			break
-		if randf() < personality_chance:
-			traits.append(personality_data)
-			personality_count += 1
+		if randf() < scoring_chance:
+			traits.append(_trait)
+			scoring_count += 1
 	
 	# Generate name based on gender
 	var person_name = _generate_name(gender)
@@ -63,57 +63,57 @@ static func generate_person(config: Dictionary) -> Person:
 	return Person.new(person_name, traits)
 
 
-## Get list of possible personality traits for this person
-static func _get_possible_personalities(nationality: String, profession: String, social_class: String, age: int) -> Array[Trait]:
-	var personalities: Array[Trait] = []
+## Get list of possible scoring traits (traits that affect happiness) for this person
+static func _get_possible_scoring_traits(nationality: String, profession: String, social_class: String, age: int) -> Array[Trait]:
+	var scoring_traits: Array[Trait] = []
 	
 	# Xenophobe - dislikes people from other nationalities
-	personalities.append(Xenophobe.new(nationality))
+	scoring_traits.append(Xenophobe.new(nationality))
 	
 	# Class Conscious - cares about social class
-	personalities.append(ClassConscious.new(social_class))
+	scoring_traits.append(ClassConscious.new(social_class))
 	
 	# Snob - only likes upper class
 	if social_class == "upper":
-		personalities.append(Snob.new())
+		scoring_traits.append(Snob.new())
 	
 	# Introvert / Extrovert
 	if randf() > 0.5:
-		personalities.append(Introvert.new())
+		scoring_traits.append(Introvert.new())
 	else:
-		personalities.append(Extrovert.new())
+		scoring_traits.append(Extrovert.new())
 	
 	# Age preferences
 	if age >= 60:
-		personalities.append(PrefersElderly.new())
+		scoring_traits.append(PrefersElderly.new())
 	elif age <= 30:
-		personalities.append(PrefersYoung.new())
+		scoring_traits.append(PrefersYoung.new())
 	
 	# Gossip
-	personalities.append(Gossip.new())
+	scoring_traits.append(Gossip.new())
 	
 	# Like/Dislike hobbies - pick random hobbies to like/dislike
 	var random_hobby = _pick_random(Constants.HOBBIES)
-	personalities.append(LikeHobby.new(random_hobby))
+	scoring_traits.append(LikeHobby.new(random_hobby))
 	
 	var disliked_hobby = _pick_random(Constants.HOBBIES)
 	if disliked_hobby != random_hobby:
-		personalities.append(DislikeHobby.new(disliked_hobby))
+		scoring_traits.append(DislikeHobby.new(disliked_hobby))
 	
 	# Like/Dislike professions
 	var liked_profession = _pick_random(Constants.PROFESSIONS)
-	personalities.append(LikeProfession.new(liked_profession))
+	scoring_traits.append(LikeProfession.new(liked_profession))
 	
 	var disliked_profession = _pick_random(Constants.PROFESSIONS)
 	if disliked_profession != liked_profession:
-		personalities.append(DislikeProfession.new(disliked_profession))
+		scoring_traits.append(DislikeProfession.new(disliked_profession))
 	
 	# Rival - has a rival profession (someone they personally hate)
 	var rival_profession = _pick_random(Constants.PROFESSIONS)
 	if rival_profession != profession:
-		personalities.append(Rival.new(rival_profession))
+		scoring_traits.append(Rival.new(rival_profession))
 	
-	return personalities
+	return scoring_traits
 
 
 ## Generate a random age (weighted towards middle ages)
