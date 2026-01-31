@@ -26,7 +26,6 @@ func calc_score(trait_set: TraitSet):
 		if t is Age:
 			if t.age >= 50:
 				score += 5
-			elif t.age < 25:
-				score -= 8
+
 
 	return score

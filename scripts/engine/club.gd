@@ -1,6 +1,6 @@
 class_name Club
 
-var day: int = 1
+var day: int = 0
 var money: int
 var capacity: int
 

@@ -33,7 +33,9 @@ func display_traits(person: Person) -> void:
 	var traits_text = ""
 	for t in person.traits:
 		if not t.hidden():
-			traits_text += "- %s\n" % t.description()
+			# Add happiness indicator: [H] for traits that affect happiness
+			var happiness_indicator = " [H]" if t.can_affect_happiness() else ""
+			traits_text += "- %s%s\n" % [t.description(), happiness_indicator]
 	traits_label.text = traits_text
 
 
