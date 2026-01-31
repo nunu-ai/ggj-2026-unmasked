@@ -71,6 +71,7 @@ const LOWER_DECO_CATEGORIES = [
 	{ "value": "none",   "weight": 25 },
 	{ "value": "roman",  "weight": 40 },
 	{ "value": "stars",  "weight": 35 },
+	{ "value": "cards",  "weight": 40 }
 ]
 
 const LOWER_DECOS_ROMAN = [
@@ -80,6 +81,13 @@ const LOWER_DECOS_ROMAN = [
 	{ "value": "res://assets/masks/lower_decos/roman/4.png", "weight": 15 },
 	{ "value": "res://assets/masks/lower_decos/roman/5.png", "weight": 15 },
 	{ "value": "res://assets/masks/lower_decos/roman/6.png", "weight": 10 },
+]
+
+const LOWER_DECOS_CARDS = [
+	{ "value": "res://assets/masks/lower_decos/cards/clubs.png", "weight": 20},
+	{ "value": "res://assets/masks/lower_decos/cards/diamond.png", "weight": 20},
+	{ "value": "res://assets/masks/lower_decos/cards/heart.png", "weight": 20},
+	{ "value": "res://assets/masks/lower_decos/cards/spades.png", "weight": 20},
 ]
 
 ## Stars — each star adds 50 money
@@ -133,6 +141,8 @@ static func generate() -> Mask:
 			var star_entry = _weighted_pick(LOWER_DECOS_STARS)
 			lower_deco_path = star_entry["value"]
 			star_count = star_entry["stars"]
+		"cards":
+			lower_deco_path = _weighted_pick(LOWER_DECOS_CARDS)["value"]
 		_:  # "none"
 			lower_deco_path = ""
 

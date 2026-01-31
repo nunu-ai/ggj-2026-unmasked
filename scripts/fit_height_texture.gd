@@ -25,9 +25,10 @@ func _resize() -> void:
 		return
 
 	var aspect: float = tex_size.x / tex_size.y
-	var target_height: float = parent_size.y
+	var target_height: float = parent_size.y*1.3
 	var target_width: float = target_height * aspect
 
-	# Bottom-left aligned
-	set_position(Vector2(0.0, parent_size.y - target_height))
+	# Bottom-left aligned, nudged down slightly
+	var y_offset: float = parent_size.y * 0.15
+	set_position(Vector2(0.0, parent_size.y - target_height + y_offset))
 	set_size(Vector2(target_width, target_height))

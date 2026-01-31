@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbxc2n7hadmvf"
-path="res://.godot/imported/4.png-ee4a71cc443ac17f298b424c5be4aca1.ctex"
+uid="uid://8x5m4ijpj1rn"
+path="res://.godot/imported/spades.png-62568343f720f8466f424a99a7371e0b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/masks/upper_decos/carneval/4.png"
-dest_files=["res://.godot/imported/4.png-ee4a71cc443ac17f298b424c5be4aca1.ctex"]
+source_file="res://assets/masks/lower_decos/cards/spades.png"
+dest_files=["res://.godot/imported/spades.png-62568343f720f8466f424a99a7371e0b.ctex"]
 
 [params]
 

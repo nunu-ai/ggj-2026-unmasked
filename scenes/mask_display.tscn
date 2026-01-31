@@ -3,19 +3,19 @@
 [ext_resource type="Texture2D" uid="uid://cehidhncyc2dl" path="res://assets/character.png" id="1_6x82c"]
 [ext_resource type="Script" uid="uid://diay6t8ltfw35" path="res://scripts/fit_height_texture.gd" id="2_rt6ct"]
 [ext_resource type="Texture2D" path="res://assets/masks/mask.png" id="3_u16yr"]
-[ext_resource type="Texture2D" uid="uid://bqrxae56h6ouo" path="res://assets/masks/upper_decos/carneval-3.png" id="4_awuyp"]
-[ext_resource type="Texture2D" path="res://assets/masks/mouths/neutral/1.png" id="5_mouth"]
+[ext_resource type="Texture2D" path="res://assets/masks/upper_decos/carneval-3.png" id="4_awuyp"]
+[ext_resource type="Texture2D" uid="uid://itol5by6uel" path="res://assets/masks/mouths/neutral/1.png" id="5_mouth"]
 
 [node name="VBox1" type="Control"]
-clip_contents = true
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 3
 
 [node name="CharacterLayer" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 915.0
-offset_bottom = 610.0
+offset_top = -194.4
+offset_right = 1263.6
+offset_bottom = 648.0
 texture = ExtResource("1_6x82c")
 expand_mode = 1
 script = ExtResource("2_rt6ct")
@@ -23,32 +23,36 @@ script = ExtResource("2_rt6ct")
 [node name="MaskLayer" type="TextureRect" parent="."]
 modulate = Color(0.6, 0.2, 0.8, 1)
 layout_mode = 0
-offset_right = 915.0
-offset_bottom = 610.0
+offset_top = -194.4
+offset_right = 1263.6
+offset_bottom = 648.0
 texture = ExtResource("3_u16yr")
 expand_mode = 1
 script = ExtResource("2_rt6ct")
 
 [node name="MouthLayer" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 915.0
-offset_bottom = 610.0
+offset_top = -194.4
+offset_right = 1263.6
+offset_bottom = 648.0
 texture = ExtResource("5_mouth")
 expand_mode = 1
 script = ExtResource("2_rt6ct")
 
 [node name="UpperDecoLayer" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 915.0
-offset_bottom = 610.0
+offset_top = -194.4
+offset_right = 1263.6
+offset_bottom = 648.0
 texture = ExtResource("4_awuyp")
 expand_mode = 1
 script = ExtResource("2_rt6ct")
 
 [node name="LowerDecoLayer" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 915.0
-offset_bottom = 610.0
+offset_top = -194.4
+offset_right = 1263.6
+offset_bottom = 648.0
 texture = ExtResource("4_awuyp")
 expand_mode = 1
 script = ExtResource("2_rt6ct")
