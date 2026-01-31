@@ -15,9 +15,9 @@ shader_parameter/halo_intensity = 0.3
 shader_parameter/halo_size = 0.15
 shader_parameter/halo_softness = 0.1
 shader_parameter/num_halos = 4
-shader_parameter/dot_size = 0.015
-shader_parameter/num_dots = 30
-shader_parameter/dot_speed = 0.15000000386512
+shader_parameter/dot_size = 0.00499999988824
+shader_parameter/num_dots = 4
+shader_parameter/dot_speed = 0.10000000149012
 shader_parameter/bounce_speed = 0.5
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8j4ut"]

@@ -8,7 +8,7 @@ uniform float halo_size : hint_range(0.05, 0.5) = 0.15;
 uniform float halo_softness : hint_range(0.01, 0.3) = 0.1;
 uniform int num_halos : hint_range(1, 8) = 4;
 uniform float dot_size : hint_range(0.005, 0.05) = 0.015;
-uniform int num_dots : hint_range(4, 32) = 12;
+uniform int num_dots : hint_range(0, 32) = 12;
 uniform float dot_speed : hint_range(0.1, 2.0) = 0.5;
 uniform float bounce_speed : hint_range(0.1, 2.0) = 0.5;
 
