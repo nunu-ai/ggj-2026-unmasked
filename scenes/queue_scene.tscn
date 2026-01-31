@@ -173,7 +173,6 @@ amount = 30
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_8j4ut")
 script = ExtResource("6_chl07")
-happy_texture = ExtResource("5_s6a0p")
 
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
