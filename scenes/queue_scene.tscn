@@ -112,11 +112,14 @@ text = "Total Happiness: 0"
 [node name="HSeparator2" type="HSeparator" parent="DebugPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="ClubMembersLabel" type="Label" parent="DebugPanel/VBoxContainer"]
+[node name="ClubMembersScroll" type="ScrollContainer" parent="DebugPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "No members yet"
-autowrap_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ClubMembersList" type="VBoxContainer" parent="DebugPanel/VBoxContainer/ClubMembersScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]
