@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://itol5by6uel" path="res://assets/masks/mouths/neutral/1.png" id="5_mouth"]
 
 [node name="VBox1" type="Control"]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="CharacterLayer" type="TextureRect" parent="."]

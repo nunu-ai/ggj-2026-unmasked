@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
-[ext_resource type="Shader" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
@@ -16,7 +16,7 @@ shader_parameter/halo_size = 0.15
 shader_parameter/halo_softness = 0.1
 shader_parameter/num_halos = 4
 shader_parameter/dot_size = 0.00499999988824
-shader_parameter/num_dots = 4
+shader_parameter/num_dots = 0
 shader_parameter/dot_speed = 0.10000000149012
 shader_parameter/bounce_speed = 0.5
 
@@ -78,7 +78,9 @@ size_flags_vertical = 3
 dragging_enabled = false
 
 [node name="VBox1" parent="VBoxContainer/HBox" instance=ExtResource("3_s6a0p")]
+clip_contents = true
 layout_mode = 2
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
 layout_mode = 2
