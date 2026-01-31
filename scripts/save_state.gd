@@ -53,7 +53,6 @@ func end_day():
 
 	self.save()
 
-
 ## Loads the game state from a file.
 ## Returns true if successful, false otherwise.
 func load() -> bool:
