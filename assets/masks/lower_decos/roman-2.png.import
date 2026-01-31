@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqrxae56h6ouo"
-path="res://.godot/imported/carneval-3.png-2271d59c564dfc31f6e9937d28b6832b.ctex"
+uid="uid://bcgk3hmntjncr"
+path="res://.godot/imported/roman-2.png-dc52e0fff37f800c197654a80034690d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/masks/upper_decos/carneval-3.png"
-dest_files=["res://.godot/imported/carneval-3.png-2271d59c564dfc31f6e9937d28b6832b.ctex"]
+source_file="res://assets/masks/lower_decos/roman-2.png"
+dest_files=["res://.godot/imported/roman-2.png-dc52e0fff37f800c197654a80034690d.ctex"]
 
 [params]
 

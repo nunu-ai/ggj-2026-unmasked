@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqrxae56h6ouo"
-path="res://.godot/imported/carneval-3.png-2271d59c564dfc31f6e9937d28b6832b.ctex"
+uid="uid://d2b6oxumnml3m"
+path="res://.godot/imported/half-mask-1.png-9bd2dd8c14d8cbac2eece4a689e4e63d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/masks/upper_decos/carneval-3.png"
-dest_files=["res://.godot/imported/carneval-3.png-2271d59c564dfc31f6e9937d28b6832b.ctex"]
+source_file="res://assets/masks/half-mask-1.png"
+dest_files=["res://.godot/imported/half-mask-1.png-9bd2dd8c14d8cbac2eece4a689e4e63d.ctex"]
 
 [params]
 

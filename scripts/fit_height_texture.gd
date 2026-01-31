@@ -7,7 +7,7 @@ extends TextureRect
 func _ready() -> void:
 	get_parent().resized.connect(_resize)
 
-
+ 
 func _process(_delta: float) -> void:
 	_resize()
 

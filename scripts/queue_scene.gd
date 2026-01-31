@@ -28,12 +28,30 @@ const REJECT_PHRASES: Array[String] = [
 ]
 
 @onready var _mask_layer: TextureRect = $VBoxContainer/HBox/VBox1/MaskLayer
-@onready var _deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/DecoLayer
+@onready var _upper_deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/UpperDecoLayer
+@onready var _lower_deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/LowerDecoLayer
 
-var _deco_textures: Array[Texture2D] = [
+var _mask_textures: Array[Texture2D] = [
+	preload("res://assets/masks/full-mask-1.png"),
+	preload("res://assets/masks/half-mask-1.png"),
+]
+
+var _upper_deco_textures: Array[Texture2D] = [
 	null,
-	preload("res://assets/masks/deco1.png"),
-	preload("res://assets/masks/deco2.png"),
+	preload("res://assets/masks/upper_decos/carneval-3.png"),
+	preload("res://assets/masks/upper_decos/carneval-4.png"),
+	preload("res://assets/masks/upper_decos/carneval-8.png"),
+]
+
+var _lower_deco_textures: Array[Texture2D] = [
+	null,
+	preload("res://assets/masks/lower_decos/roman-1.png"),
+	preload("res://assets/masks/lower_decos/roman-2.png"),
+	preload("res://assets/masks/lower_decos/roman-3.png"),
+	preload("res://assets/masks/lower_decos/roman-4.png"),
+	preload("res://assets/masks/lower_decos/roman-5.png"),
+	preload("res://assets/masks/lower_decos/roman-6.png"),
+	preload("res://assets/masks/lower_decos/star-1.png"),
 ]
 
 func _ready() -> void:
@@ -137,9 +155,17 @@ func update_status() -> void:
 
 
 func _randomize_appearance() -> void:
+	# Randomize mask
+	_mask_layer.texture = _mask_textures.pick_random()
 	_mask_layer.modulate = Color(randf(), randf(), randf(), 1.0)
-	_deco_layer.modulate = Color(randf(), randf(), randf(), 1.0)
-	_deco_layer.texture = _deco_textures.pick_random()
+
+	# Randomize upper deco (can be null = no deco)
+	_upper_deco_layer.texture = _upper_deco_textures.pick_random()
+	_upper_deco_layer.modulate = Color(randf(), randf(), randf(), 1.0)
+
+	# Randomize lower deco (can be null = no deco)
+	_lower_deco_layer.texture = _lower_deco_textures.pick_random()
+	_lower_deco_layer.modulate = Color(randf(), randf(), randf(), 1.0)
 
 
 func _on_accept_button_pressed() -> void:

@@ -1,14 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
-[ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
-[ext_resource type="Texture2D" uid="uid://cehidhncyc2dl" path="res://assets/character.png" id="3_54epr"]
-[ext_resource type="PackedScene" uid="uid://rxui56rawoch" path="res://scenes/debug_panel.tscn" id="4_54epr"]
-[ext_resource type="Script" uid="uid://c73iorjibs4pa" path="res://scripts/reaction_particles.gd" id="6_chl07"]
+[ext_resource type="Shader" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
+[ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="4_54epr"]
-[ext_resource type="Script" uid="uid://diay6t8ltfw35" path="res://scripts/fit_height_texture.gd" id="5_fit"]
-[ext_resource type="Texture2D" uid="uid://biispkrc5dw16" path="res://assets/masks/mask.png" id="6_mask"]
-[ext_resource type="Texture2D" uid="uid://bqrxae56h6ouo" path="res://assets/masks/deco1.png" id="7_deco1"]
+[ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -75,29 +72,8 @@ layout_mode = 2
 size_flags_vertical = 3
 dragging_enabled = false
 
-[node name="VBox1" type="Control" parent="VBoxContainer/HBox"]
-clip_contents = true
+[node name="VBox1" parent="VBoxContainer/HBox" instance=ExtResource("3_s6a0p")]
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CharacterLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 0
-texture = ExtResource("3_54epr")
-expand_mode = 1
-script = ExtResource("5_fit")
-
-[node name="MaskLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-modulate = Color(0.6, 0.2, 0.8, 1)
-layout_mode = 0
-texture = ExtResource("6_mask")
-expand_mode = 1
-script = ExtResource("5_fit")
-
-[node name="DecoLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 0
-texture = ExtResource("7_deco1")
-expand_mode = 1
-script = ExtResource("5_fit")
 
 [node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
 layout_mode = 2
@@ -173,6 +149,7 @@ amount = 30
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_8j4ut")
 script = ExtResource("6_chl07")
+happy_texture = ExtResource("2_tbu78")
 
 [connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
