@@ -7,8 +7,31 @@ extends Control
 @export var reject_button: Button
 @export var debug_panel: DebugPanel
 
+const ACCEPT_PHRASES: Array[String] = [
+	"Welcome",
+	"Come in",
+	"You're in",
+	"Enter",
+	"Go ahead",
+]
+
+const REJECT_PHRASES: Array[String] = [
+	"Get lost",
+	"Go home",
+	"Not tonight",
+	"Beat it",
+	"No way",
+	"Scram",
+]
+
 func _ready() -> void:
+	randomize_button_captions()
 	update_display()
+
+
+func randomize_button_captions() -> void:
+	accept_button.text = ACCEPT_PHRASES.pick_random()
+	reject_button.text = REJECT_PHRASES.pick_random()
 
 
 func update_display() -> void:
@@ -88,11 +111,13 @@ func update_status() -> void:
 
 func _on_accept_button_pressed() -> void:
 	SaveState.day.decide_current_person(true)
+	randomize_button_captions()
 	update_display()
 
 
 func _on_reject_button_pressed() -> void:
 	SaveState.day.decide_current_person(false)
+	randomize_button_captions()
 	update_display()
 
 
