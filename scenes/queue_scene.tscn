@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=8 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 [ext_resource type="Texture2D" uid="uid://cehidhncyc2dl" path="res://assets/character.png" id="3_54epr"]
+[ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -17,6 +19,20 @@ shader_parameter/dot_size = 0.015
 shader_parameter/num_dots = 30
 shader_parameter/dot_speed = 0.15000000386512
 shader_parameter/bounce_speed = 0.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8j4ut"]
+lifetime_randomness = 0.37
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_box_extents = Vector3(400, 50, 1)
+direction = Vector3(0, -1, 0)
+spread = 28.085
+initial_velocity_min = 891.38
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 98, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
 
 [node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "mask_label", "rules_label", "accept_button", "reject_button", "reroll_button", "end_day_button")]
 material = SubResource("ShaderMaterial_54epr")
@@ -186,6 +202,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
 text = "End Day"
+
 [node name="ClubLogPopup" type="AcceptDialog" parent="."]
 title = "Club Log"
 size = Vector2i(750, 600)

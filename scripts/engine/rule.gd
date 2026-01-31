@@ -25,13 +25,13 @@ func is_violated(club_people: Array) -> bool:
 		RuleType.MAX_COLOR_COUNT:
 			var count = 0
 			for person in club_people:
-				if person.mask.color == params["color"]:
+				if person.mask != null and person.mask.tier_name().to_lower() == params["color"]:
 					count += 1
 			return count > params["max"]
 		RuleType.MIN_COLOR_COUNT:
 			var count = 0
 			for person in club_people:
-				if person.mask.color == params["color"]:
+				if person.mask != null and person.mask.tier_name().to_lower() == params["color"]:
 					count += 1
 			return count < params["min"]
 	return false

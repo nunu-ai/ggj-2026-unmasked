@@ -1,17 +1,6 @@
 class_name Mask
 extends RefCounted
 
-var color: String  # e.g., "gold", "silver", "grey", "blue", etc.
-var decoration: String  # e.g., "deco1", "none", etc.
-
-func _init(_color: String, _decoration: String):
-	color = _color
-	decoration = _decoration
-
-
-func get_money_value() -> int:
-	return 100
-
 ## Represents a person's mask appearance and its associated money value.
 ## Stores texture paths (not Texture2D) so it's serializable.
 
@@ -76,6 +65,11 @@ func money() -> int:
 	total += star_count * 50
 	total += MOOD_BONUS[mouth_mood]
 	return total
+
+
+## Alias for compatibility with code that calls get_money_value()
+func get_money_value() -> int:
+	return money()
 
 
 ## Human-readable tier name

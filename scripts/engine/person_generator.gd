@@ -3,179 +3,36 @@ class_name PersonGenerator
 # =============================================================================
 # PERSON GENERATOR
 # Generates random people with masks, money, and optional rules
-# 
-# TODO: This is a stub - friend will implement the full generator
 # =============================================================================
 
 
 ## Generate a single random person
-## This is the main function that should be implemented
 static func generate_person() -> Person:
-	# Stub implementation - generates a basic person
-	# Friend will replace this with proper generation logic including:
-	# - Random name generation
-	# - Mask generation (color determines money)
-	# - Optional rules (with probability)
-	
-	var name = _generate_name()
-	var mask = _generate_mask()
+	var person_name = _generate_name()
+	var mask = MaskGenerator.generate()
 	var rules = _maybe_generate_rules()
-	
-	return Person.new(name, mask, rules)
+
+	return Person.new(person_name, [], mask, rules)
 
 
-<<<<<<< HEAD
 ## Generate a random name
 static func _generate_name() -> String:
 	var first_name = _pick_random(Constants.FIRST_NAMES_MALE + Constants.FIRST_NAMES_FEMALE)
-=======
-## Generate a single random person based on config
-static func generate_person(config: Dictionary) -> Person:
-	var traits: Array[Trait] = []
-	
-	# Always assign base traits
-	var gender = _pick_random(Constants.GENDERS)
-	var nationality = _pick_random(Constants.NATIONALITIES)
-	var profession = _pick_random(Constants.PROFESSIONS)
-	var social_class = _pick_random(Constants.SOCIAL_CLASSES)
-	var age = _generate_age()
-	var dress_theme = _pick_random(Constants.DRESS_THEMES)
-	
-	traits.append(Gender.new(gender))
-	traits.append(Nationality.new(nationality))
-	traits.append(Profession.new(profession))
-	traits.append(SocialClass.new(social_class))
-	traits.append(Age.new(age))
-	traits.append(DressCode.new(dress_theme))
-	
-	# Maybe add a hobby
-	if randf() < config["hobby_chance"]:
-		var hobby = _pick_random(Constants.HOBBIES)
-		traits.append(Hobby.new(hobby))
-	
-	# Maybe add scoring traits (these affect happiness)
-	var scoring_count = 0
-	var max_scoring_traits = config["max_scoring_traits"]
-	var scoring_chance = config["scoring_trait_chance"]
-	
-	# Try to add scoring traits based on chance
-	var possible_scoring_traits = _get_possible_scoring_traits(nationality, profession, social_class, age)
-	possible_scoring_traits.shuffle()
-	
-	for _trait in possible_scoring_traits:
-		if scoring_count >= max_scoring_traits:
-			break
-		if randf() < scoring_chance:
-			traits.append(_trait)
-			scoring_count += 1
-	
-	# Generate name based on gender
-	var person_name = _generate_name(gender)
-
-	# Generate mask appearance
-	var mask = MaskGenerator.generate()
-
-	return Person.new(person_name, traits, mask)
-
-
-## Get list of possible scoring traits (traits that affect happiness) for this person
-static func _get_possible_scoring_traits(nationality: String, profession: String, social_class: String, age: int) -> Array[Trait]:
-	var scoring_traits: Array[Trait] = []
-	
-	# Xenophobe - dislikes people from other nationalities
-	scoring_traits.append(Xenophobe.new(nationality))
-	
-	# Class Conscious - cares about social class
-	scoring_traits.append(ClassConscious.new(social_class))
-	
-	# Snob - only likes upper class
-	if social_class == "upper":
-		scoring_traits.append(Snob.new())
-	
-	# Introvert / Extrovert
-	if randf() > 0.5:
-		scoring_traits.append(Introvert.new())
-	else:
-		scoring_traits.append(Extrovert.new())
-	
-	# Age preferences
-	if age >= 60:
-		scoring_traits.append(PrefersElderly.new())
-	elif age <= 30:
-		scoring_traits.append(PrefersYoung.new())
-	
-	# Gossip
-	scoring_traits.append(Gossip.new())
-	
-	# Like/Dislike hobbies - pick random hobbies to like/dislike
-	var random_hobby = _pick_random(Constants.HOBBIES)
-	scoring_traits.append(LikeHobby.new(random_hobby))
-	
-	var disliked_hobby = _pick_random(Constants.HOBBIES)
-	if disliked_hobby != random_hobby:
-		scoring_traits.append(DislikeHobby.new(disliked_hobby))
-	
-	# Like/Dislike professions
-	var liked_profession = _pick_random(Constants.PROFESSIONS)
-	scoring_traits.append(LikeProfession.new(liked_profession))
-	
-	var disliked_profession = _pick_random(Constants.PROFESSIONS)
-	if disliked_profession != liked_profession:
-		scoring_traits.append(DislikeProfession.new(disliked_profession))
-	
-	# Rival - has a rival profession (someone they personally hate)
-	var rival_profession = _pick_random(Constants.PROFESSIONS)
-	if rival_profession != profession:
-		scoring_traits.append(Rival.new(rival_profession))
-	
-	return scoring_traits
-
-
-## Generate a random age (weighted towards middle ages)
-static func _generate_age() -> int:
-	# Use weighted distribution: more adults, fewer young/elderly
-	var roll = randf()
-	if roll < 0.2:
-		return randi_range(18, 30)   # Young
-	elif roll < 0.8:
-		return randi_range(31, 55)   # Adult  
-	else:
-		return randi_range(56, 80)   # Elderly
-
-
-## Generate a name based on gender
-static func _generate_name(gender: String) -> String:
-	var first_name: String
-	if gender == "Female":
-		first_name = _pick_random(Constants.FIRST_NAMES_FEMALE)
-	else:
-		first_name = _pick_random(Constants.FIRST_NAMES_MALE)
-	
->>>>>>> 31f099b (random mask generation and log)
 	var last_name = _pick_random(Constants.LAST_NAMES)
 	return first_name + " " + last_name
-
-
-## Generate a random mask
-## Mask color determines the money value
-static func _generate_mask() -> Mask:
-	var color = _pick_random(Constants.MASK_COLORS)
-	var decoration = _pick_random(Constants.MASK_DECORATIONS)
-	return Mask.new(color, decoration)
 
 
 ## Maybe generate personal rules for this person
 ## Most people don't have rules - probability handled here
 static func _maybe_generate_rules() -> Array[Rule]:
 	var rules: Array[Rule] = []
-	
+
 	# Low chance of having personal rules (10%)
-	# TODO: Friend can adjust this probability
 	if randf() < 0.1:
 		var available = Rule.get_available_rules()
 		if available.size() > 0:
 			rules.append(_pick_random(available))
-	
+
 	return rules
 
 
