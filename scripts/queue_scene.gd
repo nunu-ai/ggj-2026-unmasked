@@ -27,8 +27,18 @@ const REJECT_PHRASES: Array[String] = [
 	"Scram",
 ]
 
+@onready var _mask_layer: TextureRect = $VBoxContainer/HBox/VBox1/MaskLayer
+@onready var _deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/DecoLayer
+
+var _deco_textures: Array[Texture2D] = [
+	null,
+	preload("res://assets/masks/deco1.png"),
+	preload("res://assets/masks/deco2.png"),
+]
+
 func _ready() -> void:
 	randomize_button_captions()
+	_randomize_appearance()
 	update_display()
 
 
@@ -126,15 +136,26 @@ func update_status() -> void:
 			reaction_particles.react_neutrally()
 
 
+func _randomize_appearance() -> void:
+	_mask_layer.modulate = Color(randf(), randf(), randf(), 1.0)
+	_deco_layer.modulate = Color(randf(), randf(), randf(), 1.0)
+	_deco_layer.texture = _deco_textures.pick_random()
+
+
 func _on_accept_button_pressed() -> void:
 	SaveState.day.decide_current_person(true)
+<<<<<<< HEAD
 	randomize_button_captions()
+=======
+	_randomize_appearance()
+>>>>>>> 0e88efc (show masks and overlay structure)
 	update_display()
 
 
 func _on_reject_button_pressed() -> void:
 	SaveState.day.decide_current_person(false)
 	randomize_button_captions()
+	_randomize_appearance()
 	update_display()
 
 

@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://rxui56rawoch" path="res://scenes/debug_panel.tscn" id="4_54epr"]
 [ext_resource type="Texture2D" uid="uid://biispkrc5dw16" path="res://assets/masks/mask.png" id="5_s6a0p"]
 [ext_resource type="Script" uid="uid://c73iorjibs4pa" path="res://scripts/reaction_particles.gd" id="6_chl07"]
+[ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="4_54epr"]
+[ext_resource type="Script" uid="uid://diay6t8ltfw35" path="res://scripts/fit_height_texture.gd" id="5_fit"]
+[ext_resource type="Texture2D" uid="uid://biispkrc5dw16" path="res://assets/masks/mask.png" id="6_mask"]
+[ext_resource type="Texture2D" uid="uid://bqrxae56h6ouo" path="res://assets/masks/deco1.png" id="7_deco1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -72,23 +76,29 @@ layout_mode = 2
 size_flags_vertical = 3
 dragging_enabled = false
 
-[node name="VBox1" type="VBoxContainer" parent="VBoxContainer/HBox"]
+[node name="VBox1" type="Control" parent="VBoxContainer/HBox"]
 clip_contents = true
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 3
 
-[node name="MaskDisplay" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-size_flags_stretch_ratio = 0.0
+[node name="CharacterLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+layout_mode = 0
 texture = ExtResource("3_54epr")
 expand_mode = 1
-stretch_mode = 2
+script = ExtResource("5_fit")
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 2
+[node name="MaskLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+modulate = Color(0.6, 0.2, 0.8, 1)
+layout_mode = 0
+texture = ExtResource("6_mask")
+expand_mode = 1
+script = ExtResource("5_fit")
+
+[node name="DecoLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+layout_mode = 0
+texture = ExtResource("7_deco1")
+expand_mode = 1
+script = ExtResource("5_fit")
 
 [node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
 layout_mode = 2
