@@ -56,15 +56,22 @@ size_flags_vertical = 3
 dragging_enabled = false
 
 [node name="VBox1" type="VBoxContainer" parent="VBoxContainer/HBox"]
+clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 3
 alignment = 1
 
 [node name="MaskDisplay" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 6
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.0
 texture = ExtResource("3_54epr")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
+layout_mode = 2
 
 [node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
 layout_mode = 2
