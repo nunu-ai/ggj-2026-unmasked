@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
-[ext_resource type="Texture2D" uid="uid://cehidhncyc2dl" path="res://assets/character.png" id="3_54epr"]
+[ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
@@ -77,41 +77,8 @@ layout_mode = 2
 size_flags_vertical = 3
 dragging_enabled = false
 
-[node name="VBox1" type="TextureRect" parent="VBoxContainer/HBox"]
+[node name="VBox1" parent="VBoxContainer/HBox" instance=ExtResource("3_s6a0p")]
 layout_mode = 2
-texture = ExtResource("3_54epr")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="MaskLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="UpperDecoLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LowerDecoLayer" type="TextureRect" parent="VBoxContainer/HBox/VBox1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
 
 [node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
 layout_mode = 2

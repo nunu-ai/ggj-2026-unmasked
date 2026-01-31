@@ -10,6 +10,7 @@ extends Control
 @export var end_day_button: Button
 
 @onready var _mask_layer: TextureRect = $VBoxContainer/HBox/VBox1/MaskLayer
+@onready var _mouth_layer: TextureRect = $VBoxContainer/HBox/VBox1/MouthLayer
 @onready var _upper_deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/UpperDecoLayer
 @onready var _lower_deco_layer: TextureRect = $VBoxContainer/HBox/VBox1/LowerDecoLayer
 
@@ -52,6 +53,9 @@ func _apply_mask(mask: Mask) -> void:
 	# Mask base
 	_mask_layer.texture = load(mask.mask_path)
 	_mask_layer.modulate = mask.color
+
+	# Mouth
+	_mouth_layer.texture = load(mask.mouth_path)
 
 	# Upper deco
 	if mask.upper_deco_path != "":
