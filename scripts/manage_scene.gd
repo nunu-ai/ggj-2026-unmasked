@@ -10,6 +10,7 @@ const REROLL_DISCOUNT_AMOUNT: int = 25  # How much each upgrade reduces the cost
 @onready var _money_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/MoneyLabel
 @onready var _capacity_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/CapacityLabel
 @onready var _day_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/DayLabel
+@onready var _reroll_cost_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/RerollCostLabel
 
 # Upgrade buttons
 @onready var _capacity_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton
@@ -96,6 +97,11 @@ func update_display() -> void:
 
 	# Tomorrow's info
 	var tomorrow_day = SaveState.club.day + 1
+	
+	# Calculate and display tomorrow's reroll cost
+	var tomorrow_base_reroll_cost = 25 + (tomorrow_day - 1) * 25
+	var tomorrow_reroll_cost = maxi(tomorrow_base_reroll_cost - SaveState.club.reroll_discount, 25)
+	_reroll_cost_label.text = "🔄 Next Cost: $%s" % _format_money(tomorrow_reroll_cost)
 	_tomorrow_title.text = "Tomorrow: Day %d" % tomorrow_day
 	
 	# Theme display
@@ -121,12 +127,8 @@ func update_display() -> void:
 	_capacity_upgrade_button.disabled = SaveState.club.money < current_upgrade_cost
 	
 	# Reroll discount upgrade - only available if "Next" price for tomorrow is $50+
-	# Base cost formula: 25 + (day - 1) * 25
-	var tomorrow_base_cost = 25 + (tomorrow_day - 1) * 25
-	var tomorrow_next_price = maxi(tomorrow_base_cost - SaveState.club.reroll_discount, 25)
-	
 	# Only show/enable this upgrade if tomorrow's "Next" price would be $50 or more
-	var upgrade_available = tomorrow_next_price >= 50
+	var upgrade_available = tomorrow_reroll_cost >= 50
 	var can_afford = SaveState.club.money >= REROLL_DISCOUNT_UPGRADE_COST
 	_reroll_discount_upgrade_button.text = "$%s" % _format_money(REROLL_DISCOUNT_UPGRADE_COST)
 	_reroll_discount_upgrade_button.disabled = not (upgrade_available and can_afford)

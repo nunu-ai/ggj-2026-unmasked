@@ -114,6 +114,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "📅 Day 1"
 
+[node name="RerollCostLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🔄 Next Cost: $50"
+
 [node name="UpgradesCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel"]
 layout_mode = 2
 size_flags_vertical = 3
