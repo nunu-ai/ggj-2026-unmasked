@@ -263,7 +263,18 @@ func _on_main_menu_button_pressed() -> void:
 
 
 func _on_main_menu_confirm_popup_confirmed() -> void:
-	SaveState.end_day()
+	# End the day (calculate profits/rent) then go to main menu
+	SaveState.club.money += int(SaveState.day.profit(SaveState.club.capacity))
+	SaveState.club.money -= SaveState.club.rent()
+	
+	# Check for game over (bankruptcy)
+	if SaveState.club.money < 0:
+		SaveState.delete_save()
+		SaveState.switch_to_state(SaveStateClass.State.GameOver)
+	else:
+		SaveState.next_theme = DailyTheme.pick_random()
+		SaveState.save()
+		SaveState.switch_to_state(SaveStateClass.State.Menu)
 
 
 func _on_log_button_pressed() -> void:

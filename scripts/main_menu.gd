@@ -11,8 +11,13 @@ func _on_new_game_button_pressed() -> void:
 
 
 func _on_continue_button_pressed() -> void:
-	SaveState.load()
-	SaveState.switch_to_state(SaveStateClass.State.Manage)
+	if SaveState.load():
+		# Check if player has already lost (money < 0)
+		if SaveState.club.money < 0:
+			SaveState.delete_save()
+			SaveState.switch_to_state(SaveStateClass.State.GameOver)
+		else:
+			SaveState.switch_to_state(SaveStateClass.State.Manage)
 
 func _on_settings_button_pressed() -> void:
 	pass
