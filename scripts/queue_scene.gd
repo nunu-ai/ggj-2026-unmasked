@@ -118,8 +118,7 @@ func _display_id_card(person: Person) -> void:
 	
 	# Personal rules (these become tonight's rules if accepted)
 	if person.rules.size() > 0:
-		var rules_text = "[color=yellow]⚠ Personal Rules[/color]\n"
-		rules_text += "[color=gray][i]Will become active rules if accepted[/i][/color]\n"
+		var rules_text = ""
 		for rule in person.rules:
 			rules_text += "• %s [color=red](-$%d)[/color]\n" % [rule.description, abs(rule.penalty)]
 		_personal_rules_label.text = rules_text.strip_edges()
