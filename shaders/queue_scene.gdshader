@@ -11,6 +11,7 @@ uniform float dot_size : hint_range(0.005, 0.05) = 0.015;
 uniform int num_dots : hint_range(0, 32) = 12;
 uniform float dot_speed : hint_range(0.1, 2.0) = 0.5;
 uniform float bounce_speed : hint_range(0.1, 2.0) = 0.5;
+uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // Simple hash function for pseudo-random values
 float hash(float n) {
@@ -104,5 +105,5 @@ void fragment() {
 	dot_contribution = clamp(dot_contribution, 0.0, 1.0);
 	color = mix(color, dot_color, dot_contribution);
 
-	COLOR = vec4(color, 1.0);
+	COLOR = vec4(color, opacity);
 }
