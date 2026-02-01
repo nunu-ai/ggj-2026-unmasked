@@ -59,7 +59,7 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.753, 0.412, 0.106, 1)
+border_color = Color(0.5, 0.2, 0.6, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -148,6 +148,11 @@ text = "👥 Club: 0/5"
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "📅 Day 1"
+
+[node name="RerollCostLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🔄 Next: $25"
 
 [node name="Spacer" type="Control" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2

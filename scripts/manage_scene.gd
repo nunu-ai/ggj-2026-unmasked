@@ -3,14 +3,18 @@ extends Control
 const BASE_UPGRADE_COST: int = 250  # First upgrade costs 250, then 500, 750, etc.
 const INITIAL_CAPACITY: int = 5  # Starting capacity (to calculate upgrade count)
 const CAPACITY_UPGRADE_AMOUNT: int = 1
+const REROLL_DISCOUNT_UPGRADE_COST: int = 500  # Cost to reduce "Next" price by $25
+const REROLL_DISCOUNT_AMOUNT: int = 25  # How much each upgrade reduces the cost
 
 # Current state labels
 @onready var _money_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/MoneyLabel
 @onready var _capacity_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/CapacityLabel
 @onready var _day_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/DayLabel
 
-# Upgrade button
+# Upgrade buttons
 @onready var _capacity_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton
+@onready var _reroll_discount_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow/RerollDiscountUpgradeButton
+@onready var _reroll_discount_row: HBoxContainer = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow
 @onready var _undo_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UndoButton
 
 # Tomorrow's info
@@ -115,16 +119,30 @@ func update_display() -> void:
 	
 	# Disable upgrade button if can't afford
 	_capacity_upgrade_button.disabled = SaveState.club.money < current_upgrade_cost
+	
+	# Reroll discount upgrade - only available if "Next" price for tomorrow is $50+
+	# Base cost formula: 25 + (day - 1) * 25
+	var tomorrow_base_cost = 25 + (tomorrow_day - 1) * 25
+	var tomorrow_next_price = maxi(tomorrow_base_cost - SaveState.club.reroll_discount, 25)
+	
+	# Only show/enable this upgrade if tomorrow's "Next" price would be $50 or more
+	var upgrade_available = tomorrow_next_price >= 50
+	var can_afford = SaveState.club.money >= REROLL_DISCOUNT_UPGRADE_COST
+	_reroll_discount_upgrade_button.text = "$%s" % _format_money(REROLL_DISCOUNT_UPGRADE_COST)
+	_reroll_discount_upgrade_button.disabled = not (upgrade_available and can_afford)
+	_reroll_discount_row.visible = upgrade_available
 
 	# Disable undo button if no purchases to undo
 	_undo_button.disabled = _purchase_history.is_empty()
 
 
 ## Calculate the cost for the next capacity upgrade
-## Cost increases by 250 each time: 250, 500, 750, 1000, etc.
+## Cost increases by 250 every 5 capacity levels:
+## Capacity 5-9: $250, Capacity 10-14: $500, Capacity 15-19: $750, etc.
 func _get_upgrade_cost() -> int:
-	var upgrades_purchased = SaveState.club.capacity - INITIAL_CAPACITY
-	return BASE_UPGRADE_COST * (upgrades_purchased + 1)
+	@warning_ignore("INTEGER_DIVISION")
+	var price_tier = SaveState.club.capacity / 5  # Integer division: 5-9 = 1, 10-14 = 2, etc.
+	return BASE_UPGRADE_COST * price_tier
 
 
 ## Calculate rent for a specific day number
@@ -167,6 +185,25 @@ func _on_capacity_upgrade_button_pressed() -> void:
 	update_display()
 
 
+func _on_reroll_discount_upgrade_button_pressed() -> void:
+	MusicManager.play_button_sfx()
+	if SaveState.club.money < REROLL_DISCOUNT_UPGRADE_COST:
+		return
+	
+	# Apply the upgrade
+	SaveState.club.money -= REROLL_DISCOUNT_UPGRADE_COST
+	SaveState.club.reroll_discount += REROLL_DISCOUNT_AMOUNT
+	
+	# Record in history for undo
+	_purchase_history.append({
+		"type": "reroll_discount",
+		"cost": REROLL_DISCOUNT_UPGRADE_COST,
+		"amount": REROLL_DISCOUNT_AMOUNT
+	})
+	
+	update_display()
+
+
 func _on_undo_button_pressed() -> void:
 	MusicManager.play_button_sfx()
 	if _purchase_history.is_empty():
@@ -178,6 +215,9 @@ func _on_undo_button_pressed() -> void:
 	if last_purchase["type"] == "capacity":
 		SaveState.club.money += last_purchase["cost"]
 		SaveState.club.capacity -= last_purchase["amount"]
+	elif last_purchase["type"] == "reroll_discount":
+		SaveState.club.money += last_purchase["cost"]
+		SaveState.club.reroll_discount -= last_purchase["amount"]
 	
 	update_display()
 

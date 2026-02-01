@@ -158,6 +158,21 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "$1,000"
 
+[node name="RerollDiscountUpgradeRow" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList"]
+layout_mode = 2
+
+[node name="UpgradeLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "🔄 -$25 Next Cost"
+
+[node name="RerollDiscountUpgradeButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "$500"
+
 [node name="UndoSpacer" type="Control" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -283,5 +298,6 @@ horizontal_alignment = 1
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/DayResultsButton" to="." method="_on_day_results_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton" to="." method="_on_capacity_upgrade_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow/RerollDiscountUpgradeButton" to="." method="_on_reroll_discount_upgrade_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UndoButton" to="." method="_on_undo_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/StartDayButton" to="." method="_on_start_day_button_pressed"]

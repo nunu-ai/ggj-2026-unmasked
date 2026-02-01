@@ -5,6 +5,7 @@ extends Control
 @onready var _rent_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/RentLabel
 @onready var _capacity_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/CapacityLabel
 @onready var _day_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/DayLabel
+@onready var _reroll_cost_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/RerollCostLabel
 
 # ID Card labels
 @onready var _name_label: Label = $MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox/NameLabel
@@ -104,15 +105,20 @@ func _display_id_card(person: Person) -> void:
 	# Build mask attributes string (left-aligned)
 	var tier_color = _get_tier_color(mask.color_tier)
 	var mood_emoji = _get_mood_emoji(mask.mouth_mood)
-	var stars_text = ""
-	if mask.star_count > 0:
-		for i in range(mask.star_count):
-			stars_text += "★"
-	else:
-		stars_text = "None"
 	
-	_mask_attributes_label.text = "[color=%s]%s[/color] Mask  |  %s %s  |  Stars: %s" % [
-		tier_color, mask.tier_name(), mood_emoji, mask.mood_name(), stars_text
+	# Determine decoration type
+	var deco_text = ""
+	if mask.upper_deco_path != "" and mask.lower_deco_path != "":
+		deco_text = "Upper + Lower"
+	elif mask.upper_deco_path != "":
+		deco_text = "Upper"
+	elif mask.lower_deco_path != "":
+		deco_text = "Lower"
+	else:
+		deco_text = "None"
+	
+	_mask_attributes_label.text = "[color=%s]%s[/color] Mask  |  %s %s  |  Deco: %s" % [
+		tier_color, mask.tier_name(), mood_emoji, mask.mood_name(), deco_text
 	]
 	
 	# Money amount
@@ -164,13 +170,14 @@ func _display_rules_and_theme() -> void:
 		_rules_label.text = rules_text.strip_edges()
 
 
-# Reroll/reject cost: $100 base + $25 per day after day 1
+# Reroll/reject cost: $25 base + $25 per day after day 1, minus any discount
 const REROLL_BASE_COST = 25
 const REROLL_COST_INCREMENT = 25
 
 
 func _get_reroll_cost() -> int:
-	return REROLL_BASE_COST + (SaveState.day.day_number - 1) * REROLL_COST_INCREMENT
+	var base_cost = REROLL_BASE_COST + (SaveState.day.day_number - 1) * REROLL_COST_INCREMENT
+	return maxi(base_cost - SaveState.club.reroll_discount, 25)  # Minimum $25
 
 
 func _update_status() -> void:
@@ -184,6 +191,7 @@ func _update_status() -> void:
 	_rent_label.text = "🏠 Rent: $%s" % _format_money(rent)
 	_capacity_label.text = "👥 Club: %d/%d" % [day.in_club.size(), club.capacity]
 	_day_label.text = "📅 Day %d" % day.day_number
+	_reroll_cost_label.text = "🔄 Next: $%s" % _format_money(reroll_cost)
 
 	# Disable accept if club is full
 	_accept_button.disabled = day.is_club_full(club.capacity)

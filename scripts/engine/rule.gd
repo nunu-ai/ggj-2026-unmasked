@@ -288,62 +288,62 @@ static func get_available_rules() -> Array[Rule]:
 static func get_easy_rules() -> Array[Rule]:
 	return [
 		# Color limits
-		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "blue", "max": 3}, -200, "Maximum of 3 blue masks"),
-		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "green", "max": 3}, -200, "Maximum of 3 green masks"),
-		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "grey", "max": 4}, -200, "Maximum of 4 grey masks"),
-		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "gold", "min": 1}, -200, "At least 1 gold mask required"),
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "blue", "max": 3}, -400, "Maximum of 3 blue masks"),
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "green", "max": 3}, -400, "Maximum of 3 green masks"),
+		Rule.new(RuleType.MAX_COLOR_COUNT, {"color": "grey", "max": 4}, -400, "Maximum of 4 grey masks"),
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "gold", "min": 1}, -400, "At least 1 gold mask required"),
 		
 		# Mood rules
-		Rule.new(RuleType.MAX_MOOD_COUNT, {"mood": Mask.Mood.SAD, "max": 2}, -200, "Maximum of 2 sad people"),
-		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 2}, -200, "At least 2 happy people"),
+		Rule.new(RuleType.MAX_MOOD_COUNT, {"mood": Mask.Mood.SAD, "max": 2}, -400, "Maximum of 2 sad people"),
+		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 2}, -400, "At least 2 happy people"),
 	]
 
 static func get_medium_rules() -> Array[Rule]:
 	return [
 		# Exact color counts
-		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "blue", "count": 2}, -275, "Exactly 2 blue masks required"),
-		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "purple", "count": 1}, -275, "Exactly 1 purple mask required"),
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "blue", "count": 2}, -550, "Exactly 2 blue masks required"),
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "purple", "count": 1}, -550, "Exactly 1 purple mask required"),
 		
 		# Star rules
-		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 5}, -325, "Minimum 5 total stars"),
-		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 3}, -225, "Minimum 3 total stars"),
-		Rule.new(RuleType.MAX_TOTAL_STARS, {"max": 6}, -275, "Maximum 6 total stars"),
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 5}, -650, "Minimum 5 total stars"),
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 3}, -450, "Minimum 3 total stars"),
+		Rule.new(RuleType.MAX_TOTAL_STARS, {"max": 6}, -550, "Maximum 6 total stars"),
 		
 		# Mood balance
-		Rule.new(RuleType.EQUAL_MOOD_COUNT, {"mood1": Mask.Mood.HAPPY, "mood2": Mask.Mood.SAD}, -325, "Equal number of happy and sad people"),
+		Rule.new(RuleType.EQUAL_MOOD_COUNT, {"mood1": Mask.Mood.HAPPY, "mood2": Mask.Mood.SAD}, -650, "Equal number of happy and sad people"),
 		
 		# No specific decorations
-		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "horns"}, -275, "No horns allowed"),
-		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "carneval"}, -275, "No carnival decorations"),
+		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "horns"}, -550, "No horns allowed"),
+		Rule.new(RuleType.NO_UPPER_DECO_TYPE, {"deco_type": "carneval"}, -550, "No carnival decorations"),
 		
 		# Card suits
-		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "heart", "min": 1}, -225, "At least 1 heart card"),
-		Rule.new(RuleType.MAX_CARD_SUIT, {"suit": "spades", "max": 1}, -225, "Maximum 1 spades card"),
+		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "heart", "min": 1}, -450, "At least 1 heart card"),
+		Rule.new(RuleType.MAX_CARD_SUIT, {"suit": "spades", "max": 1}, -450, "Maximum 1 spades card"),
 	]
 
 static func get_hard_rules() -> Array[Rule]:
 	return [
 		# Roman number rules
-		Rule.new(RuleType.ODD_ROMAN_TOTAL, {}, -400, "Odd total of roman numbers"),
-		Rule.new(RuleType.EVEN_ROMAN_TOTAL, {}, -400, "Even total of roman numbers"),
-		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "roman"}, -350, "No roman numbers allowed"),
+		Rule.new(RuleType.ODD_ROMAN_TOTAL, {}, -800, "Odd total of roman numbers"),
+		Rule.new(RuleType.EVEN_ROMAN_TOTAL, {}, -800, "Even total of roman numbers"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "roman"}, -700, "No roman numbers allowed"),
 		
 		# Strict mood rules
-		Rule.new(RuleType.NO_MOOD_TYPE, {"mood": Mask.Mood.SAD}, -450, "No sad people allowed"),
-		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 3}, -350, "At least 3 happy people"),
+		Rule.new(RuleType.NO_MOOD_TYPE, {"mood": Mask.Mood.SAD}, -900, "No sad people allowed"),
+		Rule.new(RuleType.MIN_MOOD_COUNT, {"mood": Mask.Mood.HAPPY, "min": 3}, -700, "At least 3 happy people"),
 		
 		# Strict color rules
-		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "purple", "min": 2}, -400, "At least 2 purple masks"),
-		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "orange", "min": 1}, -450, "At least 1 orange mask"),
-		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "green", "count": 3}, -350, "Exactly 3 green masks"),
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "purple", "min": 2}, -800, "At least 2 purple masks"),
+		Rule.new(RuleType.MIN_COLOR_COUNT, {"color": "orange", "min": 1}, -900, "At least 1 orange mask"),
+		Rule.new(RuleType.EXACT_COLOR_COUNT, {"color": "green", "count": 3}, -700, "Exactly 3 green masks"),
 		
 		# High star requirements
-		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 8}, -450, "Minimum 8 total stars"),
+		Rule.new(RuleType.MIN_TOTAL_STARS, {"min": 8}, -900, "Minimum 8 total stars"),
 		
 		# Complex card rules
-		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "diamond", "min": 2}, -350, "At least 2 diamond cards"),
-		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "cards"}, -300, "No playing cards allowed"),
-		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "stars"}, -300, "No star decorations allowed"),
+		Rule.new(RuleType.MIN_CARD_SUIT, {"suit": "diamond", "min": 2}, -700, "At least 2 diamond cards"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "cards"}, -600, "No playing cards allowed"),
+		Rule.new(RuleType.NO_LOWER_DECO_TYPE, {"deco_type": "stars"}, -600, "No star decorations allowed"),
 	]
 
 # =============================================================================
@@ -352,28 +352,28 @@ static func get_hard_rules() -> Array[Rule]:
 
 static func get_easy_bonus_rules() -> Array[Rule]:
 	return [
-		Rule.new(RuleType.BONUS_ALL_MOODS, {}, 300, "Mood Variety: Have all 3 mood types", true),
-		Rule.new(RuleType.BONUS_MIN_UPPER_DECO, {"min": 3}, 225, "Decorated Party: 3+ upper decorations", true),
-		Rule.new(RuleType.BONUS_MOOD_MAJORITY, {"mood": Mask.Mood.HAPPY}, 250, "Happy Hour: Majority happy people", true),
+		Rule.new(RuleType.BONUS_ALL_MOODS, {}, 600, "Mood Variety: Have all 3 mood types", true),
+		Rule.new(RuleType.BONUS_MIN_UPPER_DECO, {"min": 3}, 450, "Decorated Party: 3+ upper decorations", true),
+		Rule.new(RuleType.BONUS_MOOD_MAJORITY, {"mood": Mask.Mood.HAPPY}, 500, "Happy Hour: Majority happy people", true),
 	]
 
 static func get_medium_bonus_rules() -> Array[Rule]:
 	return [
-		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 3}, 425, "Carnival Night: 3+ carneval masks", true),
-		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 8}, 375, "Star Studded: 8+ total stars", true),
-		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 3}, 325, "Card Flush: 3+ same card suit", true),
-		Rule.new(RuleType.BONUS_NO_GREY, {}, 425, "VIP Night: No grey masks", true),
-		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green"]}, 375, "Color Trio: Gold, Blue & Green masks", true),
+		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 3}, 850, "Carnival Night: 3+ carneval masks", true),
+		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 8}, 750, "Star Studded: 8+ total stars", true),
+		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 3}, 650, "Card Flush: 3+ same card suit", true),
+		Rule.new(RuleType.BONUS_NO_GREY, {}, 850, "VIP Night: No grey masks", true),
+		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green"]}, 750, "Color Trio: Gold, Blue & Green masks", true),
 	]
 
 static func get_hard_bonus_rules() -> Array[Rule]:
 	return [
-		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 5}, 800, "Grand Carnival: 5+ carneval masks", true),
-		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green", "grey", "purple"]}, 700, "Rainbow Club: 5 different mask colors", true),
-		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 12}, 600, "Constellation: 12+ total stars", true),
-		Rule.new(RuleType.BONUS_FULL_CAPACITY, {}, 500, "Full House: Club at full capacity", true),
-		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 4}, 600, "Royal Flush: 4+ same card suit", true),
-		Rule.new(RuleType.BONUS_ROMAN_SUM, {"target": 10}, 700, "Perfect Ten: Roman numbers sum to 10", true),
+		Rule.new(RuleType.BONUS_MIN_CARNEVAL, {"min": 5}, 1600, "Grand Carnival: 5+ carneval masks", true),
+		Rule.new(RuleType.BONUS_ALL_COLORS, {"colors": ["gold", "blue", "green", "grey", "purple"]}, 1400, "Rainbow Club: 5 different mask colors", true),
+		Rule.new(RuleType.BONUS_HIGH_STAR_TOTAL, {"min": 12}, 1200, "Constellation: 12+ total stars", true),
+		Rule.new(RuleType.BONUS_FULL_CAPACITY, {}, 1000, "Full House: Club at full capacity", true),
+		Rule.new(RuleType.BONUS_CARD_FLUSH, {"min": 4}, 1200, "Royal Flush: 4+ same card suit", true),
+		Rule.new(RuleType.BONUS_ROMAN_SUM, {"target": 10}, 1400, "Perfect Ten: Roman numbers sum to 10", true),
 	]
 
 # Get bonus rules for a specific day
