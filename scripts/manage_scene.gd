@@ -1,6 +1,7 @@
 extends Control
 
-const CAPACITY_UPGRADE_COST: int = 1000
+const BASE_UPGRADE_COST: int = 250  # First upgrade costs 250, then 500, 750, etc.
+const INITIAL_CAPACITY: int = 5  # Starting capacity (to calculate upgrade count)
 const CAPACITY_UPGRADE_AMOUNT: int = 1
 
 # Current state labels
@@ -51,7 +52,6 @@ func _ready() -> void:
 	# Calculate day results (before any upgrades can change capacity)
 	_calculate_day_results()
 
-	_capacity_upgrade_button.text = "$%s" % _format_money(CAPACITY_UPGRADE_COST)
 	update_display()
 
 	# Auto-open day results popup when arriving at manage scene (skip day 0)
@@ -109,11 +109,22 @@ func update_display() -> void:
 	_day_results_button.visible = SaveState.club.day > 0
 	_day_results_button.text = "📋 Day %d Results" % SaveState.club.day
 
+	# Calculate current upgrade cost (250 * upgrade_number, where upgrade_number = capacity - 4)
+	var current_upgrade_cost = _get_upgrade_cost()
+	_capacity_upgrade_button.text = "$%s" % _format_money(current_upgrade_cost)
+	
 	# Disable upgrade button if can't afford
-	_capacity_upgrade_button.disabled = SaveState.club.money < CAPACITY_UPGRADE_COST
+	_capacity_upgrade_button.disabled = SaveState.club.money < current_upgrade_cost
 
 	# Disable undo button if no purchases to undo
 	_undo_button.disabled = _purchase_history.is_empty()
+
+
+## Calculate the cost for the next capacity upgrade
+## Cost increases by 250 each time: 250, 500, 750, 1000, etc.
+func _get_upgrade_cost() -> int:
+	var upgrades_purchased = SaveState.club.capacity - INITIAL_CAPACITY
+	return BASE_UPGRADE_COST * (upgrades_purchased + 1)
 
 
 ## Calculate rent for a specific day number
@@ -138,17 +149,18 @@ func _format_money(amount: int) -> String:
 
 func _on_capacity_upgrade_button_pressed() -> void:
 	MusicManager.play_button_sfx()
-	if SaveState.club.money < CAPACITY_UPGRADE_COST:
+	var upgrade_cost = _get_upgrade_cost()
+	if SaveState.club.money < upgrade_cost:
 		return
 
 	# Apply the upgrade
-	SaveState.club.money -= CAPACITY_UPGRADE_COST
+	SaveState.club.money -= upgrade_cost
 	SaveState.club.capacity += CAPACITY_UPGRADE_AMOUNT
 	
 	# Record in history for undo
 	_purchase_history.append({
 		"type": "capacity",
-		"cost": CAPACITY_UPGRADE_COST,
+		"cost": upgrade_cost,
 		"amount": CAPACITY_UPGRADE_AMOUNT
 	})
 	
