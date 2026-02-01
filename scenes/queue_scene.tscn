@@ -34,7 +34,7 @@ gravity = Vector3(0, 98, 0)
 scale_min = 0.099999994
 scale_max = 0.19999999
 
-[node name="QueueScene" type="PanelContainer" node_paths=PackedStringArray("name_label", "status_label", "mask_label", "rules_label", "accept_button", "reject_button", "end_day_button")]
+[node name="QueueScene" type="PanelContainer"]
 material = SubResource("ShaderMaterial_54epr")
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,123 +42,222 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h6422")
-name_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/NameLabel")
-status_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/StatusLabel")
-mask_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer/MaskLabel")
-rules_label = NodePath("VBoxContainer/HBox/VBoxContainer/VBoxContainer/RulesLabel")
-accept_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton")
-reject_button = NodePath("VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton")
-end_day_button = NodePath("VBoxContainer/BoxContainer/BoxContainer/EndDayButton")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopBar" type="PanelContainer" parent="MainMargin/MainVBox"]
 layout_mode = 2
 
-[node name="BoxContainer" type="BoxContainer" parent="VBoxContainer"]
+[node name="TopBarHBox" type="HBoxContainer" parent="MainMargin/MainVBox/TopBar"]
 layout_mode = 2
-alignment = 2
+theme_override_constants/separation = 20
 
-[node name="BoxContainer" type="BoxContainer" parent="VBoxContainer/BoxContainer"]
+[node name="StatusPanel" type="HBoxContainer" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
-vertical = true
+theme_override_constants/separation = 30
 
-[node name="LogButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
+[node name="MoneyLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Club Log"
+theme_override_font_sizes/font_size = 20
+text = "💰 Money: $500"
 
-[node name="EndDayButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
+[node name="RentLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "End Day"
+theme_override_font_sizes/font_size = 20
+text = "🏠 Rent Due: $1000"
 
-[node name="MainMenuButton" type="Button" parent="VBoxContainer/BoxContainer/BoxContainer"]
+[node name="CapacityLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
+text = "👥 Club: 0/5"
+
+[node name="DayLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "📅 Day 1"
+
+[node name="Spacer" type="Control" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainMenuButton" type="Button" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "Main Menu"
 
-[node name="HBox" type="HSplitContainer" parent="VBoxContainer"]
+[node name="ContentHBox" type="HBoxContainer" parent="MainMargin/MainVBox"]
 layout_mode = 2
 size_flags_vertical = 3
-dragging_enabled = false
+theme_override_constants/separation = 16
 
-[node name="VBox1" parent="VBoxContainer/HBox" instance=ExtResource("3_s6a0p")]
+[node name="MaskDisplayContainer" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox"]
 clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+
+[node name="MaskDisplay" parent="MainMargin/MainVBox/ContentHBox/MaskDisplayContainer" instance=ExtResource("3_s6a0p")]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer/HBox"]
+[node name="RightPanel" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-dragging_enabled = false
+size_flags_stretch_ratio = 1.0
+theme_override_constants/separation = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBox/VBoxContainer"]
+[node name="IDCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+[node name="IDCardMargin" type="MarginContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Club Entrance"
-horizontal_alignment = 1
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+[node name="IDCardVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "In Club: 0/0 | Money: $0"
-horizontal_alignment = 1
+theme_override_constants/separation = 6
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="NameLabel" type="Label" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Person Name"
-horizontal_alignment = 1
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+[node name="MaskAttributesLabel" type="RichTextLabel" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
+layout_mode = 2
+bbcode_enabled = true
+text = "Mask: Gold | Mood: Happy | Stars: ★★"
+fit_content = true
+scroll_active = false
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 150)
+[node name="SpendingLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "SPENDING TONIGHT"
+
+[node name="MoneyAmountLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "$5,000"
+
+[node name="HSeparator2" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
 layout_mode = 2
 
-[node name="MaskLabel" type="RichTextLabel" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer/ScrollContainer"]
+[node name="PersonalRulesScroll" type="ScrollContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PersonalRulesLabel" type="RichTextLabel" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox/PersonalRulesScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "Mask: Gold
-Money: $100"
-shortcut_keys_enabled = false
-horizontal_alignment = 1
+text = "[color=gray]No personal rules[/color]"
+fit_content = true
+scroll_active = false
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
+[node name="RulesPanel" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RulesMargin" type="MarginContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="RulesVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ThemeLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin/RulesVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Active theme: Carneval Night"
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin/RulesVBox"]
 layout_mode = 2
 
-[node name="RulesLabel" type="RichTextLabel" parent="VBoxContainer/HBox/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
+[node name="RulesScroll" type="ScrollContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin/RulesVBox"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RulesLabel" type="RichTextLabel" parent="MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin/RulesVBox/RulesScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 bbcode_enabled = true
-text = "[b]Today's Rules:[/b]
-- Maximum of 3 blue masks allowed"
-shortcut_keys_enabled = false
-horizontal_alignment = 1
+text = "✓ Maximum of 3 blue masks (-$50)
+☆ Mood Variety (+$150)"
+fit_content = true
+scroll_active = false
 
-[node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/HBox/VBoxContainer"]
+[node name="ButtonsVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
 layout_mode = 2
-dragging_enabled = false
+theme_override_constants/separation = 8
 
-[node name="AcceptButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer"]
+[node name="GameplayButtonsHBox" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LogButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "Accept"
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+text = "📋 Club Log"
 
-[node name="RejectButton" type="Button" parent="VBoxContainer/HBox/VBoxContainer/HBoxContainer"]
+[node name="EndDayButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+text = "🌙 End Day"
+
+[node name="DecisionButtonsHBox" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AcceptButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
-text = "Reject ($100)"
+text = "✓ Accept"
+
+[node name="RejectButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "✗ Reject ($100)"
+
+[node name="MainMenuConfirmPopup" type="ConfirmationDialog" parent="."]
+title = "Return to Main Menu?"
+size = Vector2i(400, 150)
+dialog_text = "Are you sure you want to return to the main menu? This will end the current day."
+ok_button_text = "Yes, End Day"
+cancel_button_text = "Cancel"
 
 [node name="ClubLogPopup" type="AcceptDialog" parent="."]
 title = "Club Log"
@@ -188,8 +287,8 @@ process_material = SubResource("ParticleProcessMaterial_8j4ut")
 script = ExtResource("6_chl07")
 happy_texture = ExtResource("2_tbu78")
 
-[connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/LogButton" to="." method="_on_log_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/BoxContainer/BoxContainer/EndDayButton" to="." method="_on_end_day_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBox/VBoxContainer/HBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/LogButton" to="." method="_on_log_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/EndDayButton" to="." method="_on_end_day_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/RejectButton" to="." method="_on_reject_button_pressed"]
