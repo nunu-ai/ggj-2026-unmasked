@@ -51,6 +51,9 @@ func _ready() -> void:
 	_capacity_upgrade_button.text = "$%d" % CAPACITY_UPGRADE_COST
 	update_display()
 
+	# Auto-open day results popup when arriving at manage scene
+	_on_day_results_button_pressed()
+
 
 func update_display() -> void:
 	# Current state panel

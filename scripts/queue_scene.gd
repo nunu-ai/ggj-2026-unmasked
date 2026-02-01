@@ -1,5 +1,22 @@
 extends Control
 
+const ACCEPT_PHRASES: Array[String] = [
+	"Welcome",
+	"Come in",
+	"You're in",
+	"Enter",
+	"Go ahead",
+]
+
+const REJECT_PHRASES: Array[String] = [
+	"Get lost",
+	"Go home",
+	"Not tonight",
+	"Beat it",
+	"No way",
+	"Scram",
+]
+
 # Top bar status labels
 @onready var _money_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/MoneyLabel
 @onready var _rent_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/RentLabel
@@ -188,11 +205,11 @@ func _update_status() -> void:
 	if _accept_button.disabled:
 		_accept_button.text = "Club Full"
 	else:
-		_accept_button.text = "✓ Accept"
+		_accept_button.text = ACCEPT_PHRASES.pick_random()
 
 	# Disable reject/reroll if not enough money
 	_reject_button.disabled = club.money < reroll_cost
-	_reject_button.text = "✗ Reject ($%d)" % reroll_cost
+	_reject_button.text = "%s ($%d)" % [REJECT_PHRASES.pick_random(), reroll_cost]
 
 
 ## Helper to format money with thousands separator
@@ -234,19 +251,25 @@ func _get_mood_emoji(mood: Mask.Mood) -> String:
 func _on_accept_button_pressed() -> void:
 	MusicManager.play_button_sfx()
 	var person = SaveState.day.current_person()
-	
+
 	# Give money immediately when accepting
 	if person != null:
 		SaveState.club.money += person.money
-	
+
 	# Add personal rules to tonight's rules when accepting
 	# Then clear them from the person so they're not counted twice in profit
 	if person != null and person.rules.size() > 0:
 		for rule in person.rules:
 			SaveState.day.global_rules.append(rule)
 		person.rules.clear()
-	
+
 	SaveState.day.decide_current_person(true)
+
+	# Auto end day when club reaches max capacity
+	if SaveState.day.is_club_full(SaveState.club.capacity):
+		SaveState.end_day()
+		return
+
 	update_display()
 
 
