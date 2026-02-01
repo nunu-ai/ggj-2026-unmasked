@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://cn7w22ecscp33"]
+[gd_scene load_steps=15 format=3 uid="uid://cn7w22ecscp33"]
 
 [ext_resource type="Script" uid="uid://di0cmmkjhh5ra" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Shader" uid="uid://dpcf7lwiig7s3" path="res://shaders/main_menu_background.gdshader" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="3_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://dec1c41fqlq8h" path="res://assets/buttons/continue-1.png" id="4_cont1"]
+[ext_resource type="Texture2D" uid="uid://b8oagprej1or" path="res://assets/unmasked.png" id="4_flqon"]
 [ext_resource type="Texture2D" uid="uid://jrw3xlmpp0fs" path="res://assets/buttons/continue-2.png" id="5_cont2"]
 [ext_resource type="Texture2D" uid="uid://cb6og5xnnai1o" path="res://assets/buttons/new-game-1.png" id="6_ng1"]
 [ext_resource type="Texture2D" uid="uid://dlwv2uwo878lg" path="res://assets/buttons/new-game-2.png" id="7_ng2"]
@@ -56,6 +57,13 @@ stretch_mode = 6
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 275.0
+offset_right = 875.0
+offset_bottom = 150.0
+texture = ExtResource("4_flqon")
 
 [node name="MainMenuVBox" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -130,7 +138,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
 [node name="SettingsMargin" type="MarginContainer" parent="SettingsPopup"]
 offset_left = 3.0
 offset_top = 3.0
-offset_right = 430.0
+offset_right = 397.0
 offset_bottom = 197.0
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
