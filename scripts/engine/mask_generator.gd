@@ -143,6 +143,14 @@ static func generate(theme: DailyTheme = null) -> Mask:
 	var upper_deco_path: String = ""
 	var upper_deco_color: Color = Color(randf(), randf(), randf())
 
+	match upper_category:
+		"carneval":
+			upper_deco_path = _weighted_pick(UPPER_DECOS_CARNEVAL)["value"]
+		"horns":
+			upper_deco_path = _weighted_pick(UPPER_DECOS_HORNS)["value"]
+		_:  # "none"
+			upper_deco_path = ""
+
 	# Pick lower deco category, then pick within it
 	var lower_category: String = _weighted_pick(LOWER_DECO_CATEGORIES)["value"]
 	var lower_deco_path: String = ""
