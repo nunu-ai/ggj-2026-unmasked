@@ -1,14 +1,15 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=16 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
+[ext_resource type="Texture2D" uid="uid://c4oy847dty2m5" path="res://assets/buttons/let-in-1.png" id="5_x81ya"]
 [ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
+[ext_resource type="Texture2D" uid="uid://bvv8vnm4p2g2k" path="res://assets/buttons/next-1.png" id="7_8d61r"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="7_wallpaper"]
-[ext_resource type="Texture2D" uid="uid://chgdd62pig4wj" path="res://assets/buttons/let-in.png" id="8_letin"]
+[ext_resource type="Texture2D" uid="uid://dbexsphkkx32p" path="res://assets/buttons/end-day-1.png" id="9_8d61r"]
 [ext_resource type="Texture2D" uid="uid://bvdpc4plq6ii2" path="res://assets/buttons/let-in-2.png" id="9_letin2"]
-[ext_resource type="Texture2D" uid="uid://cqecfowccrxho" path="res://assets/buttons/next.png" id="10_next"]
 [ext_resource type="Texture2D" uid="uid://15iq8yw0eoam" path="res://assets/buttons/next-2.png" id="11_next2"]
 [ext_resource type="Texture2D" uid="uid://bc82k663qy0tc" path="res://assets/buttons/end-day-2.png" id="12_endday2"]
 
@@ -248,14 +249,13 @@ scroll_active = false
 [node name="DecisionButtonsHBox" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_constants/separation = 12
 
 [node name="AcceptButton" type="TextureButton" parent="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource("8_letin")
+texture_normal = ExtResource("5_x81ya")
 texture_hover = ExtResource("9_letin2")
 ignore_texture_size = true
 stretch_mode = 6
@@ -264,7 +264,7 @@ stretch_mode = 6
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource("10_next")
+texture_normal = ExtResource("7_8d61r")
 texture_hover = ExtResource("11_next2")
 ignore_texture_size = true
 stretch_mode = 6
@@ -273,7 +273,8 @@ stretch_mode = 6
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource("12_endday2")
+texture_normal = ExtResource("9_8d61r")
+texture_hover = ExtResource("12_endday2")
 ignore_texture_size = true
 stretch_mode = 6
 
