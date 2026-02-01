@@ -1,19 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwceom4mhsge3"]
+[gd_scene load_steps=3 format=3 uid="uid://bwceom4mhsge3"]
 
 [ext_resource type="Script" uid="uid://3is7pnpie4g6" path="res://scripts/manage_scene.gd" id="1_manage"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="2_wallpaper"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
-bg_color = Color(0.212, 0.235, 0.271, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.753, 0.412, 0.106, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [node name="ManageScene" type="Control"]
 layout_mode = 3
@@ -236,7 +224,6 @@ text = "▶ Start Day"
 [node name="DayResultsPopup" type="AcceptDialog" parent="."]
 title = "Day Results"
 size = Vector2i(420, 380)
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_popup")
 unresizable = true
 
 [node name="MarginContainer" type="MarginContainer" parent="DayResultsPopup"]
