@@ -59,6 +59,7 @@ const UPPER_DECO_CATEGORIES = [
 	{ "value": "none",     "weight": 30 },
 	{ "value": "carneval", "weight": 40 },
 	{ "value": "horns",    "weight": 30 },
+	{ "value": "flower",   "weight": 30 }
 ]
 
 const UPPER_DECOS_CARNEVAL = [
@@ -69,8 +70,17 @@ const UPPER_DECOS_CARNEVAL = [
 ]
 
 const UPPER_DECOS_HORNS = [
+	{ "value": "res://assets/masks/upper_decos/horns/1.png", "weight": 50 },
 	{ "value": "res://assets/masks/upper_decos/horns/2.png", "weight": 50 },
 	{ "value": "res://assets/masks/upper_decos/horns/3.png", "weight": 50 },
+	{ "value": "res://assets/masks/upper_decos/horns/4.png", "weight": 50 },
+]
+
+const UPPER_DECOS_FLOWER = [
+	{ "value": "res://assets/masks/upper_decos/flower/1.png", "weight": 50 },
+	{ "value": "res://assets/masks/upper_decos/flower/2.png", "weight": 50 },
+	{ "value": "res://assets/masks/upper_decos/flower/3.png", "weight": 50 },
+	{ "value": "res://assets/masks/upper_decos/flower/4.png", "weight": 50 },
 ]
 
 # =============================================================================
@@ -148,6 +158,9 @@ static func generate(theme: DailyTheme = null) -> Mask:
 			upper_deco_path = _weighted_pick(UPPER_DECOS_CARNEVAL)["value"]
 		"horns":
 			upper_deco_path = _weighted_pick(UPPER_DECOS_HORNS)["value"]
+		"flower":
+			upper_deco_path = _weighted_pick(UPPER_DECOS_FLOWER)["value"]
+
 		_:  # "none"
 			upper_deco_path = ""
 
