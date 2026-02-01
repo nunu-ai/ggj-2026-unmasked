@@ -39,14 +39,17 @@ const MOUTH_MOOD_WEIGHTS = [
 
 const MOUTHS_HAPPY = [
 	{ "value": "res://assets/masks/mouths/happy/1.png", "weight": 100 },
+	{ "value": "res://assets/masks/mouths/happy/2.png", "weight": 100 },
 ]
 
 const MOUTHS_NEUTRAL = [
 	{ "value": "res://assets/masks/mouths/neutral/1.png", "weight": 50 },
 	{ "value": "res://assets/masks/mouths/neutral/2.png", "weight": 50 },
+	{ "value": "res://assets/masks/mouths/neutral/2.png", "weight": 50 },
 ]
 
 const MOUTHS_SAD = [
+	{ "value": "res://assets/masks/mouths/sad/1.png", "weight": 100 },
 	{ "value": "res://assets/masks/mouths/sad/1.png", "weight": 100 },
 ]
 
