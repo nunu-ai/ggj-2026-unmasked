@@ -34,6 +34,8 @@ var _club_log_entry_scene: PackedScene = preload("res://scenes/club_log_entry.ts
 # Main menu confirmation
 @onready var _main_menu_confirm_popup: PopupPanel = $MainMenuConfirmPopup
 
+# Reaction Particles
+@onready var _reaction_particles: ReactionParticles = $ReactionParticles
 
 func _ready() -> void:
 	update_display()
@@ -249,6 +251,7 @@ func _on_accept_button_pressed() -> void:
 		return
 
 	update_display()
+	_reaction_particles.react_happily()
 
 
 func _on_reject_button_pressed() -> void:
@@ -258,6 +261,7 @@ func _on_reject_button_pressed() -> void:
 		SaveState.club.money -= reroll_cost
 		SaveState.day.decide_current_person(false)
 		update_display()
+	_reaction_particles.react_negatively()
 
 
 func _on_end_day_button_pressed() -> void:

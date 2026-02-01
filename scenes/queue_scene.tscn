@@ -1,17 +1,19 @@
-[gd_scene load_steps=16 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=18 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
-[ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Texture2D" uid="uid://c4oy847dty2m5" path="res://assets/buttons/let-in-1.png" id="5_x81ya"]
-[ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
+[ext_resource type="Script" uid="uid://c73iorjibs4pa" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 [ext_resource type="Texture2D" uid="uid://bvv8vnm4p2g2k" path="res://assets/buttons/next-1.png" id="7_8d61r"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="7_wallpaper"]
 [ext_resource type="Texture2D" uid="uid://dbexsphkkx32p" path="res://assets/buttons/end-day-1.png" id="9_8d61r"]
 [ext_resource type="Texture2D" uid="uid://bvdpc4plq6ii2" path="res://assets/buttons/let-in-2.png" id="9_letin2"]
 [ext_resource type="Texture2D" uid="uid://15iq8yw0eoam" path="res://assets/buttons/next-2.png" id="11_next2"]
+[ext_resource type="Texture2D" uid="uid://b6bvly4on5h64" path="res://assets/icons/happy.png" id="12_0wbuu"]
 [ext_resource type="Texture2D" uid="uid://bc82k663qy0tc" path="res://assets/buttons/end-day-2.png" id="12_endday2"]
+[ext_resource type="Texture2D" uid="uid://77j20n5mlvxv" path="res://assets/icons/smile.png" id="13_r5e7t"]
+[ext_resource type="Texture2D" uid="uid://blpp8iy5c83vb" path="res://assets/icons/angry.png" id="14_waenf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -45,7 +47,7 @@ lifetime_randomness = 0.37
 particle_flag_align_y = true
 particle_flag_rotate_y = true
 emission_shape = 3
-emission_box_extents = Vector3(400, 50, 1)
+emission_box_extents = Vector3(200, 50, 1)
 direction = Vector3(0, -1, 0)
 spread = 28.085
 initial_velocity_min = 891.38
@@ -287,7 +289,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
 offset_left = 3.0
 offset_top = 3.0
 offset_right = 447.0
-offset_bottom = 591.0
+offset_bottom = 197.0
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -355,13 +357,15 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
 [node name="ReactionParticles" type="GPUParticles2D" parent="."]
-position = Vector2(587, 707)
+position = Vector2(261, 711)
 emitting = false
 amount = 30
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_8j4ut")
 script = ExtResource("6_chl07")
-happy_texture = ExtResource("2_tbu78")
+happy_texture = ExtResource("12_0wbuu")
+neutral_texture = ExtResource("13_r5e7t")
+negative_texture = ExtResource("14_waenf")
 
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/LogButton" to="." method="_on_log_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

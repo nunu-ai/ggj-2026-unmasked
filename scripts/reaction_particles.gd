@@ -35,10 +35,10 @@ func react_happily() -> void:
 
 
 func react_neutrally() -> void:
-	var selected_texture = happy_texture
+	var selected_texture = neutral_texture
 	_emit_with_texture(selected_texture)
 
 
 func react_negatively() -> void:
-	var selected_texture = happy_texture
+	var selected_texture = negative_texture
 	_emit_with_texture(selected_texture)
