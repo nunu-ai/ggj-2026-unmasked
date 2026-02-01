@@ -49,7 +49,7 @@ const REJECT_PHRASES: Array[String] = [
 var _club_log_entry_scene: PackedScene = preload("res://scenes/club_log_entry.tscn")
 
 # Main menu confirmation
-@onready var _main_menu_confirm_popup: ConfirmationDialog = $MainMenuConfirmPopup
+@onready var _main_menu_confirm_popup: PopupPanel = $MainMenuConfirmPopup
 
 
 func _ready() -> void:
@@ -292,8 +292,14 @@ func _on_main_menu_button_pressed() -> void:
 	_main_menu_confirm_popup.popup_centered()
 
 
+func _on_main_menu_cancel_pressed() -> void:
+	MusicManager.play_button_sfx()
+	_main_menu_confirm_popup.hide()
+
+
 func _on_main_menu_confirm_popup_confirmed() -> void:
 	MusicManager.play_button_sfx()
+	_main_menu_confirm_popup.hide()
 	# End the day (calculate profits/rent) then go to main menu
 	SaveState.club.money += int(SaveState.day.profit(SaveState.club.capacity))
 	SaveState.club.money -= SaveState.club.rent()

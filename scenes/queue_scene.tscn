@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=11 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
@@ -6,6 +6,21 @@
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
 [ext_resource type="Texture2D" path="res://assets/wallpaper.png" id="7_wallpaper"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
+bg_color = Color(0.212, 0.235, 0.271, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.753, 0.412, 0.106, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_panel"]
+bg_color = Color(0.212, 0.235, 0.271, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
@@ -266,16 +281,59 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
 text = "✗ Reject ($100)"
 
-[node name="MainMenuConfirmPopup" type="ConfirmationDialog" parent="."]
-title = "Return to Main Menu?"
-size = Vector2i(400, 150)
-dialog_text = "Are you sure you want to return to the main menu? This will end the current day."
-ok_button_text = "Yes, End Day"
-cancel_button_text = "Cancel"
+[node name="MainMenuConfirmPopup" type="PopupPanel" parent="."]
+initial_position = 2
+size = Vector2i(450, 200)
+theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
+
+[node name="ConfirmMargin" type="MarginContainer" parent="MainMenuConfirmPopup"]
+offset_right = 450.0
+offset_bottom = 200.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ConfirmVBox" type="VBoxContainer" parent="MainMenuConfirmPopup/ConfirmMargin"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Return to Main Menu?"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Are you sure you want to return to the main menu?
+This will end the current day."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Cancel"
+
+[node name="ConfirmButton" type="Button" parent="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Yes, End Day"
 
 [node name="ClubLogPopup" type="AcceptDialog" parent="."]
 title = "Club Log"
 size = Vector2i(750, 600)
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_popup")
 unresizable = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ClubLogPopup"]
@@ -302,7 +360,8 @@ script = ExtResource("6_chl07")
 happy_texture = ExtResource("2_tbu78")
 
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="confirmed" from="MainMenuConfirmPopup" to="." method="_on_main_menu_confirm_popup_confirmed"]
+[connection signal="pressed" from="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox/CancelButton" to="." method="_on_main_menu_cancel_pressed"]
+[connection signal="pressed" from="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox/ConfirmButton" to="." method="_on_main_menu_confirm_popup_confirmed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/LogButton" to="." method="_on_log_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/EndDayButton" to="." method="_on_end_day_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/AcceptButton" to="." method="_on_accept_button_pressed"]

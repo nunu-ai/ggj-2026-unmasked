@@ -1,8 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn7w22ecscp33"]
+[gd_scene load_steps=6 format=3 uid="uid://cn7w22ecscp33"]
 
 [ext_resource type="Script" uid="uid://di0cmmkjhh5ra" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Shader" uid="uid://dpcf7lwiig7s3" path="res://shaders/main_menu_background.gdshader" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="3_bqqt6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
+bg_color = Color(0.212, 0.235, 0.271, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.753, 0.412, 0.106, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ekxnf"]
 shader = ExtResource("2_ekxnf")
@@ -96,6 +108,7 @@ horizontal_alignment = 1
 title = "Settings"
 initial_position = 2
 size = Vector2i(400, 200)
+theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
 
 [node name="SettingsMargin" type="MarginContainer" parent="SettingsPopup"]
 offset_left = 4.0

@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwceom4mhsge3"]
+[gd_scene load_steps=4 format=3 uid="uid://bwceom4mhsge3"]
 
 [ext_resource type="Script" uid="uid://3is7pnpie4g6" path="res://scripts/manage_scene.gd" id="1_manage"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="2_wallpaper"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
+bg_color = Color(0.212, 0.235, 0.271, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.753, 0.412, 0.106, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="ManageScene" type="Control"]
 layout_mode = 3
@@ -225,11 +237,6 @@ size_flags_horizontal = 3
 [node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel"]
 layout_mode = 2
 
-[node name="StartDayButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Start Day"
-
 [node name="DayResultsButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -240,9 +247,15 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Main Menu"
 
+[node name="StartDayButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Start Day"
+
 [node name="DayResultsPopup" type="AcceptDialog" parent="."]
 title = "Day Results"
 size = Vector2i(400, 300)
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_popup")
 unresizable = true
 
 [node name="MarginContainer" type="MarginContainer" parent="DayResultsPopup"]
@@ -298,6 +311,6 @@ text = "Money Spent: $0"
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetCartButton" to="." method="_on_reset_cart_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetToInitialButton" to="." method="_on_reset_to_initial_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton" to="." method="_on_confirm_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/StartDayButton" to="." method="_on_start_day_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton" to="." method="_on_day_results_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/StartDayButton" to="." method="_on_start_day_button_pressed"]

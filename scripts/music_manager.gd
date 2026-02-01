@@ -31,16 +31,19 @@ func _ready() -> void:
 	# Load saved settings
 	_load_settings()
 	
+	# Calculate actual volume (mute at minimum slider value)
+	var actual_volume: float = -80.0 if volume_db <= -39.9 else volume_db
+	
 	# Create the audio player
 	music_player = AudioStreamPlayer.new()
 	music_player.bus = "Master"
-	music_player.volume_db = volume_db
+	music_player.volume_db = actual_volume
 	add_child(music_player)
 	
 	# Create the SFX player
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.bus = "Master"
-	sfx_player.volume_db = volume_db
+	sfx_player.volume_db = actual_volume
 	add_child(sfx_player)
 	
 	# Connect to the finished signal to loop the music
@@ -65,8 +68,11 @@ func play_track(track: Track) -> void:
 
 func set_volume(new_volume_db: float) -> void:
 	volume_db = new_volume_db
-	music_player.volume_db = volume_db
-	sfx_player.volume_db = volume_db
+	# At minimum slider value (-40 dB), mute completely
+	# Otherwise use the actual dB value
+	var actual_volume: float = -80.0 if volume_db <= -39.9 else volume_db
+	music_player.volume_db = actual_volume
+	sfx_player.volume_db = actual_volume
 	_save_settings()
 
 func play_sfx(sound: SFX) -> void:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dac7mopfso1cj"
+path="res://.godot/imported/Unmasked _club_telephone.mp3-ba84db344a4d0438da43bc1f5c749f6c.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Unmasked _club_telephone.mp3"
+dest_files=["res://.godot/imported/Unmasked _club_telephone.mp3-ba84db344a4d0438da43bc1f5c749f6c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
