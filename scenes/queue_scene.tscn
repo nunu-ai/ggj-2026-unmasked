@@ -108,7 +108,6 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="MainMargin" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
