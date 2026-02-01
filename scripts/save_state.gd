@@ -30,6 +30,13 @@ func load_scene(scene: PackedScene):
 func switch_to_state(new_state: State):
 	self.state = new_state
 
+	# Switch music based on scene
+	# Club music plays in Manage and Queue (won't restart if already playing)
+	if state == State.Manage or state == State.Queue:
+		MusicManager.play_track(MusicManager.Track.CLUB)
+	else:
+		MusicManager.play_track(MusicManager.Track.MENU)
+
 	if state == State.Menu:
 		load_scene(menu_scene)
 	elif state == State.Queue:
