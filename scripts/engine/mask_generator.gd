@@ -152,7 +152,9 @@ static func generate(theme: DailyTheme = null) -> Mask:
 			upper_deco_path = ""
 
 	# Pick lower deco category, then pick within it
-	var lower_category: String = _weighted_pick(LOWER_DECO_CATEGORIES)["value"]
+	# Apply theme bonus to the boosted lower category's weight
+	var lower_categories = _apply_theme_bonus(LOWER_DECO_CATEGORIES, theme, true)
+	var lower_category: String = _weighted_pick(lower_categories)["value"]
 	var lower_deco_path: String = ""
 	var lower_deco_color: Color = Color(randf(), randf(), randf())
 	var star_count: int = 0
@@ -189,11 +191,20 @@ static func generate(theme: DailyTheme = null) -> Mask:
 
 ## Returns a copy of categories with the theme-boosted category's weight increased.
 ## If no theme or no matching category, returns the original array unchanged.
-static func _apply_theme_bonus(categories: Array, theme: DailyTheme) -> Array:
-	if theme == null or theme.boosted_category() == "":
+## Set is_lower to true when applying to lower deco categories.
+static func _apply_theme_bonus(categories: Array, theme: DailyTheme, is_lower: bool = false) -> Array:
+	if theme == null:
 		return categories
 
-	var boosted: String = theme.boosted_category()
+	var boosted: String
+	if is_lower:
+		boosted = theme.boosted_lower_category()
+	else:
+		boosted = theme.boosted_upper_category()
+
+	if boosted == "":
+		return categories
+
 	var bonus: float = theme.bonus_percent() / 100.0  # e.g. 100% -> 1.0 multiplier
 
 	var result: Array = []
