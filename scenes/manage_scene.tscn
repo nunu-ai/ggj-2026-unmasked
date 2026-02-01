@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bwceom4mhsge3"]
 
 [ext_resource type="Script" uid="uid://3is7pnpie4g6" path="res://scripts/manage_scene.gd" id="1_manage"]
-[ext_resource type="Texture2D" path="res://assets/wallpaper.png" id="2_wallpaper"]
+[ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="2_wallpaper"]
 
 [node name="ManageScene" type="Control"]
 layout_mode = 3
@@ -19,10 +19,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("2_wallpaper")
 expand_mode = 1
 stretch_mode = 6
-mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -44,66 +44,6 @@ layout_mode = 2
 [node name="ManageContent" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="LeftPane" type="VBoxContainer" parent="VBoxContainer/ManageContent"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="RulesPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer"]
-layout_mode = 2
-
-[node name="ThemeTitle" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "Tomorrow's Theme"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ThemeLabel" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "No Theme"
-horizontal_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ButtonPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel"]
-layout_mode = 2
-
-[node name="StartDayButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Start Day"
-
-[node name="DayResultsButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Day 0 Results"
-
-[node name="MainMenuButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Main Menu"
 
 [node name="RightPane" type="VBoxContainer" parent="VBoxContainer/ManageContent"]
 layout_mode = 2
@@ -240,6 +180,66 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
 text = "Confirm"
 
+[node name="LeftPane" type="VBoxContainer" parent="VBoxContainer/ManageContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RulesPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ThemeTitle" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Tomorrow's Theme"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeLabel" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "No Theme"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel"]
+layout_mode = 2
+
+[node name="StartDayButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Start Day"
+
+[node name="DayResultsButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Day 0 Results"
+
+[node name="MainMenuButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Main Menu"
+
 [node name="DayResultsPopup" type="AcceptDialog" parent="."]
 title = "Day Results"
 size = Vector2i(400, 300)
@@ -294,10 +294,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Money Spent: $0"
 
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/StartDayButton" to="." method="_on_start_day_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton" to="." method="_on_day_results_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetCartButton" to="." method="_on_reset_cart_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetToInitialButton" to="." method="_on_reset_to_initial_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/StartDayButton" to="." method="_on_start_day_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton" to="." method="_on_day_results_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
