@@ -12,7 +12,7 @@ const COLOR_TIERS = [
 	{ "tier": Mask.ColorTier.GREEN,  "weight": 25, "color": Color(0.2, 0.8, 0.2) },
 	{ "tier": Mask.ColorTier.BLUE,   "weight": 20, "color": Color(0.2, 0.4, 0.9) },
 	{ "tier": Mask.ColorTier.PURPLE, "weight": 15, "color": Color(0.6, 0.2, 0.8) },
-	{ "tier": Mask.ColorTier.ORANGE, "weight": 8,  "color": Color(1.0, 0.6, 0.1) },
+	{ "tier": Mask.ColorTier.ORANGE, "weight": 8,  "color": Color(0.459, 0.153, 0.624) },
 	{ "tier": Mask.ColorTier.GOLD,   "weight": 2,  "color": Color(1.0, 0.85, 0.0) },
 ]
 
@@ -54,23 +54,14 @@ const MOUTHS_SAD = [
 # UPPER DECOS — carneval category
 # =============================================================================
 
-## Which upper deco category to use
-const UPPER_DECO_CATEGORIES = [
-	{ "value": "none",     "weight": 30 },
-	{ "value": "carneval", "weight": 40 },
-	{ "value": "horns",    "weight": 30 },
-]
-
-const UPPER_DECOS_CARNEVAL = [
-	{ "value": "res://assets/masks/upper_decos/carneval/1.png", "weight": 25 },
-	{ "value": "res://assets/masks/upper_decos/carneval/3.png", "weight": 25 },
-	{ "value": "res://assets/masks/upper_decos/carneval/6.png", "weight": 25 },
-	{ "value": "res://assets/masks/upper_decos/carneval/8.png", "weight": 25 },
-]
-
-const UPPER_DECOS_HORNS = [
-	{ "value": "res://assets/masks/upper_decos/horns/2.png", "weight": 50 },
-	{ "value": "res://assets/masks/upper_decos/horns/3.png", "weight": 50 },
+const UPPER_DECOS = [
+	{ "value": "", "weight": 30 },  # no deco
+	{ "value": "res://assets/masks/upper_decos/carneval/1.png", "weight": 12 },
+	{ "value": "res://assets/masks/upper_decos/carneval/3.png", "weight": 12 },
+	{ "value": "res://assets/masks/upper_decos/carneval/6.png", "weight": 12 },
+	{ "value": "res://assets/masks/upper_decos/carneval/8.png", "weight": 10 },
+	{ "value": "res://assets/masks/upper_decos/horns/2.png", "weight": 12 },
+	{ "value": "res://assets/masks/upper_decos/horns/3.png", "weight": 12 },
 ]
 
 # =============================================================================
@@ -114,8 +105,8 @@ const LOWER_DECOS_STARS = [
 # GENERATION
 # =============================================================================
 
-## Generate a fully randomized Mask, optionally influenced by a DailyTheme
-static func generate(theme: DailyTheme = null) -> Mask:
+## Generate a fully randomized Mask
+static func generate() -> Mask:
 	# Pick color tier
 	var tier_entry = _weighted_pick(COLOR_TIERS)
 	var color_tier: Mask.ColorTier = tier_entry["tier"]
@@ -136,25 +127,12 @@ static func generate(theme: DailyTheme = null) -> Mask:
 		_:
 			mouth_path = _weighted_pick(MOUTHS_NEUTRAL)["value"]
 
-	# Pick upper deco category, then pick within it
-	# Apply theme bonus to the boosted category's weight
-	var upper_categories = _apply_theme_bonus(UPPER_DECO_CATEGORIES, theme)
-	var upper_category: String = _weighted_pick(upper_categories)["value"]
-	var upper_deco_path: String = ""
+	# Pick upper deco
+	var upper_deco_path: String = _weighted_pick(UPPER_DECOS)["value"]
 	var upper_deco_color: Color = Color(randf(), randf(), randf())
 
-	match upper_category:
-		"carneval":
-			upper_deco_path = _weighted_pick(UPPER_DECOS_CARNEVAL)["value"]
-		"horns":
-			upper_deco_path = _weighted_pick(UPPER_DECOS_HORNS)["value"]
-		_:  # "none"
-			upper_deco_path = ""
-
 	# Pick lower deco category, then pick within it
-	# Apply theme bonus to the boosted lower category's weight
-	var lower_categories = _apply_theme_bonus(LOWER_DECO_CATEGORIES, theme, true)
-	var lower_category: String = _weighted_pick(lower_categories)["value"]
+	var lower_category: String = _weighted_pick(LOWER_DECO_CATEGORIES)["value"]
 	var lower_deco_path: String = ""
 	var lower_deco_color: Color = Color(randf(), randf(), randf())
 	var star_count: int = 0
@@ -188,35 +166,6 @@ static func generate(theme: DailyTheme = null) -> Mask:
 # =============================================================================
 # WEIGHTED RANDOM HELPER
 # =============================================================================
-
-## Returns a copy of categories with the theme-boosted category's weight increased.
-## If no theme or no matching category, returns the original array unchanged.
-## Set is_lower to true when applying to lower deco categories.
-static func _apply_theme_bonus(categories: Array, theme: DailyTheme, is_lower: bool = false) -> Array:
-	if theme == null:
-		return categories
-
-	var boosted: String
-	if is_lower:
-		boosted = theme.boosted_lower_category()
-	else:
-		boosted = theme.boosted_upper_category()
-
-	if boosted == "":
-		return categories
-
-	var bonus: float = theme.bonus_percent() / 100.0  # e.g. 100% -> 1.0 multiplier
-
-	var result: Array = []
-	for entry in categories:
-		if entry["value"] == boosted:
-			var modified = entry.duplicate()
-			modified["weight"] = entry["weight"] * (1.0 + bonus)
-			result.append(modified)
-		else:
-			result.append(entry)
-	return result
-
 
 ## Pick a random entry from an array of dictionaries with "weight" keys.
 ## Returns the full dictionary entry.

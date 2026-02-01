@@ -212,7 +212,7 @@ func _get_tier_color(tier: Mask.ColorTier) -> String:
 		Mask.ColorTier.GREEN: return "#44aa44"
 		Mask.ColorTier.BLUE: return "#4488ff"
 		Mask.ColorTier.PURPLE: return "#aa44aa"
-		Mask.ColorTier.ORANGE: return "#ff8844"
+		Mask.ColorTier.ORANGE: return "#75279f"
 		Mask.ColorTier.GOLD: return "#ffdd44"
 	return "#ffffff"
 
