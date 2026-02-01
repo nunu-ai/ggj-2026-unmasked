@@ -34,9 +34,9 @@ func _spawn_decorative_masks() -> void:
 	var margin = 60.0
 	var center_exclusion = Rect2(
 		viewport_size.x * 0.25,
-		viewport_size.y * 0.15,
+		viewport_size.y * 0.01,
 		viewport_size.x * 0.5,
-		viewport_size.y * 0.7
+		viewport_size.y * 0.9
 	)
 	
 	var positions: Array[Vector2] = []
