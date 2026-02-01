@@ -21,15 +21,22 @@ const CAPACITY_UPGRADE_AMOUNT: int = 1
 @onready var _day_results_button: Button = $MainMargin/MainVBox/TopBar/TopBarHBox/DayResultsButton
 @onready var _day_results_popup: AcceptDialog = $DayResultsPopup
 @onready var _popup_day_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupDayLabel
-@onready var _popup_initial_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupInitialMoneyLabel
-@onready var _popup_initial_capacity_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupInitialCapacityLabel
-@onready var _popup_current_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupCurrentMoneyLabel
-@onready var _popup_current_capacity_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupCurrentCapacityLabel
-@onready var _popup_money_spent_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupMoneySpentLabel
+@onready var _starting_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/StartingMoneyLabel
+@onready var _guest_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/GuestMoneyLabel
+@onready var _rules_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/RulesMoneyLabel
+@onready var _rent_label_popup: Label = $DayResultsPopup/MarginContainer/VBoxContainer/RentLabel
+@onready var _final_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/FinalMoneyLabel
 
 # Initial state snapshot (captured once on scene load)
 var _initial_money: int
 var _initial_capacity: int
+
+# Day results (calculated once when scene loads, before upgrades)
+var _day_starting_money: int = 0
+var _day_guest_money: int = 0
+var _day_rules_money: int = 0
+var _day_rent: int = 0
+var _day_final_money: int = 0
 
 # Undo stack - stores purchases that can be undone
 # Each entry is a dictionary: { "type": "capacity", "cost": 1000, "amount": 1 }
@@ -41,12 +48,40 @@ func _ready() -> void:
 	_initial_money = SaveState.club.money
 	_initial_capacity = SaveState.club.capacity
 
+	# Calculate day results (before any upgrades can change capacity)
+	_calculate_day_results()
+
 	_capacity_upgrade_button.text = "$%s" % _format_money(CAPACITY_UPGRADE_COST)
 	update_display()
 
 	# Auto-open day results popup when arriving at manage scene (skip day 0)
 	if SaveState.club.day > 0:
 		_on_day_results_button_pressed()
+
+
+## Calculate and store day results for the popup
+func _calculate_day_results() -> void:
+	if SaveState.day == null or SaveState.club.day == 0:
+		return
+	
+	# Money at end of day (current state when arriving at manage)
+	_day_final_money = _initial_money
+	
+	# Calculate money earned from guests (sum of all accepted people)
+	_day_guest_money = 0
+	for person in SaveState.day.in_club:
+		_day_guest_money += person.money
+	
+	# Calculate money from rules (bonuses - penalties)
+	_day_rules_money = int(SaveState.day.profit(_initial_capacity))
+	
+	# Calculate rent that was paid (uses capacity at end of day)
+	_day_rent = int(_initial_capacity * 200 * (1.3 ** SaveState.club.day))
+	
+	# Back-calculate starting money
+	# final = starting + guests + rules - rent
+	# starting = final - guests - rules + rent
+	_day_starting_money = _day_final_money - _day_guest_money - _day_rules_money + _day_rent
 
 
 func update_display() -> void:
@@ -137,14 +172,30 @@ func _on_undo_button_pressed() -> void:
 
 func _on_day_results_button_pressed() -> void:
 	MusicManager.play_button_sfx()
-	var money_spent: int = _initial_money - SaveState.club.money
 
-	_popup_day_label.text = "Day %d Results" % SaveState.club.day
-	_popup_initial_money_label.text = "Starting Money: $%s" % _format_money(_initial_money)
-	_popup_initial_capacity_label.text = "Starting Capacity: %d" % _initial_capacity
-	_popup_current_money_label.text = "Current Money: $%s" % _format_money(SaveState.club.money)
-	_popup_current_capacity_label.text = "Current Capacity: %d" % SaveState.club.capacity
-	_popup_money_spent_label.text = "Money Spent: $%s" % _format_money(money_spent)
+	_popup_day_label.text = "📅 Day %d Results" % SaveState.club.day
+	
+	# Starting money (gray, muted)
+	_starting_money_label.text = "💰 Starting: $%s" % _format_money(_day_starting_money)
+	
+	# Guest money (green for positive)
+	_guest_money_label.add_theme_color_override("font_color", Color(0.4, 0.8, 0.4))
+	_guest_money_label.text = "🎭 Guests: +$%s" % _format_money(_day_guest_money)
+	
+	# Rules money (green for positive, red for negative)
+	if _day_rules_money >= 0:
+		_rules_money_label.add_theme_color_override("font_color", Color(0.4, 0.8, 0.4))
+		_rules_money_label.text = "📋 Rules: +$%s" % _format_money(_day_rules_money)
+	else:
+		_rules_money_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+		_rules_money_label.text = "📋 Rules: -$%s" % _format_money(abs(_day_rules_money))
+	
+	# Rent (red)
+	_rent_label_popup.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+	_rent_label_popup.text = "🏠 Rent: -$%s" % _format_money(_day_rent)
+	
+	# Final money (orange accent)
+	_final_money_label.text = "💰 End of Day: $%s" % _format_money(_day_final_money)
 
 	_day_results_popup.popup_centered()
 

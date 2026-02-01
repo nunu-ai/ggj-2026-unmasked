@@ -59,6 +59,11 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 20
 
+[node name="TitleLabel" type="Label" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Club Management"
+
 [node name="Spacer" type="Control" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -230,7 +235,7 @@ text = "▶ Start Day"
 
 [node name="DayResultsPopup" type="AcceptDialog" parent="."]
 title = "Day Results"
-size = Vector2i(400, 300)
+size = Vector2i(420, 380)
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_popup")
 unresizable = true
 
@@ -245,43 +250,48 @@ offset_bottom = -40.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DayResultsPopup/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 4
 
 [node name="PopupDayLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.753, 0.412, 0.106, 1)
 theme_override_font_sizes/font_size = 24
-text = "Day 0 Results"
+text = "📅 Day 1 Results"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="PopupInitialMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
+[node name="StartingMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 18
-text = "Starting Money: $0"
+text = "💰 Starting: $500"
 
-[node name="PopupInitialCapacityLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
+[node name="GuestMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Starting Capacity: 0"
+text = "🎭 Guests: +$1,200"
+
+[node name="RulesMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "📋 Rules: +$150"
+
+[node name="RentLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "🏠 Rent: -$1,300"
 
 [node name="HSeparator2" type="HSeparator" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="PopupCurrentMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
+[node name="FinalMoneyLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Current Money: $0"
-
-[node name="PopupCurrentCapacityLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Current Capacity: 0"
-
-[node name="PopupMoneySpentLabel" type="Label" parent="DayResultsPopup/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Money Spent: $0"
+theme_override_colors/font_color = Color(0.753, 0.412, 0.106, 1)
+theme_override_font_sizes/font_size = 22
+text = "💰 End of Day: $550"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/DayResultsButton" to="." method="_on_day_results_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
