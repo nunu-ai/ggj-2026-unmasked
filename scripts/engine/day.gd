@@ -19,13 +19,9 @@ func _init(_day_number: int, _theme: DailyTheme = null):
 	_generate_next_person()
 
 
-## Calculate profit based on people in club minus rule penalties plus bonuses
+## Calculate end-of-day profit/loss from rule penalties and bonuses
+## Note: Person money is given immediately on acceptance, not at end of day
 func profit(club_capacity: int = 0) -> float:
-	# Base profit from money each person brings (based on their mask)
-	var base_profit: float = 0.0
-	for person in in_club:
-		base_profit += person.money
-
 	# Calculate penalties from violated global rules
 	var penalties: float = 0.0
 	for rule in global_rules:
@@ -43,7 +39,7 @@ func profit(club_capacity: int = 0) -> float:
 	for rule in bonus_rules:
 		bonuses += rule.get_bonus(in_club, club_capacity)
 
-	return base_profit + penalties + bonuses  # penalties are negative, bonuses are positive
+	return penalties + bonuses  # penalties are negative, bonuses are positive
 
 
 ## Get the current person (infinite queue - always has someone)

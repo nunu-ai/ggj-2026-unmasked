@@ -163,7 +163,7 @@ func _display_rules_and_theme() -> void:
 
 
 # Reroll/reject cost: $100 base + $25 per day after day 1
-const REROLL_BASE_COST = 100
+const REROLL_BASE_COST = 25
 const REROLL_COST_INCREMENT = 25
 
 
@@ -233,6 +233,10 @@ func _get_mood_emoji(mood: Mask.Mood) -> String:
 
 func _on_accept_button_pressed() -> void:
 	var person = SaveState.day.current_person()
+	
+	# Give money immediately when accepting
+	if person != null:
+		SaveState.club.money += person.money
 	
 	# Add personal rules to tonight's rules when accepting
 	# Then clear them from the person so they're not counted twice in profit
