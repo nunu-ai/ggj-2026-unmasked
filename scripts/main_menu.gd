@@ -7,7 +7,10 @@ extends Panel
 
 func _ready() -> void:
 	# Only show Continue button if there's a save file
-	$VBoxContainer/ContinueButton.disabled = !SaveState.has_save()
+	var continue_btn = $VBoxContainer/ContinueButton
+	continue_btn.disabled = !SaveState.has_save()
+	if continue_btn.disabled:
+		continue_btn.modulate = Color(0.4, 0.4, 0.4, 0.5)
 	
 	# Initialize volume slider from saved settings
 	_volume_slider.value = MusicManager.get_volume()

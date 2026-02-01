@@ -1,8 +1,25 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn7w22ecscp33"]
+[gd_scene load_steps=14 format=3 uid="uid://cn7w22ecscp33"]
 
 [ext_resource type="Script" uid="uid://di0cmmkjhh5ra" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Shader" uid="uid://dpcf7lwiig7s3" path="res://shaders/main_menu_background.gdshader" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="3_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://dec1c41fqlq8h" path="res://assets/buttons/continue-1.png" id="4_cont1"]
+[ext_resource type="Texture2D" uid="uid://jrw3xlmpp0fs" path="res://assets/buttons/continue-2.png" id="5_cont2"]
+[ext_resource type="Texture2D" uid="uid://cb6og5xnnai1o" path="res://assets/buttons/new-game-1.png" id="6_ng1"]
+[ext_resource type="Texture2D" uid="uid://dlwv2uwo878lg" path="res://assets/buttons/new-game-2.png" id="7_ng2"]
+[ext_resource type="Texture2D" uid="uid://dvu620pc42gmw" path="res://assets/buttons/settings-1.png" id="8_set1"]
+[ext_resource type="Texture2D" uid="uid://bwlui8y612j27" path="res://assets/buttons/settings-2.png" id="9_set2"]
+[ext_resource type="Texture2D" uid="uid://dee835m5dmll6" path="res://assets/buttons/exit-1.png" id="10_exit1"]
+[ext_resource type="Texture2D" uid="uid://clyyh3aq2klde" path="res://assets/buttons/exit-2.png" id="11_exit2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekxnf"]
+shader = ExtResource("2_ekxnf")
+shader_parameter/color1 = Color(0.1, 0.05, 0.2, 1)
+shader_parameter/color2 = Color(0.5, 0.2, 0.6, 1)
+shader_parameter/color3 = Color(0.3, 0.1, 0.4, 1)
+shader_parameter/background_color = Color(0.05, 0.02, 0.1, 1)
+shader_parameter/wave_speed = 0.5
+shader_parameter/wave_scale = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
 bg_color = Color(0.212, 0.235, 0.271, 1)
@@ -15,15 +32,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekxnf"]
-shader = ExtResource("2_ekxnf")
-shader_parameter/color1 = Color(0.1, 0.05, 0.2, 1)
-shader_parameter/color2 = Color(0.5, 0.2, 0.6, 1)
-shader_parameter/color3 = Color(0.3, 0.1, 0.4, 1)
-shader_parameter/background_color = Color(0.05, 0.02, 0.1, 1)
-shader_parameter/wave_speed = 0.5
-shader_parameter/wave_scale = 2.0
 
 [node name="MainMenu" type="Panel"]
 material = SubResource("ShaderMaterial_ekxnf")
@@ -67,33 +75,42 @@ anchor_right = 0.5
 offset_left = -150.0
 offset_top = 182.0
 offset_right = 150.0
+offset_bottom = 582.0
 grow_horizontal = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 15
 
-[node name="ContinueButton" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+[node name="ContinueButton" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Continue"
+texture_normal = ExtResource("4_cont1")
+texture_hover = ExtResource("5_cont2")
+ignore_texture_size = true
+stretch_mode = 6
 
-[node name="NewGameButton" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+[node name="NewGameButton" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "New Game"
+texture_normal = ExtResource("6_ng1")
+texture_hover = ExtResource("7_ng2")
+ignore_texture_size = true
+stretch_mode = 6
 
-[node name="Settings" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+[node name="Settings" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Settings"
+texture_normal = ExtResource("8_set1")
+texture_hover = ExtResource("9_set2")
+ignore_texture_size = true
+stretch_mode = 6
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+[node name="Exit" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Exit
-"
+texture_normal = ExtResource("10_exit1")
+texture_hover = ExtResource("11_exit2")
+ignore_texture_size = true
+stretch_mode = 6
 
 [node name="Title" type="RichTextLabel" parent="."]
 layout_mode = 0
@@ -111,10 +128,10 @@ size = Vector2i(400, 200)
 theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
 
 [node name="SettingsMargin" type="MarginContainer" parent="SettingsPopup"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 431.0
-offset_bottom = 196.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 430.0
+offset_bottom = 197.0
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
