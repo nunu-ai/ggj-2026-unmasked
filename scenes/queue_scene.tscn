@@ -1,11 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=14 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
 [ext_resource type="Texture2D" uid="uid://bbqsslp1ogo0x" path="res://icon.svg" id="2_tbu78"]
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Script" path="res://scripts/reaction_particles.gd" id="6_chl07"]
-[ext_resource type="Texture2D" path="res://assets/wallpaper.png" id="7_wallpaper"]
+[ext_resource type="Texture2D" uid="uid://ds5jfj3n08x4b" path="res://assets/wallpaper.png" id="7_wallpaper"]
+[ext_resource type="Texture2D" uid="uid://chgdd62pig4wj" path="res://assets/buttons/let-in.png" id="8_letin"]
+[ext_resource type="Texture2D" uid="uid://bvdpc4plq6ii2" path="res://assets/buttons/let-in-2.png" id="9_letin2"]
+[ext_resource type="Texture2D" uid="uid://cqecfowccrxho" path="res://assets/buttons/next.png" id="10_next"]
+[ext_resource type="Texture2D" uid="uid://15iq8yw0eoam" path="res://assets/buttons/next-2.png" id="11_next2"]
+[ext_resource type="Texture2D" uid="uid://bc82k663qy0tc" path="res://assets/buttons/end-day-2.png" id="12_endday2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
 bg_color = Color(0.212, 0.235, 0.271, 1)
@@ -61,10 +66,10 @@ script = ExtResource("1_h6422")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("7_wallpaper")
 expand_mode = 1
 stretch_mode = 6
-mouse_filter = 2
 
 [node name="ShaderOverlay" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_54epr")
@@ -118,6 +123,13 @@ text = "📅 Day 1"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="LogButton" type="Button" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+text = "📋 Club Log"
+
 [node name="MainMenuButton" type="Button" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
@@ -132,16 +144,13 @@ theme_override_constants/separation = 16
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
 
 [node name="MaskDisplay" parent="MainMargin/MainVBox/ContentHBox/MaskDisplayContainer" instance=ExtResource("3_s6a0p")]
 layout_mode = 2
-mouse_filter = 2
 
 [node name="RightPanel" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
 theme_override_constants/separation = 12
 
 [node name="IDCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
@@ -176,8 +185,8 @@ layout_mode = 2
 
 [node name="SpendingLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 12
 text = "SPENDING TONIGHT"
 
 [node name="MoneyAmountLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/IDCard/IDCardMargin/IDCardVBox"]
@@ -238,6 +247,38 @@ text = "✓ Maximum of 3 blue masks (-$50)
 ☆ Mood Variety (+$150)"
 fit_content = true
 scroll_active = false
+
+[node name="DecisionButtonsHBox" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="AcceptButton" type="TextureButton" parent="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("8_letin")
+texture_hover = ExtResource("9_letin2")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="RejectButton" type="TextureButton" parent="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("10_next")
+texture_hover = ExtResource("11_next2")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="EndDayButton" type="TextureButton" parent="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("12_endday2")
+ignore_texture_size = true
+stretch_mode = 6
 
 [node name="ButtonsVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
 layout_mode = 2
@@ -329,6 +370,11 @@ custom_minimum_size = Vector2(140, 40)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Yes, End Day"
+[node name="MainMenuConfirmPopup" type="ConfirmationDialog" parent="."]
+title = "Return to Main Menu?"
+size = Vector2i(400, 150)
+ok_button_text = "Yes, End Day"
+dialog_text = "Are you sure you want to return to the main menu? This will end the current day."
 
 [node name="ClubLogPopup" type="AcceptDialog" parent="."]
 title = "Club Log"
@@ -359,10 +405,11 @@ process_material = SubResource("ParticleProcessMaterial_8j4ut")
 script = ExtResource("6_chl07")
 happy_texture = ExtResource("2_tbu78")
 
+[connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/LogButton" to="." method="_on_log_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox/CancelButton" to="." method="_on_main_menu_cancel_pressed"]
 [connection signal="pressed" from="MainMenuConfirmPopup/ConfirmMargin/ConfirmVBox/ButtonsHBox/ConfirmButton" to="." method="_on_main_menu_confirm_popup_confirmed"]
-[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/LogButton" to="." method="_on_log_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/GameplayButtonsHBox/EndDayButton" to="." method="_on_end_day_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/AcceptButton" to="." method="_on_accept_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/RejectButton" to="." method="_on_reject_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox/RejectButton" to="." method="_on_reject_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox/EndDayButton" to="." method="_on_end_day_button_pressed"]
+[connection signal="confirmed" from="MainMenuConfirmPopup" to="." method="_on_main_menu_confirm_popup_confirmed"]

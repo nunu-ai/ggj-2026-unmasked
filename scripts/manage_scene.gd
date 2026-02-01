@@ -51,8 +51,9 @@ func _ready() -> void:
 	_capacity_upgrade_button.text = "$%d" % CAPACITY_UPGRADE_COST
 	update_display()
 
-	# Auto-open day results popup when arriving at manage scene
-	_on_day_results_button_pressed()
+	# Auto-open day results popup when arriving at manage scene (skip day 0)
+	if SaveState.club.day > 0:
+		_on_day_results_button_pressed()
 
 
 func update_display() -> void:
@@ -73,7 +74,8 @@ func update_display() -> void:
 	else:
 		_theme_label.text = "No Theme"
 
-	# Day results button text
+	# Day results button - hide on day 0, show otherwise
+	_day_results_button.visible = SaveState.club.day > 0
 	_day_results_button.text = "Day %d Results" % SaveState.club.day
 
 	# Disable upgrade button if can't afford with pending costs

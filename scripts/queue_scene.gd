@@ -1,22 +1,5 @@
 extends Control
 
-const ACCEPT_PHRASES: Array[String] = [
-	"Welcome",
-	"Come in",
-	"You're in",
-	"Enter",
-	"Go ahead",
-]
-
-const REJECT_PHRASES: Array[String] = [
-	"Get lost",
-	"Go home",
-	"Not tonight",
-	"Beat it",
-	"No way",
-	"Scram",
-]
-
 # Top bar status labels
 @onready var _money_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/MoneyLabel
 @onready var _rent_label: Label = $MainMargin/MainVBox/TopBar/TopBarHBox/StatusPanel/RentLabel
@@ -34,8 +17,8 @@ const REJECT_PHRASES: Array[String] = [
 @onready var _rules_label: RichTextLabel = $MainMargin/MainVBox/ContentHBox/RightPanel/RulesPanel/RulesMargin/RulesVBox/RulesScroll/RulesLabel
 
 # Buttons
-@onready var _accept_button: Button = $MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/AcceptButton
-@onready var _reject_button: Button = $MainMargin/MainVBox/ContentHBox/RightPanel/ButtonsVBox/DecisionButtonsHBox/RejectButton
+@onready var _accept_button: TextureButton = $MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox/AcceptButton
+@onready var _reject_button: TextureButton = $MainMargin/MainVBox/ContentHBox/RightPanel/DecisionButtonsHBox/RejectButton
 
 # Mask display layers
 @onready var _mask_layer: TextureRect = $MainMargin/MainVBox/ContentHBox/MaskDisplayContainer/MaskDisplay/MaskLayer
@@ -202,14 +185,9 @@ func _update_status() -> void:
 
 	# Disable accept if club is full
 	_accept_button.disabled = day.is_club_full(club.capacity)
-	if _accept_button.disabled:
-		_accept_button.text = "Club Full"
-	else:
-		_accept_button.text = ACCEPT_PHRASES.pick_random()
 
 	# Disable reject/reroll if not enough money
 	_reject_button.disabled = club.money < reroll_cost
-	_reject_button.text = "%s ($%d)" % [REJECT_PHRASES.pick_random(), reroll_cost]
 
 
 ## Helper to format money with thousands separator
