@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chgdd62pig4wj"
-path="res://.godot/imported/let-in.png-95a767270eb21a28b3ba09bc227a0aff.ctex"
+uid="uid://dee835m5dmll6"
+path="res://.godot/imported/exit-1.png-2f3b2d60320e094ad26268a00510f870.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/let-in.png"
-dest_files=["res://.godot/imported/let-in.png-95a767270eb21a28b3ba09bc227a0aff.ctex"]
+source_file="res://assets/buttons/exit-1.png"
+dest_files=["res://.godot/imported/exit-1.png-2f3b2d60320e094ad26268a00510f870.ctex"]
 
 [params]
 
