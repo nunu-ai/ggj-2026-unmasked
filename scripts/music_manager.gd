@@ -7,13 +7,24 @@ enum Track {
 	CLUB,
 }
 
+enum SFX {
+	BUTTON,
+	REROLL,
+}
+
 var music_player: AudioStreamPlayer
+var sfx_player: AudioStreamPlayer
 var current_track: Track = Track.MENU
 var volume_db: float = 0.0
 
 var tracks: Dictionary = {
 	Track.MENU: "res://assets/audio/Unmasked_menu.mp3",
 	Track.CLUB: "res://assets/audio/Unmasked_club.mp3",
+}
+
+var sfx: Dictionary = {
+	SFX.BUTTON: "res://assets/audio/button.mp3",
+	SFX.REROLL: "res://assets/audio/reroll.mp3",
 }
 
 func _ready() -> void:
@@ -25,6 +36,12 @@ func _ready() -> void:
 	music_player.bus = "Master"
 	music_player.volume_db = volume_db
 	add_child(music_player)
+	
+	# Create the SFX player
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.bus = "Master"
+	sfx_player.volume_db = volume_db
+	add_child(sfx_player)
 	
 	# Connect to the finished signal to loop the music
 	music_player.finished.connect(_on_music_finished)
@@ -49,7 +66,20 @@ func play_track(track: Track) -> void:
 func set_volume(new_volume_db: float) -> void:
 	volume_db = new_volume_db
 	music_player.volume_db = volume_db
+	sfx_player.volume_db = volume_db
 	_save_settings()
+
+func play_sfx(sound: SFX) -> void:
+	var audio = load(sfx[sound])
+	if audio:
+		sfx_player.stream = audio
+		sfx_player.play()
+
+func play_button_sfx() -> void:
+	play_sfx(SFX.BUTTON)
+
+func play_reroll_sfx() -> void:
+	play_sfx(SFX.REROLL)
 
 func get_volume() -> float:
 	return volume_db

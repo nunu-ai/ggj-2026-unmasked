@@ -87,6 +87,7 @@ func update_display() -> void:
 
 
 func _on_upgrade_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	if (SaveState.club.money - _pending_cost) < CAPACITY_UPGRADE_COST:
 		return
 
@@ -96,6 +97,7 @@ func _on_upgrade_button_pressed() -> void:
 
 
 func _on_confirm_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	if _pending_cost == 0:
 		return
 
@@ -107,12 +109,14 @@ func _on_confirm_button_pressed() -> void:
 
 
 func _on_reset_cart_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	_pending_cost = 0
 	_pending_capacity = 0
 	update_display()
 
 
 func _on_reset_to_initial_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	SaveState.club.money = _initial_money
 	SaveState.club.capacity = _initial_capacity
 	_pending_cost = 0
@@ -121,6 +125,7 @@ func _on_reset_to_initial_button_pressed() -> void:
 
 
 func _on_day_results_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	var money_spent: int = _initial_money - SaveState.club.money
 
 	_popup_day_label.text = "Day %d Results" % SaveState.club.day
@@ -134,8 +139,10 @@ func _on_day_results_button_pressed() -> void:
 
 
 func _on_start_day_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	SaveState.start_day()
 
 
 func _on_main_menu_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	SaveState.switch_to_state(SaveStateClass.State.Menu)

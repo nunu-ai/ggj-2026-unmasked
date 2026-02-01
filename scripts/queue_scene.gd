@@ -232,6 +232,7 @@ func _get_mood_emoji(mood: Mask.Mood) -> String:
 
 
 func _on_accept_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	var person = SaveState.day.current_person()
 	
 	# Give money immediately when accepting
@@ -250,6 +251,7 @@ func _on_accept_button_pressed() -> void:
 
 
 func _on_reject_button_pressed() -> void:
+	MusicManager.play_reroll_sfx()
 	var reroll_cost = _get_reroll_cost()
 	if SaveState.club.money >= reroll_cost:
 		SaveState.club.money -= reroll_cost
@@ -258,14 +260,17 @@ func _on_reject_button_pressed() -> void:
 
 
 func _on_end_day_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	SaveState.end_day()
 
 
 func _on_main_menu_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	_main_menu_confirm_popup.popup_centered()
 
 
 func _on_main_menu_confirm_popup_confirmed() -> void:
+	MusicManager.play_button_sfx()
 	# End the day (calculate profits/rent) then go to main menu
 	SaveState.club.money += int(SaveState.day.profit(SaveState.club.capacity))
 	SaveState.club.money -= SaveState.club.rent()
@@ -281,6 +286,7 @@ func _on_main_menu_confirm_popup_confirmed() -> void:
 
 
 func _on_log_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	# Clear old entries
 	for child in _log_list.get_children():
 		child.queue_free()

@@ -15,10 +15,12 @@ func _ready() -> void:
 
 
 func _on_new_game_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	SaveState.new_game()
 
 
 func _on_continue_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	if SaveState.load():
 		# Check if player has already lost (money < 0)
 		if SaveState.club.money < 0:
@@ -29,10 +31,12 @@ func _on_continue_button_pressed() -> void:
 
 
 func _on_settings_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	_settings_popup.popup_centered()
 
 
 func _on_settings_close_pressed() -> void:
+	MusicManager.play_button_sfx()
 	_settings_popup.hide()
 
 
@@ -48,4 +52,5 @@ func _update_volume_label(volume_db: float) -> void:
 
 
 func _on_exit_button_pressed() -> void:
+	MusicManager.play_button_sfx()
 	get_tree().quit()
