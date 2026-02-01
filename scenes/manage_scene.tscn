@@ -36,221 +36,197 @@ texture = ExtResource("2_wallpaper")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="ManageTitle" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Club Management"
-horizontal_alignment = 1
-
-[node name="ManageSeparator" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="ManageContent" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RightPane" type="VBoxContainer" parent="VBoxContainer/ManageContent"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CurrentState" type="PanelContainer" parent="VBoxContainer/ManageContent/RightPane"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/RightPane/CurrentState"]
-layout_mode = 2
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
+theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer"]
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TopBar" type="PanelContainer" parent="MainMargin/MainVBox"]
 layout_mode = 2
 
-[node name="DayLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer"]
+[node name="TopBarHBox" type="HBoxContainer" parent="MainMargin/MainVBox/TopBar"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Day: 0"
-horizontal_alignment = 1
+theme_override_constants/separation = 20
 
-[node name="MoneyLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Money: $0"
-
-[node name="CapacityLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Capacity: 0"
-
-[node name="Upgrades" type="PanelContainer" parent="VBoxContainer/ManageContent/RightPane"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/RightPane/Upgrades"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 15
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer"]
-layout_direction = 2
-layout_mode = 2
-
-[node name="UpgradesLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Upgrades"
-
-[node name="CapacityUpgrade" type="HBoxContainer" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="UpgradeInfo" type="VBoxContainer" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade"]
+[node name="Spacer" type="Control" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UpgradeName" type="Label" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade/UpgradeInfo"]
+[node name="DayResultsButton" type="Button" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Capacity +1"
+theme_override_font_sizes/font_size = 16
+text = "📋 Day Results"
 
-[node name="UpgradeDesc" type="Label" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade/UpgradeInfo"]
+[node name="MainMenuButton" type="Button" parent="MainMargin/MainVBox/TopBar/TopBarHBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Increase club capacity by 1"
-
-[node name="UpgradeButton" type="Button" parent="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "$1000"
-
-[node name="CheckoutOverview" type="PanelContainer" parent="VBoxContainer/ManageContent/RightPane"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer"]
-layout_mode = 2
-
-[node name="CartTitle" type="Label" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Cart"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="CostLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Cost: $0"
-
-[node name="MoneyAfterLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Money After: $0"
-
-[node name="CapacityAfterLabel" type="Label" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Capacity After: 0"
-
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ButtonRow" type="HBoxContainer" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ResetCartButton" type="Button" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
-text = "Reset Cart"
-
-[node name="ResetToInitialButton" type="Button" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
-text = "Reset All"
-
-[node name="ConfirmButton" type="Button" parent="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
-text = "Confirm"
-
-[node name="LeftPane" type="VBoxContainer" parent="VBoxContainer/ManageContent"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="RulesPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer"]
-layout_mode = 2
-
-[node name="ThemeTitle" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "Tomorrow's Theme"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ThemeLabel" type="Label" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "No Theme"
-horizontal_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ButtonPanel" type="PanelContainer" parent="VBoxContainer/ManageContent/LeftPane"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel"]
-layout_mode = 2
-
-[node name="DayResultsButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Day 0 Results"
-
-[node name="MainMenuButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 16
 text = "Main Menu"
 
-[node name="StartDayButton" type="Button" parent="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer"]
+[node name="ContentHBox" type="HBoxContainer" parent="MainMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LeftPanel" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="CurrentStateCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel"]
+layout_mode = 2
+
+[node name="StateMargin" type="MarginContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="StateVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="StateTitle" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Current Status"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+
+[node name="MoneyLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "💰 $500"
+
+[node name="CapacityLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "👥 Capacity: 5"
+
+[node name="DayLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "📅 Day 1"
+
+[node name="UpgradesCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradesMargin" type="MarginContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="UpgradesVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="UpgradesTitle" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Upgrades"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
+layout_mode = 2
+
+[node name="UpgradesList" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="CapacityUpgradeRow" type="HBoxContainer" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList"]
+layout_mode = 2
+
+[node name="UpgradeLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "👥 +1 Capacity"
+
+[node name="CapacityUpgradeButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "$1,000"
+
+[node name="UndoSpacer" type="Control" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UndoButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "↩ Undo Last Purchase"
+
+[node name="RightPanel" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TomorrowCard" type="PanelContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TomorrowMargin" type="MarginContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="TomorrowVBox" type="VBoxContainer" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TomorrowTitle" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Start Day"
+text = "Tomorrow: Day 2"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox"]
+layout_mode = 2
+
+[node name="ThemeLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🎭 Theme: Carneval (+100%)"
+horizontal_alignment = 1
+
+[node name="RentLabel" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🏠 Rent Due: $1,300"
+horizontal_alignment = 1
+
+[node name="RentWarning" type="Label" parent="MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Rent is paid at the end of the day"
+horizontal_alignment = 1
+
+[node name="StartDayButton" type="Button" parent="MainMargin/MainVBox/ContentHBox/RightPanel"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "▶ Start Day"
 
 [node name="DayResultsPopup" type="AcceptDialog" parent="."]
 title = "Day Results"
@@ -307,10 +283,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Money Spent: $0"
 
-[connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetCartButton" to="." method="_on_reset_cart_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetToInitialButton" to="." method="_on_reset_to_initial_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton" to="." method="_on_confirm_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton" to="." method="_on_day_results_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/StartDayButton" to="." method="_on_start_day_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/DayResultsButton" to="." method="_on_day_results_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/TopBar/TopBarHBox/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton" to="." method="_on_capacity_upgrade_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UndoButton" to="." method="_on_undo_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/ContentHBox/RightPanel/StartDayButton" to="." method="_on_start_day_button_pressed"]

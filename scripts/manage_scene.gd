@@ -3,29 +3,22 @@ extends Control
 const CAPACITY_UPGRADE_COST: int = 1000
 const CAPACITY_UPGRADE_AMOUNT: int = 1
 
-# Current state panel labels
-@onready var _day_label: Label = $VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer/DayLabel
-@onready var _money_label: Label = $VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer/MoneyLabel
-@onready var _capacity_label: Label = $VBoxContainer/ManageContent/RightPane/CurrentState/MarginContainer/VBoxContainer/CapacityLabel
+# Current state labels
+@onready var _money_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/MoneyLabel
+@onready var _capacity_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/CapacityLabel
+@onready var _day_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/DayLabel
 
 # Upgrade button
-@onready var _capacity_upgrade_button: Button = $VBoxContainer/ManageContent/RightPane/Upgrades/MarginContainer/VBoxContainer/CapacityUpgrade/UpgradeButton
+@onready var _capacity_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton
+@onready var _undo_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UndoButton
 
-# Checkout labels
-@onready var _cost_label: Label = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/CostLabel
-@onready var _money_after_label: Label = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/MoneyAfterLabel
-@onready var _capacity_after_label: Label = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/CapacityAfterLabel
-
-# Checkout buttons
-@onready var _reset_cart_button: Button = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetCartButton
-@onready var _reset_to_initial_button: Button = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ResetToInitialButton
-@onready var _confirm_button: Button = $VBoxContainer/ManageContent/RightPane/CheckoutOverview/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton
-
-# Theme label
-@onready var _theme_label: Label = $VBoxContainer/ManageContent/LeftPane/RulesPanel/MarginContainer/VBoxContainer/ThemeLabel
+# Tomorrow's info
+@onready var _tomorrow_title: Label = $MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox/TomorrowTitle
+@onready var _theme_label: Label = $MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox/ThemeLabel
+@onready var _rent_label: Label = $MainMargin/MainVBox/ContentHBox/RightPanel/TomorrowCard/TomorrowMargin/TomorrowVBox/RentLabel
 
 # Day results button + popup
-@onready var _day_results_button: Button = $VBoxContainer/ManageContent/LeftPane/ButtonPanel/ButtonContainer/DayResultsButton
+@onready var _day_results_button: Button = $MainMargin/MainVBox/TopBar/TopBarHBox/DayResultsButton
 @onready var _day_results_popup: AcceptDialog = $DayResultsPopup
 @onready var _popup_day_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupDayLabel
 @onready var _popup_initial_money_label: Label = $DayResultsPopup/MarginContainer/VBoxContainer/PopupInitialMoneyLabel
@@ -38,9 +31,9 @@ const CAPACITY_UPGRADE_AMOUNT: int = 1
 var _initial_money: int
 var _initial_capacity: int
 
-# Pending upgrade totals (cart)
-var _pending_cost: int = 0
-var _pending_capacity: int = 0
+# Undo stack - stores purchases that can be undone
+# Each entry is a dictionary: { "type": "capacity", "cost": 1000, "amount": 1 }
+var _purchase_history: Array = []
 
 
 func _ready() -> void:
@@ -48,7 +41,7 @@ func _ready() -> void:
 	_initial_money = SaveState.club.money
 	_initial_capacity = SaveState.club.capacity
 
-	_capacity_upgrade_button.text = "$%d" % CAPACITY_UPGRADE_COST
+	_capacity_upgrade_button.text = "$%s" % _format_money(CAPACITY_UPGRADE_COST)
 	update_display()
 
 	# Auto-open day results popup when arriving at manage scene (skip day 0)
@@ -57,75 +50,88 @@ func _ready() -> void:
 
 
 func update_display() -> void:
-	# Current state panel
-	_day_label.text = "Day: %d" % SaveState.club.day
-	_money_label.text = "Money: $%d" % SaveState.club.money
-	_capacity_label.text = "Capacity: %d" % SaveState.club.capacity
+	# Current state with icons (like queue scene)
+	_money_label.text = "💰 $%s" % _format_money(SaveState.club.money)
+	_capacity_label.text = "👥 Capacity: %d" % SaveState.club.capacity
+	_day_label.text = "📅 Day %d" % SaveState.club.day
 
-	# Cart preview
-	_cost_label.text = "Cost: $%d" % _pending_cost
-	_money_after_label.text = "Money After: $%d" % (SaveState.club.money - _pending_cost)
-	_capacity_after_label.text = "Capacity After: %d" % (SaveState.club.capacity + _pending_capacity)
-
+	# Tomorrow's info
+	var tomorrow_day = SaveState.club.day + 1
+	_tomorrow_title.text = "Tomorrow: Day %d" % tomorrow_day
+	
 	# Theme display
-	var theme = SaveState.next_theme
-	if theme != null and theme.type != DailyTheme.ThemeType.NONE:
-		_theme_label.text = "%s (+%d%%)" % [theme.theme_name(), int(theme.bonus_percent())]
+	var next_theme = SaveState.next_theme
+	if next_theme != null and next_theme.type != DailyTheme.ThemeType.NONE:
+		_theme_label.text = "🎭 Theme: %s (+%d%%)" % [next_theme.theme_name(), int(next_theme.bonus_percent())]
 	else:
-		_theme_label.text = "No Theme"
+		_theme_label.text = "🎭 Theme: None"
+	
+	# Rent for tomorrow (calculated with tomorrow's day number)
+	var tomorrow_rent = _calculate_rent_for_day(tomorrow_day)
+	_rent_label.text = "🏠 Rent Due: $%s" % _format_money(tomorrow_rent)
 
 	# Day results button - hide on day 0, show otherwise
 	_day_results_button.visible = SaveState.club.day > 0
-	_day_results_button.text = "Day %d Results" % SaveState.club.day
+	_day_results_button.text = "📋 Day %d Results" % SaveState.club.day
 
-	# Disable upgrade button if can't afford with pending costs
-	_capacity_upgrade_button.disabled = (SaveState.club.money - _pending_cost) < CAPACITY_UPGRADE_COST
+	# Disable upgrade button if can't afford
+	_capacity_upgrade_button.disabled = SaveState.club.money < CAPACITY_UPGRADE_COST
 
-	# Disable cart buttons when cart is empty
-	var cart_empty: bool = _pending_cost == 0
-	_reset_cart_button.disabled = cart_empty
-	_confirm_button.disabled = cart_empty
-
-	# Disable reset all when already at initial state and cart is empty
-	var at_initial: bool = SaveState.club.money == _initial_money and SaveState.club.capacity == _initial_capacity
-	_reset_to_initial_button.disabled = at_initial and cart_empty
+	# Disable undo button if no purchases to undo
+	_undo_button.disabled = _purchase_history.is_empty()
 
 
-func _on_upgrade_button_pressed() -> void:
+## Calculate rent for a specific day number
+func _calculate_rent_for_day(day_number: int) -> int:
+	return int(SaveState.club.capacity * 200 * (1.3 ** day_number))
+
+
+## Helper to format money with thousands separator
+func _format_money(amount: int) -> String:
+	var s = str(abs(amount))
+	var result = ""
+	var count = 0
+	for i in range(s.length() - 1, -1, -1):
+		if count > 0 and count % 3 == 0:
+			result = "," + result
+		result = s[i] + result
+		count += 1
+	if amount < 0:
+		result = "-" + result
+	return result
+
+
+func _on_capacity_upgrade_button_pressed() -> void:
 	MusicManager.play_button_sfx()
-	if (SaveState.club.money - _pending_cost) < CAPACITY_UPGRADE_COST:
+	if SaveState.club.money < CAPACITY_UPGRADE_COST:
 		return
 
-	_pending_cost += CAPACITY_UPGRADE_COST
-	_pending_capacity += CAPACITY_UPGRADE_AMOUNT
+	# Apply the upgrade
+	SaveState.club.money -= CAPACITY_UPGRADE_COST
+	SaveState.club.capacity += CAPACITY_UPGRADE_AMOUNT
+	
+	# Record in history for undo
+	_purchase_history.append({
+		"type": "capacity",
+		"cost": CAPACITY_UPGRADE_COST,
+		"amount": CAPACITY_UPGRADE_AMOUNT
+	})
+	
 	update_display()
 
 
-func _on_confirm_button_pressed() -> void:
+func _on_undo_button_pressed() -> void:
 	MusicManager.play_button_sfx()
-	if _pending_cost == 0:
+	if _purchase_history.is_empty():
 		return
-
-	SaveState.club.money -= _pending_cost
-	SaveState.club.capacity += _pending_capacity
-	_pending_cost = 0
-	_pending_capacity = 0
-	update_display()
-
-
-func _on_reset_cart_button_pressed() -> void:
-	MusicManager.play_button_sfx()
-	_pending_cost = 0
-	_pending_capacity = 0
-	update_display()
-
-
-func _on_reset_to_initial_button_pressed() -> void:
-	MusicManager.play_button_sfx()
-	SaveState.club.money = _initial_money
-	SaveState.club.capacity = _initial_capacity
-	_pending_cost = 0
-	_pending_capacity = 0
+	
+	# Pop the last purchase and reverse it
+	var last_purchase = _purchase_history.pop_back()
+	
+	if last_purchase["type"] == "capacity":
+		SaveState.club.money += last_purchase["cost"]
+		SaveState.club.capacity -= last_purchase["amount"]
+	
 	update_display()
 
 
@@ -134,11 +140,11 @@ func _on_day_results_button_pressed() -> void:
 	var money_spent: int = _initial_money - SaveState.club.money
 
 	_popup_day_label.text = "Day %d Results" % SaveState.club.day
-	_popup_initial_money_label.text = "Starting Money: $%d" % _initial_money
+	_popup_initial_money_label.text = "Starting Money: $%s" % _format_money(_initial_money)
 	_popup_initial_capacity_label.text = "Starting Capacity: %d" % _initial_capacity
-	_popup_current_money_label.text = "Current Money: $%d" % SaveState.club.money
+	_popup_current_money_label.text = "Current Money: $%s" % _format_money(SaveState.club.money)
 	_popup_current_capacity_label.text = "Current Capacity: %d" % SaveState.club.capacity
-	_popup_money_spent_label.text = "Money Spent: $%d" % money_spent
+	_popup_money_spent_label.text = "Money Spent: $%s" % _format_money(money_spent)
 
 	_day_results_popup.popup_centered()
 
