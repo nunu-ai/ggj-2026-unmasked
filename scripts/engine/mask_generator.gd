@@ -135,9 +135,11 @@ const LOWER_DECOS_STARS = [
 # =============================================================================
 
 ## Generate a fully randomized Mask
-static func generate() -> Mask:
-	# Pick color tier
-	var tier_entry = _weighted_pick(COLOR_TIERS)
+## luck_bonus: each point increases higher tier chances (shifts weight from GREY to better tiers)
+static func generate(luck_bonus: int = 0) -> Mask:
+	# Pick color tier with luck bonus applied
+	var adjusted_tiers = _apply_luck_bonus(COLOR_TIERS, luck_bonus)
+	var tier_entry = _weighted_pick(adjusted_tiers)
 	var color_tier: Mask.ColorTier = tier_entry["tier"]
 	var color: Color = tier_entry["color"]
 
@@ -226,3 +228,38 @@ static func _weighted_pick(entries: Array) -> Dictionary:
 
 	# Fallback (shouldn't happen)
 	return entries[entries.size() - 1]
+
+
+## Apply luck bonus to color tier weights.
+## Each point of luck_bonus shifts 2 weight from GREY to better tiers.
+## Weight is distributed: +0.5 GREEN, +0.5 BLUE, +0.5 PURPLE, +0.3 ORANGE, +0.2 GOLD per point.
+static func _apply_luck_bonus(tiers: Array, luck_bonus: int) -> Array:
+	if luck_bonus <= 0:
+		return tiers
+	
+	# Create a copy with adjusted weights
+	var adjusted: Array = []
+	for tier in tiers:
+		var new_tier = tier.duplicate()
+		adjusted.append(new_tier)
+	
+	# Calculate how much to shift from GREY (max 2 per luck point, but cap at 25 to keep GREY viable)
+	var grey_reduction = mini(luck_bonus * 2, 25)  # Cap reduction so GREY stays at minimum 5
+	
+	# Apply adjustments
+	for tier in adjusted:
+		match tier["tier"]:
+			Mask.ColorTier.GREY:
+				tier["weight"] = maxf(tier["weight"] - grey_reduction, 5)
+			Mask.ColorTier.GREEN:
+				tier["weight"] = tier["weight"] + luck_bonus * 0.5
+			Mask.ColorTier.BLUE:
+				tier["weight"] = tier["weight"] + luck_bonus * 0.5
+			Mask.ColorTier.PURPLE:
+				tier["weight"] = tier["weight"] + luck_bonus * 0.5
+			Mask.ColorTier.ORANGE:
+				tier["weight"] = tier["weight"] + luck_bonus * 0.3
+			Mask.ColorTier.GOLD:
+				tier["weight"] = tier["weight"] + luck_bonus * 0.2
+	
+	return adjusted

@@ -9,7 +9,8 @@ class_name PersonGenerator
 ## Generate a single random person
 static func generate_person(_theme: DailyTheme = null) -> Person:
 	var person_name = _generate_name()
-	var mask = MaskGenerator.generate()
+	var luck_bonus = SaveState.club.tier_luck_bonus if SaveState.club else 0
+	var mask = MaskGenerator.generate(luck_bonus)
 	var rules = _maybe_generate_rules()
 
 	return Person.new(person_name, [], mask, rules)

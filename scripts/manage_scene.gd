@@ -5,6 +5,8 @@ const INITIAL_CAPACITY: int = 5  # Starting capacity (to calculate upgrade count
 const CAPACITY_UPGRADE_AMOUNT: int = 1
 const REROLL_DISCOUNT_UPGRADE_COST: int = 500  # Cost to reduce "Next" price by $25
 const REROLL_DISCOUNT_AMOUNT: int = 25  # How much each upgrade reduces the cost
+const TIER_LUCK_UPGRADE_COST: int = 750  # Cost to increase chance of higher tier masks
+const TIER_LUCK_UPGRADE_AMOUNT: int = 1  # Each upgrade adds +1 tier luck bonus
 
 # Current state labels
 @onready var _money_label: Label = $MainMargin/MainVBox/ContentHBox/LeftPanel/CurrentStateCard/StateMargin/StateVBox/MoneyLabel
@@ -16,6 +18,8 @@ const REROLL_DISCOUNT_AMOUNT: int = 25  # How much each upgrade reduces the cost
 @onready var _capacity_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/CapacityUpgradeRow/CapacityUpgradeButton
 @onready var _reroll_discount_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow/RerollDiscountUpgradeButton
 @onready var _reroll_discount_row: HBoxContainer = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/RerollDiscountUpgradeRow
+@onready var _tier_luck_upgrade_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/TierLuckUpgradeRow/TierLuckUpgradeButton
+@onready var _tier_luck_row: HBoxContainer = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UpgradesList/TierLuckUpgradeRow
 @onready var _undo_button: Button = $MainMargin/MainVBox/ContentHBox/LeftPanel/UpgradesCard/UpgradesMargin/UpgradesVBox/UndoButton
 
 # Tomorrow's info
@@ -80,8 +84,8 @@ func _calculate_day_results() -> void:
 	# Calculate money from rules (bonuses - penalties)
 	_day_rules_money = int(SaveState.day.profit(_initial_capacity))
 	
-	# Calculate rent that was paid (uses capacity at end of day)
-	_day_rent = int(_initial_capacity * 200 * (1.3 ** SaveState.club.day))
+	# Calculate rent that was paid
+	_day_rent = int(1000 * (1.5 ** SaveState.club.day))
 	
 	# Back-calculate starting money
 	# final = starting + guests + rules - rent
@@ -133,6 +137,14 @@ func update_display() -> void:
 	_reroll_discount_upgrade_button.text = "$%s" % _format_money(REROLL_DISCOUNT_UPGRADE_COST)
 	_reroll_discount_upgrade_button.disabled = not (upgrade_available and can_afford)
 	_reroll_discount_row.visible = upgrade_available
+	
+	# Tier luck upgrade - increases chances of higher tier masks
+	# Cap at 10 upgrades (enough to significantly shift probabilities)
+	var tier_luck_available = SaveState.club.tier_luck_bonus < 10
+	var can_afford_tier_luck = SaveState.club.money >= TIER_LUCK_UPGRADE_COST
+	_tier_luck_upgrade_button.text = "$%s" % _format_money(TIER_LUCK_UPGRADE_COST)
+	_tier_luck_upgrade_button.disabled = not (tier_luck_available and can_afford_tier_luck)
+	_tier_luck_row.visible = tier_luck_available
 
 	# Disable undo button if no purchases to undo
 	_undo_button.disabled = _purchase_history.is_empty()
@@ -149,7 +161,7 @@ func _get_upgrade_cost() -> int:
 
 ## Calculate rent for a specific day number
 func _calculate_rent_for_day(day_number: int) -> int:
-	return int(SaveState.club.capacity * 200 * (1.3 ** day_number))
+	return int(1000 * (1.5 ** day_number))
 
 
 ## Helper to format money with thousands separator
@@ -206,6 +218,27 @@ func _on_reroll_discount_upgrade_button_pressed() -> void:
 	update_display()
 
 
+func _on_tier_luck_upgrade_button_pressed() -> void:
+	MusicManager.play_button_sfx()
+	if SaveState.club.money < TIER_LUCK_UPGRADE_COST:
+		return
+	if SaveState.club.tier_luck_bonus >= 10:
+		return
+	
+	# Apply the upgrade
+	SaveState.club.money -= TIER_LUCK_UPGRADE_COST
+	SaveState.club.tier_luck_bonus += TIER_LUCK_UPGRADE_AMOUNT
+	
+	# Record in history for undo
+	_purchase_history.append({
+		"type": "tier_luck",
+		"cost": TIER_LUCK_UPGRADE_COST,
+		"amount": TIER_LUCK_UPGRADE_AMOUNT
+	})
+	
+	update_display()
+
+
 func _on_undo_button_pressed() -> void:
 	MusicManager.play_button_sfx()
 	if _purchase_history.is_empty():
@@ -220,6 +253,9 @@ func _on_undo_button_pressed() -> void:
 	elif last_purchase["type"] == "reroll_discount":
 		SaveState.club.money += last_purchase["cost"]
 		SaveState.club.reroll_discount -= last_purchase["amount"]
+	elif last_purchase["type"] == "tier_luck":
+		SaveState.club.money += last_purchase["cost"]
+		SaveState.club.tier_luck_bonus -= last_purchase["amount"]
 	
 	update_display()
 
