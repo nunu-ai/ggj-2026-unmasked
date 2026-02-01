@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://dfc2ofslx3wjd"]
+[gd_scene load_steps=20 format=3 uid="uid://dfc2ofslx3wjd"]
 
 [ext_resource type="Script" uid="uid://e8xf3l74cys8" path="res://scripts/queue_scene.gd" id="1_h6422"]
 [ext_resource type="Shader" uid="uid://cp7xaiimdvev3" path="res://shaders/queue_scene.gdshader" id="1_hl0vj"]
+[ext_resource type="Shader" uid="uid://cly5rvu1h7smx" path="res://shaders/pulsating_lights.gdshader" id="3_r5e7t"]
 [ext_resource type="PackedScene" uid="uid://b42tcdagl5mcw" path="res://scenes/mask_display.tscn" id="3_s6a0p"]
 [ext_resource type="Texture2D" uid="uid://c4oy847dty2m5" path="res://assets/buttons/let-in-1.png" id="5_x81ya"]
 [ext_resource type="Script" uid="uid://c73iorjibs4pa" path="res://scripts/reaction_particles.gd" id="6_chl07"]
@@ -15,12 +16,34 @@
 [ext_resource type="Texture2D" uid="uid://77j20n5mlvxv" path="res://assets/icons/smile.png" id="13_r5e7t"]
 [ext_resource type="Texture2D" uid="uid://blpp8iy5c83vb" path="res://assets/icons/angry.png" id="14_waenf"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_waenf"]
+shader = ExtResource("3_r5e7t")
+shader_parameter/screen_size = Vector2(1280, 720)
+shader_parameter/pulse_speed = 13.8000006555
+shader_parameter/beat_amount = 0.186000008835
+shader_parameter/shimmer_amount = 0.15
+shader_parameter/min_pulse = 0.15
+shader_parameter/sync_all_lights = true
+shader_parameter/phase_variation = 0.0
+shader_parameter/target_yellow = Color(1, 0.9, 0.25, 1)
+shader_parameter/yellow_threshold = 0.04800000228
+shader_parameter/yellow_width = 0.25
+shader_parameter/brightness_threshold = 0.12
+shader_parameter/yellow_sensitivity = 1.0
+shader_parameter/intensity = 0.410000019475
+shader_parameter/saturation_boost = 0.49600002356
+shader_parameter/glow_radius_px = 6.0
+shader_parameter/glow_intensity = 1.3590000645525
+shader_parameter/glow_samples = 12
+shader_parameter/glow_falloff = 2.2
+shader_parameter/additive_only = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_54epr"]
 shader = ExtResource("1_hl0vj")
 shader_parameter/base_color = Color(0.1, 0.05, 0.15, 1)
 shader_parameter/halo_color = Color(0.8, 0.4, 0.9, 1)
 shader_parameter/dot_color = Color(1, 0.8, 0.3, 1)
-shader_parameter/halo_intensity = 0.3
+shader_parameter/halo_intensity = 0.7150000339625
 shader_parameter/halo_size = 0.15
 shader_parameter/halo_softness = 0.1
 shader_parameter/num_halos = 4
@@ -71,13 +94,21 @@ texture = ExtResource("7_wallpaper")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="ShaderOverlay2" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_waenf")
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
 [node name="ShaderOverlay" type="ColorRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_54epr")
 layout_mode = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="MainMargin" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
